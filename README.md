@@ -1,5 +1,5 @@
 # Portal Sportowy - Projekt Inżynierski
-Autor: Sebastian RICHTER
+Autor: Sebastian **RICHTER**
 ## Temat projektu
 Aplikacja internetowa do gromadzenia i prezentacji informacji sportowych (sportowy portal informacyjny).
 Web application for the collection and presentation of sports informations (sports information portal).
