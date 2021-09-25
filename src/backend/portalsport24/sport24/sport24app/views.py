@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, viewsets, status
 from knox.models import AuthToken
 from .models import *
+from .serializers import *
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -29,3 +30,14 @@ class LoginAPI(KnoxLoginView):
         login_list = super(LoginAPI, self).post(request, format=None)
         login_list.data["position"] = position
         return JsonResponse(login_list.data, safe=False, status=status.HTTP_200_OK)
+
+@csrf_exempt
+def sections_api(request, id = 0):
+    if request.method == "POST":
+        section_data=JSONParser().parse(request)
+        section_serial = SectionSerializer(data=section_data)
+        if section_serial.is_valid():
+            section_serial.save()
+            return JsonResponse(section_serial.data, safe=False, status=status.HTTP_201_CREATED)
+        return JsonResponse("Nie dodano sekcji.", safe=False, status=status.HTTP_404_NOT_FOUND)
+

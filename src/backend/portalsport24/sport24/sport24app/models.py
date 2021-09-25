@@ -103,7 +103,7 @@ class Articles(models.Model):
     date_of_create = models.DateTimeField()
     date_of_last_change = models.DateTimeField(null=True)
     text = models.TextField()
-    image = models.ImageField()
+    #image = models.ImageField()
     page_views = models.IntegerField(default=0)
     section_id = models.ForeignKey(Sections, on_delete=models.DO_NOTHING)
 
