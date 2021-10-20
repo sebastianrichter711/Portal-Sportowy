@@ -40,4 +40,3 @@ def sections_api(request, id = 0):
             section_serial.save()
             return JsonResponse(section_serial.data, safe=False, status=status.HTTP_201_CREATED)
         return JsonResponse("Nie dodano sekcji.", safe=False, status=status.HTTP_404_NOT_FOUND)
-
