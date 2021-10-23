@@ -16,6 +16,19 @@ from decimal import Decimal
 import datetime
 import json
 
+# Register API
+class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return JsonResponse({
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": AuthToken.objects.create(user)[1]
+        })
+
 class LoginAPI(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
 
@@ -24,13 +37,9 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        got_username = user.username
-        user = Users.objects.get(username=got_username)
-        position = user.position
-        login_list = super(LoginAPI, self).post(request, format=None)
-        login_list.data["position"] = position
-        return JsonResponse(login_list.data, safe=False, status=status.HTTP_200_OK)
+        return super(LoginAPI, self).post(request, format=None)
 
+        
 @csrf_exempt
 def sections_api(request, id = 0):
     if request.method == "POST":
