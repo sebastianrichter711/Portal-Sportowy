@@ -17,7 +17,7 @@ class Profile(models.Model):
     authorize_date = models.DateField(null=True, blank=True)
     end_authorize_date = models.DateField(null=True, blank=True)
     comments_number = models.IntegerField(blank=True, default=0)
-    #avatar = models.ImageField()
+    avatar = models.ImageField(null=True, blank=True)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -31,7 +31,8 @@ def save_user_profile(sender, instance, **kwargs):
 class Section(models.Model):
     section_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
-    number_of_articles = models.IntegerField(default=0)
+    number_of_articles = models.IntegerField(default=0, blank=True)
+    icon = models.ImageField(null=True, blank=True)
     moderator_id = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
 
 class Article(models.Model):
@@ -40,10 +41,10 @@ class Article(models.Model):
     date_of_create = models.DateTimeField()
     date_of_last_change = models.DateTimeField(blank=True, null=True)
     text = models.TextField()
-    #big_title_photo = models.ImageField()
-    #small_title_photo = models.ImageField()
-    #add_photo = models.ImageField()
-    page_views = models.IntegerField(default=0)
+    big_title_photo = models.ImageField(null=True, blank=True)
+    small_title_photo = models.ImageField(null=True, blank=True)
+    add_photo = models.ImageField(null=True, blank=True)
+    page_views = models.IntegerField(default=0, blank=True)
     section_id = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
 
 class Comment(models.Model):
@@ -61,6 +62,7 @@ class Discipline(models.Model):
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
+    logo = models.ImageField(null=True, blank=True)
     discipline_id = models.ForeignKey(Discipline, on_delete=models.DO_NOTHING)
 
 class Season(models.Model):
@@ -68,7 +70,7 @@ class Season(models.Model):
     season = models.CharField(max_length=10)
     phase = models.CharField(max_length=20)
     stage = models.CharField(max_length=20)
-    group = models.CharField(max_length=3, blank=True, null=True)
+    group = models.CharField(max_length=3, blank=True)
     game_id = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
 
 class Match(models.Model):

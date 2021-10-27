@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,7 +84,7 @@ WSGI_APPLICATION = 'sport24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sportinfo24',
+        'NAME': 'sportINFO24',
         "USER": 'postgres',
         "PASSWORD": 'postgres'
     }
@@ -140,3 +141,5 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
