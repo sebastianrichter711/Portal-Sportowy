@@ -53,3 +53,12 @@ class GetDisciplineSerializer(serializers.ModelSerializer):
             'name',
             'icon'
         )
+
+class GameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        fields = (
+            'name',
+            'logo'
+        )
+

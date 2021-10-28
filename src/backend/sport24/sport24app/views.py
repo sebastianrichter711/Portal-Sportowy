@@ -94,3 +94,10 @@ def disciplines_api(request, id = 0):
         disciplines_serial = GetDisciplineSerializer(disciplines, many = True)
         return JsonResponse(disciplines_serial.data, safe=False, status=status.HTTP_200_OK)
 
+@csrf_exempt
+def get_discipline_games(request, name):
+    if request.method == "GET":
+        games = Game.objects.filter(discipline_id__name=name)
+        games_serial = GameSerializer(games, many = True)
+        return JsonResponse(games_serial.data, safe=False, status=status.HTTP_200_OK)
+
