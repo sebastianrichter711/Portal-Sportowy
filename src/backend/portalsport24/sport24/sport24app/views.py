@@ -74,10 +74,29 @@ class ChangePasswordView(generics.UpdateAPIView):
         
 @csrf_exempt
 def sections_api(request, id = 0):
+    if request.method == "GET":
+        sections = Section.objects.all()
+        sections_serial = GetSectionSerializer(sections, many = True)
+        return JsonResponse(sections_serial.data, safe=False, status=status.HTTP_200_OK)
+
     if request.method == "POST":
         section_data=JSONParser().parse(request)
-        section_serial = SectionSerializer(data=section_data)
+        section_serial = PostSectionSerializer(data=section_data)
         if section_serial.is_valid():
             section_serial.save()
             return JsonResponse(section_serial.data, safe=False, status=status.HTTP_201_CREATED)
         return JsonResponse("Nie dodano sekcji.", safe=False, status=status.HTTP_404_NOT_FOUND)
+
+@csrf_exempt
+def disciplines_api(request, id = 0):
+    if request.method == "GET":
+        disciplines = Discipline.objects.all()
+        disciplines_serial = GetDisciplineSerializer(disciplines, many = True)
+        return JsonResponse(disciplines_serial.data, safe=False, status=status.HTTP_200_OK)
+
+@csrf_exempt
+def get_discipline_games(request, name):
+    if request.method == "GET":
+        games = Game.objects.filter(discipline_id__name=name)
+        games_serial = GameSerializer(games, many = True)
+        return JsonResponse(games_serial.data, safe=False, status=status.HTTP_200_OK)

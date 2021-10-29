@@ -29,10 +29,35 @@ class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
 
-class SectionSerializer(serializers.ModelSerializer):
+class PostSectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Section
         fields = (
             'name',
-            "moderator_id"
+            'icon',
+            'moderator_id'
+        )
+
+class GetSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = (
+            'name',
+            'icon'
+        )
+
+class GetDisciplineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discipline
+        fields = (
+            'name',
+            'icon'
+        )
+
+class GameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        fields = (
+            'name',
+            'logo'
         )
