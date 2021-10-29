@@ -62,7 +62,9 @@ ROOT_URLCONF = 'sport24.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontsport24/build')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +86,7 @@ WSGI_APPLICATION = 'sport24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sportINFO24',
+        'NAME': 'sportinfo24',
         "USER": 'postgres',
         "PASSWORD": 'postgres'
     }
@@ -142,4 +144,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontsport24/build/static')
+]
