@@ -106,7 +106,7 @@ def disciplines_api(request, id = 0):
         return JsonResponse("Nie dodano dyscypliny.", safe=False, status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
-def get_discipline_games(request, name):
+def discipline_games(request, name):
     if request.method == "GET":
         games = Game.objects.filter(discipline_id__name=name)
         games_serial = GameSerializer(games, many = True)
@@ -166,3 +166,12 @@ def delete_section(request,id):
             section.delete()
             return JsonResponse("Sekcja usunięta.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie usunięto sekcji!", safe=False, status = status.HTTP_404_NOT_FOUND)  
+
+@csrf_exempt
+def delete_comment(request,id):
+    if request.method=='DELETE':
+        comment=Comment.objects.get(comment_id=id)
+        if comment:
+            comment.delete()
+            return JsonResponse("Komentarz usunięty.", safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto komentarza!", safe=False, status = status.HTTP_404_NOT_FOUND)  
