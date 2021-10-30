@@ -7,11 +7,15 @@ from rest_framework import routers
 from sport24app import views
 
 urlpatterns = [
-    path('register', RegisterAPI.as_view(), name='register'),
-    path('login', LoginAPI.as_view(), name='login'),
-    path('logout', knox_views.LogoutView.as_view(), name='logout'),
+    path('register', RegisterAPI.as_view()),
+    path('login', LoginAPI.as_view()),
+    path('logout', knox_views.LogoutView.as_view()),
     path('change_password', ChangePasswordView.as_view(), name='change-password'),
     path('section', views.sections_api),
     path('discipline', views.disciplines_api),
-    path('games/<str:name>', views.get_discipline_games)
+    path('games/<str:name>', views.get_discipline_games),
+    path('profile/<int:id>', views.user_api),
+    path('short_profile/<int:id>', views.get_short_user_data),
+    path('delete_section/<int:id>', views.delete_section)
+    #path('article/<int:id>', views.get_article)
 ]

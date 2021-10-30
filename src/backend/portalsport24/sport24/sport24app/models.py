@@ -108,5 +108,5 @@ class Match(models.Model):
 
 class Quote(models.Model):
     quote_id = models.AutoField(primary_key=True)
-    quote = models.TextField()
-    description = models.TextField()
+    quotes = models.TextField(null=True)
+    description = models.TextField(null=True)
