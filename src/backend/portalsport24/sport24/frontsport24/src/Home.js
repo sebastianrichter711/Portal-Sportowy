@@ -1,6 +1,5 @@
 import React from 'react';
-import './home.css';
-
+import './style.css';
 
 function Expo() {
 

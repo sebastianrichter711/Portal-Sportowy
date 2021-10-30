@@ -1,0 +1,101 @@
+*{
+	margin:0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Roboto', sans-serif;
+}
+body{
+	background: #006600;
+}
+.logo{
+	width: 100vw;
+	position: absolute;
+	top: 3%;
+	left: 9%;
+	color: #ffffff;
+	font-size: 72px;
+	font-family: 'Roboto', sans-serif;
+    font-style: italic;
+}
+.date{
+	width: 100vw;
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	transform: translate(-50%,-50%);
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	z-index: 10;
+	color: #ffffff;
+	font-size: 12px;
+	font-family: "Times New Roman", Times, serif;
+}
+.registerButton{
+    width: 10vw;
+    height: 3vw;
+    top: 9%;
+	left: 84%;
+	background: #ffff00;
+    color: #000000;
+    font-size: 18px;
+	font-family: "Arial", Arial, serif;
+    position: absolute;
+    font-weight: bold;
+}
+.loginButton{
+    width: 10vw;
+    height: 3vw;
+    top: 3%;
+	left: 84%;
+	background: #ffff00;
+    color: #000000;
+    font-size: 18px;
+	font-family: "Arial", Arial, serif;
+    position: absolute;
+    font-weight: bold;
+}
+.scoresButton{
+    width: 10vw;
+    height: 3vw;
+    top: 33%;
+	left: 84%;
+	background: #ffff00;
+    color: #000000;
+    font-size: 18px;
+	font-family: "Arial", Arial, serif;
+    position: absolute;
+    font-weight: bold;
+
+}
+.newestNews{
+	width: 100vw;
+	position: absolute;
+	top: 53%;
+	left: 9%;
+	color: #ffffff;
+	font-size: 32px;
+	font-family: "Arial", Times, serif;
+}
+.fbImg{
+	width: 4vw;
+    height: 4vw;
+	position: absolute;
+	top: 4%;
+	left: 69.5%;
+}
+.twImg{
+	width: 5vw;
+    height: 4vw;
+	position: absolute;
+	top: 4%;
+	left: 74%;
+}
+.insImg{
+	width: 4vw;
+    height: 4vw;
+	position: absolute;
+	top: 4%;
+	left: 79%;
+}
+
