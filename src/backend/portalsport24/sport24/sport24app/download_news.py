@@ -5,10 +5,11 @@ from pprint import pprint
 url = 'https://sport.tvp.pl/56680769/niecodzienny-towarzysz-biegacza-nijela-amosa-podczas-treningu-w-botswanie'
 data = requests.get(url)
 
-print(data.text)
+#print(data.text)
 # my_data = []
 
-# html = BeautifulSoup(data.text, 'html.parser')
+html = BeautifulSoup(data.text, 'html.parser')
+print(html)
 # articles = html.select('a.post-card')
 
 # for article in articles:
