@@ -44,12 +44,13 @@ class Section(models.Model):
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
-    date_of_create = models.DateTimeField()
-    date_of_last_change = models.DateTimeField(blank=True, null=True)
+    date_of_create = models.CharField(max_length=20)
+    date_of_last_change = models.CharField(max_length=20, blank=True)
+    lead_text = models.TextField()
     text = models.TextField()
-    big_title_photo = models.ImageField(null=True, blank=True)
-    small_title_photo = models.ImageField(null=True, blank=True)
-    add_photo = models.ImageField(null=True, blank=True)
+    big_title_photo = models.ImageField(upload_to='img art big photo', null=True, blank=True)
+    small_title_photo = models.ImageField(upload_to='img art small photo', null=True, blank=True)
+    add_photo = models.ImageField(upload_to='img art add photo', null=True, blank=True)
     page_views = models.IntegerField(default=0, blank=True)
     section_id = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
 
@@ -108,5 +109,5 @@ class Match(models.Model):
 
 class Quote(models.Model):
     quote_id = models.AutoField(primary_key=True)
-    quotes = models.TextField(null=True)
+    quote = models.TextField(null=True)
     description = models.TextField(null=True)

@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'sport24app',
+    'sport24app.apps.Sport24AppConfig',
     'rest_framework',
     'knox'
 ]
@@ -74,7 +74,7 @@ WSGI_APPLICATION = 'sport24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sportinfo24',
+        'NAME': 'sportINFO24',
         "USER": 'postgres',
         "PASSWORD": 'postgres'
     }
