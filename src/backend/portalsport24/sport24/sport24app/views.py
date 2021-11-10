@@ -16,54 +16,7 @@ from decimal import Decimal
 import datetime
 import json
 from rest_framework.permissions import IsAuthenticated 
-#from news import download_article 
-
-from bs4.element import Script
-import requests
-from bs4 import BeautifulSoup
-#from sport24app.models import Article, Section
-
-def download_article(url):
-    #url = 'https://www.sport.pl/pilka/7,65041,27757263,dlaczego-gazprom-placi-setki-milionow-euro-na-europejski-futbol.html#do_w=107&do_v=314&do_st=RS&do_sid=677&do_a=677&s=SMT_Link_2'
-    data = requests.get(url)
-
-    html = BeautifulSoup(data.text, 'html.parser')
-    title = html.find("h1", {"id": "article_title"})
-    date = html.find("span", {"class": "article_date"})
-    lead_text = html.find("div", {"id": "gazeta_article_lead"})
-    main_text = html.find_all("p", {"class": "art_paragraph"})
-
-    main_text_to_DB = ""
-    for item in main_text:
-        main_text_to_DB += item.text
-
-    date_index = date.text.find("0")
-    new_date = date.text[date_index:date_index+16]
-    print(title.text)
-    print(new_date)
-    print(lead_text.text)
-    print(main_text_to_DB)
-
-    images = html.find_all("script")
-    str_img = str(images)
-    split_images = str_img.split('<script>')
-
-    images2 = ""
-    for item in split_images:
-        if "galleryInArticleData" in item:
-            images2 = item
-
-    print(images2)
-
-    imagesUrl = images2.find("url:")
-    imagesTitle = images2.find("title:")
-    newText = images2[imagesUrl:imagesTitle]
-    https = newText.find("https:")
-    jpg = newText.find("',")
-    fullUrl = newText[https:jpg]
-    print(fullUrl)
-
-    return title.text, new_date, lead_text.text, main_text_to_DB, fullUrl
+from news.news import download_article 
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -228,12 +181,8 @@ def delete_comment(request,id):
 def download_articles(request, section_name):
     if request.method == "POST":
         data=JSONParser().parse(request)
-        download_data = download_article(data["url"])
-        section = Section.objects.get(name=section_name)
-        new_article = Article.objects.create(title=download_data[0], date_of_create = download_data[1],
-               lead_text = download_data[2], text = download_data[3], big_title_photo = download_data[4], section_id = section)
-        if new_article:
-            new_article.save()
+        download_data = download_article(data["url"], section_name)
+        if download_data == True:
             return JsonResponse("Dodano artykuł/-y.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)
         
