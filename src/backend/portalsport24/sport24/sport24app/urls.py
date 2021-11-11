@@ -18,6 +18,9 @@ urlpatterns = [
     path('short_profile/<int:id>', views.get_short_user_data),
     path('delete_section/<int:id>', views.delete_section),
     path('delete_comment/<int:id>', views.delete_comment),
-    path('download_articles/<str:section_name>', views.download_articles)
-    #path('article/<int:id>', views.get_article)
+    path('download_articles/<str:section_name>', views.download_articles),
+    path('newest_articles', views.get_newest_articles),
+    path('found_articles/<str:keyword>', views.find_articles_by_keyword),
+    path('article/<int:id>', views.get_article),
+    path('articles/<str:section_name>', views.get_articles_for_section)
 ]

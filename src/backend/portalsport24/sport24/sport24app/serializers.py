@@ -89,4 +89,21 @@ class ArticleSerializer(serializers.ModelSerializer):
             'section_id'
         )
 
+class NewArticlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = (
+            'date_of_create',
+            'title'
+        )
+
+class ShortArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = (
+            'date_of_create',
+            'title',
+            'lead_text',
+            'small_title_photo'
+        )
 

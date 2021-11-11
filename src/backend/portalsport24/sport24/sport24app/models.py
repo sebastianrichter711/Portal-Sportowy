@@ -40,12 +40,12 @@ class Section(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
-    date_of_create = models.CharField(max_length=20)
-    date_of_last_change = models.CharField(max_length=20, blank=True)
+    date_of_create = models.DateTimeField()
+    date_of_last_change = models.DateTimeField(blank=True, null=True)
     lead_text = models.TextField()
     text = models.TextField()
     big_title_photo = models.ImageField(upload_to='img art big photo', null=True, blank=True)

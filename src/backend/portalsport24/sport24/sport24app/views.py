@@ -17,6 +17,7 @@ import datetime
 import json
 from rest_framework.permissions import IsAuthenticated 
 from news.news import download_article 
+from datetime import datetime, timedelta
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -150,14 +151,16 @@ def get_short_user_data(request, id):
             return JsonResponse(user_data, safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono użytkownika o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
-# @csrf_exempt
-# def get_article(request, id):
-#     if request.method == "GET":
-#         article = Article.objects.get(article_id = id)
-#         if article:
-#             article_serial = ArticleSerializer(article, many = True)
-#             return JsonResponse(article_serial, safe=False, status = status.HTTP_200_OK)
-#         return JsonResponse("Nie znaleziono artykułu o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
+@csrf_exempt
+def get_article(request, id):
+     if request.method == "GET":
+         article = Article.objects.get(article_id=id)
+         if article:
+             article.page_views += 1
+             article.save()
+             article_serial = ArticleSerializer(article)
+             return JsonResponse(article_serial.data, safe=False, status = status.HTTP_200_OK)
+         return JsonResponse("Nie znaleziono artykułu o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def delete_section(request,id):
@@ -185,4 +188,30 @@ def download_articles(request, section_name):
         if download_data == True:
             return JsonResponse("Dodano artykuł/-y.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)
+  
+@csrf_exempt
+def get_newest_articles(request, id=0):
+    if request.method == "GET":
+        yesterday_time = datetime.now() - timedelta(hours = 24)
+        newest_articles = Article.objects.filter(date_of_create__gte=yesterday_time).order_by('-date_of_create')[:10]
+        newest_articles_serial = NewArticlesSerializer(newest_articles, many = True)
+        return JsonResponse(newest_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        
+@csrf_exempt
+def find_articles_by_keyword(request, keyword):
+    if request.method == "GET":
+        found_articles = []
+        for article in Article.objects.all():
+            if keyword in article.title or keyword in article.lead_text or keyword in article.text:
+                found_articles.append(article)
+        found_articles_serial = ShortArticleSerializer(found_articles, many = True)
+        return JsonResponse(found_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+    
+@csrf_exempt
+def get_articles_for_section(request, section_name):
+    if request.method == "GET":
+        section = Section.objects.get(name=section_name)
+        section_articles = Article.objects.filter(section_id = section)
+        section_articles_serial = ShortArticleSerializer(section_articles, many = True)
+        return JsonResponse(section_articles_serial.data, safe=False, status=status.HTTP_200_OK)
         
