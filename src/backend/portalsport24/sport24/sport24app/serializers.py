@@ -81,6 +81,7 @@ class ArticleSerializer(serializers.ModelSerializer):
             'title', 
             'date_of_create',
             'date_of_last_change',
+            'lead_text',
             'text',
             'big_title_photo',
             'small_title_photo',
@@ -96,6 +97,14 @@ class NewArticlesSerializer(serializers.ModelSerializer):
             'date_of_create',
             'title'
         )
+        
+class NewestArticleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = (
+            'big_title_photo',
+            'title'
+        )
 
 class ShortArticleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -107,3 +116,18 @@ class ShortArticleSerializer(serializers.ModelSerializer):
             'small_title_photo'
         )
 
+class QuoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quote
+        fields = (
+            'quote',
+            'description'
+        )
+        
+class HomePageArticlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = (
+            'small_title_photo',
+            'title'
+        )

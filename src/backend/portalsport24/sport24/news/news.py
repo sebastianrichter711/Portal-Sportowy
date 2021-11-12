@@ -68,8 +68,9 @@ html = BeautifulSoup(data.text, 'html.parser')
 title = html.find("meta", {"property": "og:title"})
 
 #print(html)
-print(title["content"])
-
+print(type(title["content"]))
+'''
+'''
 title = html.find("h1", {"id": "article_title"})
 
 new_title = ""

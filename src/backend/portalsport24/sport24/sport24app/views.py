@@ -13,8 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from decimal import Decimal
-import datetime
-import json
+import datetime, json, random
 from rest_framework.permissions import IsAuthenticated 
 from news.news import download_article 
 from datetime import datetime, timedelta
@@ -81,8 +80,10 @@ class ChangePasswordView(generics.UpdateAPIView):
 def sections_api(request, id = 0):
     if request.method == "GET":
         sections = Section.objects.all()
-        sections_serial = GetSectionSerializer(sections, many = True)
-        return JsonResponse(sections_serial.data, safe=False, status=status.HTTP_200_OK)
+        if sections:
+            sections_serial = GetSectionSerializer(sections, many = True)
+            return JsonResponse(sections_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono działów!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "POST":
         section_data=JSONParser().parse(request)
@@ -90,14 +91,16 @@ def sections_api(request, id = 0):
         if section_serial.is_valid():
             section_serial.save()
             return JsonResponse(section_serial.data, safe=False, status=status.HTTP_201_CREATED)
-        return JsonResponse("Nie dodano sekcji.", safe=False, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse("Nie dodano działu.", safe=False, status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def disciplines_api(request, id = 0):
     if request.method == "GET":
         disciplines = Discipline.objects.all()
-        disciplines_serial = DisciplineSerializer(disciplines, many = True)
-        return JsonResponse(disciplines_serial.data, safe=False, status=status.HTTP_200_OK)
+        if disciplines:
+            disciplines_serial = DisciplineSerializer(disciplines, many = True)
+            return JsonResponse(disciplines_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono dyscyplin!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
     elif request.method == "POST":
         discipline_data=JSONParser().parse(request)
@@ -111,8 +114,10 @@ def disciplines_api(request, id = 0):
 def discipline_games(request, name):
     if request.method == "GET":
         games = Game.objects.filter(discipline_id__name=name)
-        games_serial = GameSerializer(games, many = True)
-        return JsonResponse(games_serial.data, safe=False, status=status.HTTP_200_OK)
+        if games:
+            games_serial = GameSerializer(games, many = True)
+            return JsonResponse(games_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono rozgrywek dla dyscypliny " + name + "!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
 def user_api(request, id):
@@ -163,7 +168,7 @@ def get_article(request, id):
          return JsonResponse("Nie znaleziono artykułu o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
-def delete_section(request,id):
+def delete_section(request, id):
     if request.method=='DELETE':
         section=Section.objects.get(section_id=id)
         if section:
@@ -194,8 +199,10 @@ def get_newest_articles(request, id=0):
     if request.method == "GET":
         yesterday_time = datetime.now() - timedelta(hours = 24)
         newest_articles = Article.objects.filter(date_of_create__gte=yesterday_time).order_by('-date_of_create')[:10]
-        newest_articles_serial = NewArticlesSerializer(newest_articles, many = True)
-        return JsonResponse(newest_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        if newest_articles:
+            newest_articles_serial = NewArticlesSerializer(newest_articles, many = True)
+            return JsonResponse(newest_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono najnowszych artykułów!", safe=False, status = status.HTTP_404_NOT_FOUND)
         
 @csrf_exempt
 def find_articles_by_keyword(request, keyword):
@@ -204,14 +211,75 @@ def find_articles_by_keyword(request, keyword):
         for article in Article.objects.all():
             if keyword in article.title or keyword in article.lead_text or keyword in article.text:
                 found_articles.append(article)
-        found_articles_serial = ShortArticleSerializer(found_articles, many = True)
-        return JsonResponse(found_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        if found_articles:
+            found_articles_serial = ShortArticleSerializer(found_articles, many = True)
+            return JsonResponse(found_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
 def get_articles_for_section(request, section_name):
     if request.method == "GET":
         section = Section.objects.get(name=section_name)
-        section_articles = Article.objects.filter(section_id = section)
-        section_articles_serial = ShortArticleSerializer(section_articles, many = True)
-        return JsonResponse(section_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+        if section:
+            section_articles = Article.objects.filter(section_id = section)
+            if section_articles:
+                section_articles_serial = ShortArticleSerializer(section_articles, many = True)
+                return JsonResponse(section_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse("Nie znaleziono artykułów dla działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+        return JsonResponse("Nie znaleziono działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def get_random_quote(request, id=0):
+    if request.method == "GET":
+        quotes = list(Quote.objects.all())
+        if quotes:
+            random_quote = random.choice(quotes)
+            random_quote_serial = QuoteSerializer(random_quote)
+            return JsonResponse(random_quote_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono cytatów!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def get_newest_article(request, id=0):
+    if request.method == "GET":
+        yesterday_time = datetime.now() - timedelta(hours = 24)
+        newest_article = Article.objects.filter(date_of_create__gte=yesterday_time).order_by('-date_of_create').first()
+        if newest_article:
+            newest_article_serial = NewestArticleSerializer(newest_article)
+            return JsonResponse(newest_article_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono najnowszego artykułu!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def get_articles_for_home_page(request, id=0):
+    if request.method == "GET":
+        yesterday_time = datetime.now() - timedelta(hours = 24)
+        football_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Piłka nożna").order_by('-page_views')[:2]
+        volleyball_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Siatkówka").order_by('-page_views')[:2]
+        basketball_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Koszykówka").order_by('-page_views')[:2]
+        athletics_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Lekkoatletyka").order_by('-page_views')[:2]
+        tennis_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Tenis").order_by('-page_views')[:2]
+        other_sports_articles = Article.objects.filter(date_of_create__gte=yesterday_time, section_id__name="Inne sporty").order_by('-page_views')[:2]
         
+        articles_for_home_page = []
+        if football_articles:
+            for article in football_articles:
+                articles_for_home_page.append(article)
+        if volleyball_articles:
+            for article in volleyball_articles:
+                articles_for_home_page.append(article)
+        if basketball_articles:
+            for article in basketball_articles:
+                articles_for_home_page.append(article)
+        if athletics_articles:
+            for article in athletics_articles:
+                articles_for_home_page.append(article)
+        if tennis_articles:
+            for article in tennis_articles:
+                articles_for_home_page.append(article)
+        if other_sports_articles:
+            for article in other_sports_articles:
+                articles_for_home_page.append(article)
+          
+        if articles_for_home_page: 
+            articles_for_home_page_serial = HomePageArticlesSerializer(articles_for_home_page, many=True)
+            return JsonResponse(articles_for_home_page_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono artykułów na stronę główną!", safe=False, status = status.HTTP_404_NOT_FOUND)

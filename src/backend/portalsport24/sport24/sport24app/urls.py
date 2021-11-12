@@ -19,8 +19,11 @@ urlpatterns = [
     path('delete_section/<int:id>', views.delete_section),
     path('delete_comment/<int:id>', views.delete_comment),
     path('download_articles/<str:section_name>', views.download_articles),
+    path('newest_article', views.get_newest_article),
     path('newest_articles', views.get_newest_articles),
     path('found_articles/<str:keyword>', views.find_articles_by_keyword),
     path('article/<int:id>', views.get_article),
-    path('articles/<str:section_name>', views.get_articles_for_section)
+    path('articles/<str:section_name>', views.get_articles_for_section),
+    path('articles_home_page', views.get_articles_for_home_page),
+    path('quote', views.get_random_quote)
 ]
