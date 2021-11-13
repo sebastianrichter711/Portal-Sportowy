@@ -177,7 +177,7 @@ def delete_section(request, id):
         return JsonResponse("Nie usunięto sekcji!", safe=False, status = status.HTTP_404_NOT_FOUND)  
 
 @csrf_exempt
-def delete_comment(request,id):
+def delete_comment(request, id):
     if request.method=='DELETE':
         comment=Comment.objects.get(comment_id=id)
         if comment:
@@ -229,7 +229,7 @@ def get_articles_for_section(request, section_name):
         return JsonResponse("Nie znaleziono działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
-def get_random_quote(request, id=0):
+def get_quote(request, id=0):
     if request.method == "GET":
         quotes = list(Quote.objects.all())
         if quotes:
@@ -283,3 +283,44 @@ def get_articles_for_home_page(request, id=0):
             articles_for_home_page_serial = HomePageArticlesSerializer(articles_for_home_page, many=True)
             return JsonResponse(articles_for_home_page_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułów na stronę główną!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def add_comment(request, article_id, profile_id):
+    if request.method == "POST":
+        comment_data=JSONParser().parse(request)
+        comment_text = comment_data["text"]
+        profile = Profile.objects.get(profile_id = profile_id)
+        article = Article.objects.get(article_id=article_id)
+        if profile and article:
+            new_comment = Comment.objects.create(author_id=profile, date_of_create=datetime.now(), text=comment_text,
+                                                 article_id = article)
+            new_comment.save()
+            return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def get_comments_for_article(request, article_id):
+    if request.method == "GET":
+        article = Article.objects.get(article_id=article_id)
+        if article:
+            comments = Comment.objects.filter(article_id=article_id).order_by('-date_of_create')
+            comments_data = []
+            for comment in comments:
+                new_comment = {"login": comment.author_id.user.username, "avatar": str(comment.author_id.avatar), "date_of_create": comment.date_of_create,
+                               "modified": comment.date_of_last_change, "text": comment.text}
+                comments_data.append(new_comment)
+            return JsonResponse(comments_data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono artykułu o podanym ID!", safe=False, status = status.HTTP_404_NOT_FOUND)       
+            
+@csrf_exempt
+def add_game(request):
+    if request.method == "POST":
+        game_data=JSONParser().parse(request)
+        game_data_serial = GameSerializer(data=game_data)
+        if game_data_serial.is_valid():
+            game_data_serial.save()
+            return JsonResponse(game_data_serial.data, safe=False, status=status.HTTP_201_CREATED)
+        return JsonResponse("Nie dodano rozgrywek.", safe=False, status=status.HTTP_404_NOT_FOUND)
+
+        
+        

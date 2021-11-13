@@ -131,3 +131,12 @@ class HomePageArticlesSerializer(serializers.ModelSerializer):
             'small_title_photo',
             'title'
         )
+        
+class GameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Game
+        fields = (
+            'name',
+            'logo',
+            'discipline_id'
+        )

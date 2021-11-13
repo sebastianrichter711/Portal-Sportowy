@@ -1,5 +1,5 @@
-from sportsreference.fb.schedule import Schedule
-
-purdue_schedule = Schedule('Chelsea FC')
-for game in purdue_schedule:
-    print(game.date)
+import thesportsdb
+api = thesportsdb.Api(key="1")
+players = api.Search().Players(team="Arsenal")
+for player in players:
+    print(player.strPlayer)

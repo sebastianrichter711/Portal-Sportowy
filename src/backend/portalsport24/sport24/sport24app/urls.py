@@ -12,11 +12,12 @@ urlpatterns = [
     path('logout', knox_views.LogoutView.as_view()),
     path('change_password', ChangePasswordView.as_view(), name='change-password'),
     path('section', views.sections_api),
+    path('delete_section/<int:id>', views.delete_section),
     path('discipline', views.disciplines_api),
     path('games/<str:name>', views.discipline_games),
+    path('game', views.add_game),
     path('profile/<int:id>', views.user_api),
     path('short_profile/<int:id>', views.get_short_user_data),
-    path('delete_section/<int:id>', views.delete_section),
     path('delete_comment/<int:id>', views.delete_comment),
     path('download_articles/<str:section_name>', views.download_articles),
     path('newest_article', views.get_newest_article),
@@ -25,5 +26,7 @@ urlpatterns = [
     path('article/<int:id>', views.get_article),
     path('articles/<str:section_name>', views.get_articles_for_section),
     path('articles_home_page', views.get_articles_for_home_page),
-    path('quote', views.get_random_quote)
+    path('quote', views.get_quote),
+    path('add_comment/<int:article_id>/<int:profile_id>', views.add_comment),
+    path('article/<int:article_id>/comments', views.get_comments_for_article)  
 ]
