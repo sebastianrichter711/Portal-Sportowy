@@ -322,5 +322,16 @@ def add_game(request):
             return JsonResponse(game_data_serial.data, safe=False, status=status.HTTP_201_CREATED)
         return JsonResponse("Nie dodano rozgrywek.", safe=False, status=status.HTTP_404_NOT_FOUND)
 
+@csrf_exempt
+def edit_section(request, section_id):
+    if request.method == "PUT":
+        section_data=JSONParser().parse(request)
+        section = Section.objects.get(section_id = section_id)
+        section_serial = GetSectionSerializer(section, data = section_data)
+        if section_serial.is_valid():
+            section_serial.save()
+            return JsonResponse("Zmieniono dane dot. działu!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie zmieniono danych dot. działu!", safe=False, status=status.HTTP_404_NOT_FOUND)
+
         
         
