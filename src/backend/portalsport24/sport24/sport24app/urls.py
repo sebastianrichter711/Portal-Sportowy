@@ -18,7 +18,7 @@ urlpatterns = [
     path('game', views.add_game),
     path('profile/<int:id>', views.user_api),
     path('short_profile/<int:id>', views.get_short_user_data),
-    path('delete_comment/<int:id>', views.delete_comment),
+    path('comment/<int:id>', views.comment_api),
     path('download_articles/<str:section_name>', views.download_articles),
     path('newest_article', views.get_newest_article),
     path('newest_articles', views.get_newest_articles),
