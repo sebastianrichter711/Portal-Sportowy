@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^s6i2n9n9xdw52d(s_@660*0ubfbwrj08wt^4$++n-%&3_!d6a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['serene-lowlands-71179.herokuapp.com', 'localhost:8000']
+ALLOWED_HOSTS = ['']
 
 
 # Application definition
@@ -130,8 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
