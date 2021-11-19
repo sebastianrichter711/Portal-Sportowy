@@ -1,30 +1,46 @@
-import React from 'react';
-import Expo from './Home';
-import './style.css'
-import fb from './images/fb.png'
-import insta from './images/insta.png'
-import twit from './images/twit.png'
+import '../App.css'
+import { useState} from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route, 
+} from "react-router-dom";
+import LoginForm from './components/LoginForm';
+import {LINKS} from "./shared/consts";
+import Header from "./components/Header.js";
+
 
 function App() {
+
+  const [links, setLinks] = useState([]);
+  const [position, setPosition] = useState("");
+  const [logged, setLogged] = useState(false);
+  const handleLoginLogout = (pos) => {
+      setPosition(pos);
+        if (pos in LINKS) {
+            setLinks(LINKS[pos]);
+          } else {
+            setLinks([]);
+          }
+          setLogged(true);
+        }
+  const handleLogout = () => {
+          localStorage.removeItem("token");
+          setLogged(false);
+  }
+
   return (
-    <div className="div">
-      <h1 className="logo">SPORTINFO24</h1>
-  <Expo />
-  <a href="https://facebook.com">
-    <img className="fbImg" src={fb} alt="fb"/>
-  </a>
-  <a href="https://twitter.com">
-    <img className="twImg" src={twit} alt="twit"/>
-  </a>
-  <a href="https://instagram.com">
-    <img className="insImg" src={insta} alt="insta"/>
-  </a>
-  <button className="registerButton">Zarejestruj się</button>
-  <button className="loginButton">Zaloguj się</button>
-  <button className="scoresButton">WYNIKI</button>
-  <h1 className="newestNews">Najnowsze</h1>
-  </div>
-  );
+    <div>
+      <Router>
+        <Header logged={logged} links={links} logoutCallback={handleLogout}  />
+        <Switch>
+            <Route path="/login">
+              <LoginForm headerCallback={handleLoginLogout}/>
+            </Route>            
+            </Switch>
+      </Router>
+    </div>
+  )
 }
 
 export default App;
