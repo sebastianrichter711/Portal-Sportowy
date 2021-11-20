@@ -9,6 +9,7 @@ function App() {
   return (
     <div className="div">
       <h1 className="logo">SPORTINFO24</h1>
+      <p>COS tam</p>
   <Expo />
   <a href="https://facebook.com">
     <img className="fbImg" src={fb} alt="fb"/>
