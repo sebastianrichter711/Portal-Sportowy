@@ -320,7 +320,7 @@ def get_articles_for_home_page(request, id=0):
         return JsonResponse("Nie znaleziono artykułów na stronę główną!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
-def add_comment(request, article_id, profile_id):
+def add_comment_to_article(request, article_id, profile_id):
     if request.method == "POST":
         comment_data=JSONParser().parse(request)
         comment_text = comment_data["text"]
@@ -332,6 +332,8 @@ def add_comment(request, article_id, profile_id):
             new_comment.save()
             profile.comments_number += 1
             profile.save()
+            article.comments_number += 1
+            article.save()
             return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
@@ -342,6 +344,7 @@ def get_comments_for_article(request, article_id):
         if article:
             comments = Comment.objects.filter(article_id=article_id).order_by('-date_of_create')
             comments_data = []
+            comments_data.append({"Komentarze": + article.comments_number})
             for comment in comments:
                 new_comment = {"login": comment.author_id.user.username, "avatar": str(comment.author_id.avatar), "date_of_create": comment.date_of_create,
                                "modified": comment.date_of_last_change, "text": comment.text}
@@ -353,7 +356,7 @@ def get_comments_for_article(request, article_id):
 def add_game(request):
     if request.method == "POST":
         game_data=JSONParser().parse(request)
-        game_data_serial = GameSerializer(data=game_data)
+        game_data_serial = PostGameSerializer(data=game_data)
         if game_data_serial.is_valid():
             game_data_serial.save()
             return JsonResponse(game_data_serial.data, safe=False, status=status.HTTP_201_CREATED)
@@ -372,6 +375,26 @@ def edit_section(request, section_id):
             return JsonResponse("Nie zmieniono danych dot. działu!", safe=False, status=status.HTTP_404_NOT_FOUND)
         return JsonResponse("Nie znaleziono działu!", safe=False, status=status.HTTP_404_NOT_FOUND)
     
-
+@csrf_exempt
+def edit_discipline(request, discipline_id):
+    if request.method == "PUT":
+        discipline_data=JSONParser().parse(request)
+        discipline = Discipline.objects.get(discipline_id = discipline_id)
+        if discipline:
+            discipline.name = discipline_data['name']
+            discipline.save()
+            return JsonResponse("Zmieniono dane dot. dyscypliny!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie zmieniono danych dot. dyscypliny!", safe=False, status=status.HTTP_404_NOT_FOUND)
         
-        
+@csrf_exempt
+def edit_game(request, game_id):
+    if request.method == "PUT":
+        game_data=JSONParser().parse(request)
+        game = Game.objects.get(game_id = game_id)
+        if game:
+            game.name = game_data['name']
+            game.discipline_id.discipline_id = game_data['discipline_id']
+            game.save()
+            return JsonResponse("Zmieniono dane dot. rozgrywki!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie zmieniono danych dot. rozgrywki", safe=False, status=status.HTTP_404_NOT_FOUND)    
+    

@@ -27,7 +27,10 @@ urlpatterns = [
     path('articles/<str:section_name>', views.get_articles_for_section),
     path('articles_home_page', views.get_articles_for_home_page),
     path('quote', views.get_quote),
-    path('add_comment/<int:article_id>/<int:profile_id>', views.add_comment),
+    path('add_comment/<int:article_id>/<int:profile_id>', views.add_comment_to_article),
     path('article/<int:article_id>/comments', views.get_comments_for_article),
-    path('section/<int:section_id>', views.edit_section)  
+    path('section/<int:section_id>', views.edit_section),
+    path('discipline/<int:discipline_id>', views.edit_discipline),
+    path('game/<int:game_id>', views.edit_game)
+
 ]

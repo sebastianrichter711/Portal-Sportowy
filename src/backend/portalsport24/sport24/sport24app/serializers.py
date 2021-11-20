@@ -132,7 +132,7 @@ class HomePageArticlesSerializer(serializers.ModelSerializer):
             'title'
         )
         
-class GameSerializer(serializers.ModelSerializer):
+class PostGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = (

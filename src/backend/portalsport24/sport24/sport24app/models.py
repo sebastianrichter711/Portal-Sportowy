@@ -52,6 +52,7 @@ class Article(models.Model):
     small_title_photo = models.ImageField(upload_to='img art small photo', null=True, blank=True)
     add_photo = models.ImageField(upload_to='img art add photo', null=True, blank=True)
     page_views = models.IntegerField(default=0, blank=True)
+    comments_number = models.IntegerField(default=0, blank=True)
     section_id = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
 
     def __str__(self):
