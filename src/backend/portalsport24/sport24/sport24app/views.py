@@ -16,7 +16,10 @@ from decimal import Decimal
 import datetime, json, random
 from rest_framework.permissions import IsAuthenticated 
 from news.news import download_article 
+from scores.scores import download_matches
 from datetime import datetime, timedelta
+from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -204,14 +207,19 @@ def comment_api(request, id):
             comment.save()
             return JsonResponse("Komentarz zmodyfikowany.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie zmodyfikowano komentarza!", safe=False, status = status.HTTP_404_NOT_FOUND)
-    
-    if request.method=='DELETE':
-        comment=Comment.objects.get(comment_id=id)
-        if comment:
-            comment.delete()
-            return JsonResponse("Komentarz usunięty.", safe=False, status = status.HTTP_200_OK)
-        return JsonResponse("Nie usunięto komentarza!", safe=False, status = status.HTTP_404_NOT_FOUND)  
 
+@csrf_exempt
+def delete_comment_from_article(request, comment_id, article_id):
+    if request.method=='DELETE':
+        comment=Comment.objects.get(comment_id=comment_id)
+        article=Article.objects.get(article_id=article_id)
+        if comment and article:
+            comment.delete()
+            article.comments_number -= 1
+            article.save()
+            return JsonResponse("Komentarz usunięty.", safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto komentarza!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
 @csrf_exempt
 def download_articles(request, section_name):
     if request.method == "POST":
@@ -351,7 +359,7 @@ def get_comments_for_article(request, article_id):
                 comments_data.append(new_comment)
             return JsonResponse(comments_data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułu o podanym ID!", safe=False, status = status.HTTP_404_NOT_FOUND)       
-            
+
 @csrf_exempt
 def add_game(request):
     if request.method == "POST":
@@ -396,5 +404,26 @@ def edit_game(request, game_id):
             game.discipline_id.discipline_id = game_data['discipline_id']
             game.save()
             return JsonResponse("Zmieniono dane dot. rozgrywki!", safe=False, status=status.HTTP_200_OK)
-        return JsonResponse("Nie zmieniono danych dot. rozgrywki", safe=False, status=status.HTTP_404_NOT_FOUND)    
+        return JsonResponse("Nie zmieniono danych dot. rozgrywki", safe=False, status=status.HTTP_404_NOT_FOUND) 
+       
+@csrf_exempt
+def get_newest_matches(request):
+    if request.method == "GET":
+        newest_matches = Match.objects.all().order_by('-match_date')[:5]
+        if newest_matches: 
+            list_newest_matches = []
+            for match in newest_matches:
+                new_score = match.score.split(':')
+                print(new_score)
+                match = {"match_date": match.match_date, "host": match.host, "host_score": new_score[0],
+                         "guest": match.guest, "guest_score": new_score[1]}
+                list_newest_matches.append(match)
+            return JsonResponse(list_newest_matches, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono najnowszych meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
     
+@csrf_exempt
+def add_matches(request, game_id, round, season):
+    if request.method == "POST":
+        download_matches(game_id, round, season)
+        return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
+    return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)

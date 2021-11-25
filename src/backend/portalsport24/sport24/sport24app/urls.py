@@ -31,6 +31,9 @@ urlpatterns = [
     path('article/<int:article_id>/comments', views.get_comments_for_article),
     path('section/<int:section_id>', views.edit_section),
     path('discipline/<int:discipline_id>', views.edit_discipline),
-    path('game/<int:game_id>', views.edit_game)
+    path('game/<int:game_id>', views.edit_game),
+    path('comment/<int:comment_id>/<int:article_id>', views.delete_comment_from_article),
+    path('newest_matches', views.get_newest_matches),
+    path('add_matches/<int:game_id>/<int:round>/<str:season>', views.add_matches)
 
 ]

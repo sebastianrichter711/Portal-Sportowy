@@ -79,6 +79,7 @@ class Discipline(models.Model):
 
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
+    db_game_id = models.IntegerField(blank=True)
     name = models.CharField(max_length=100)
     logo = models.ImageField(upload_to='img rozgrywki', null=True, blank=True)
     discipline_id = models.ForeignKey(Discipline, on_delete=models.DO_NOTHING)

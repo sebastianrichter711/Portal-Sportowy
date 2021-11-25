@@ -140,3 +140,13 @@ class PostGameSerializer(serializers.ModelSerializer):
             'logo',
             'discipline_id'
         )
+        
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = (
+            'match_date',
+            'host',
+            'guest',
+            'score'
+        )
