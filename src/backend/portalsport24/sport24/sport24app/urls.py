@@ -35,5 +35,4 @@ urlpatterns = [
     path('comment/<int:comment_id>/<int:article_id>', views.delete_comment_from_article),
     path('newest_matches', views.get_newest_matches),
     path('add_matches/<int:game_id>/<int:round>/<str:season>', views.add_matches)
-
 ]
