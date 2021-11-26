@@ -8,7 +8,7 @@ body{
 	background: #006600;
 }
 .logo{
-	width: 100vw;
+	width: 30vw;
 	position: absolute;
 	top: 3%;
 	left: 9%;
@@ -21,7 +21,7 @@ body{
 	width: 100vw;
 	position: absolute;
 	top: 20%;
-	left: 20%;
+	left: 18%;
 	transform: translate(-50%,-50%);
 	display: flex;
 	align-items: flex-end;
@@ -43,6 +43,10 @@ body{
     position: absolute;
     font-weight: bold;
 }
+.registerButton:hover{
+	background: #ffffff;
+	color: #006600;
+}
 .loginButton{
     width: 10vw;
     height: 3vw;
@@ -54,6 +58,10 @@ body{
 	font-family: "Arial", Arial, serif;
     position: absolute;
     font-weight: bold;
+}
+.loginButton:hover{
+	background: #ffffff;
+	color: #006600;
 }
 .scoresButton{
     width: 10vw;
@@ -68,6 +76,10 @@ body{
     font-weight: bold;
 
 }
+.scoresButton:hover{
+	background: #ffffff;
+	color: #006600;
+}
 .newestNews{
 	width: 100vw;
 	position: absolute;
@@ -77,25 +89,35 @@ body{
 	font-size: 32px;
 	font-family: "Arial", Times, serif;
 }
+.note{
+	width: 100vw;
+	position: absolute;
+	top: 73%;
+	left: 18%;
+	color: #ffffff;
+	font-size: 32px;
+	font-family: "Arial", Times, serif;
+}
 .fbImg{
-	width: 4vw;
-    height: 4vw;
+	width: 3vw;
+    height: 3vw;
 	position: absolute;
 	top: 4%;
 	left: 69.5%;
 }
 .twImg{
-	width: 5vw;
-    height: 4vw;
+	width: 3vw;
+    height: 3vw;
 	position: absolute;
 	top: 4%;
-	left: 74%;
+	left: 74.3%;
 }
 .insImg{
-	width: 4vw;
-    height: 4vw;
+	width: 3vw;
+    height: 3vw;
 	position: absolute;
 	top: 4%;
 	left: 79%;
 }
+
 

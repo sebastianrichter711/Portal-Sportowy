@@ -4,11 +4,12 @@ import './style.css'
 import fb from './images/fb.png'
 import insta from './images/insta.png'
 import twit from './images/twit.png'
+import logo from './images/logo.png'
 
 function App() {
   return (
     <div className="div">
-      <h1 className="logo">SPORTINFO24</h1>
+      <img className="logo" src={logo} alt="logo"/>
   <Expo />
   <a href="https://facebook.com">
     <img className="fbImg" src={fb} alt="fb"/>
@@ -23,6 +24,8 @@ function App() {
   <button className="loginButton">Zaloguj się</button>
   <button className="scoresButton">WYNIKI</button>
   <h1 className="newestNews">Najnowsze</h1>
+
+  <h1 className="note">Artykuły w serwisie pochodzą ze strony </h1>
   </div>
   );
 }
