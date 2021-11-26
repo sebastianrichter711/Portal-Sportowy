@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Portal-Sportowy/static/css/main.8095c163.chunk.css",
-    "main.js": "/Portal-Sportowy/static/js/main.84e9edb0.chunk.js",
-    "main.js.map": "/Portal-Sportowy/static/js/main.84e9edb0.chunk.js.map",
+    "main.css": "/Portal-Sportowy/static/css/main.7f55eb0f.chunk.css",
+    "main.js": "/Portal-Sportowy/static/js/main.2b6e1187.chunk.js",
+    "main.js.map": "/Portal-Sportowy/static/js/main.2b6e1187.chunk.js.map",
     "runtime-main.js": "/Portal-Sportowy/static/js/runtime-main.9bce46b9.js",
     "runtime-main.js.map": "/Portal-Sportowy/static/js/runtime-main.9bce46b9.js.map",
     "static/js/2.72e45b8d.chunk.js": "/Portal-Sportowy/static/js/2.72e45b8d.chunk.js",
@@ -10,16 +10,16 @@
     "static/js/3.37023395.chunk.js": "/Portal-Sportowy/static/js/3.37023395.chunk.js",
     "static/js/3.37023395.chunk.js.map": "/Portal-Sportowy/static/js/3.37023395.chunk.js.map",
     "index.html": "/Portal-Sportowy/index.html",
-    "static/css/main.8095c163.chunk.css.map": "/Portal-Sportowy/static/css/main.8095c163.chunk.css.map",
+    "static/css/main.7f55eb0f.chunk.css.map": "/Portal-Sportowy/static/css/main.7f55eb0f.chunk.css.map",
     "static/js/2.72e45b8d.chunk.js.LICENSE.txt": "/Portal-Sportowy/static/js/2.72e45b8d.chunk.js.LICENSE.txt",
-    "static/media/fb.12a447f3.png": "/Portal-Sportowy/static/media/fb.12a447f3.png",
-    "static/media/insta.08546dfb.png": "/Portal-Sportowy/static/media/insta.08546dfb.png",
-    "static/media/twit.5af0057c.png": "/Portal-Sportowy/static/media/twit.5af0057c.png"
+    "static/media/fb.e88109b0.png": "/Portal-Sportowy/static/media/fb.e88109b0.png",
+    "static/media/insta.4fae33bb.png": "/Portal-Sportowy/static/media/insta.4fae33bb.png",
+    "static/media/logo.62188fec.png": "/Portal-Sportowy/static/media/logo.62188fec.png"
   },
   "entrypoints": [
     "static/js/runtime-main.9bce46b9.js",
     "static/js/2.72e45b8d.chunk.js",
-    "static/css/main.8095c163.chunk.css",
-    "static/js/main.84e9edb0.chunk.js"
+    "static/css/main.7f55eb0f.chunk.css",
+    "static/js/main.2b6e1187.chunk.js"
   ]
 }
