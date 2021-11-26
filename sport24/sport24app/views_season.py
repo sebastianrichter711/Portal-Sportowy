@@ -26,6 +26,6 @@ def edit_season(request, season_id):
         season_serial=SeasonSerializer(season, data=season_data)
         if season_serial.is_valid():
             season_serial.save()
-            return JsonResponse(season_serial.data, safe=False)
+            return JsonResponse(season_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie zaktualizowano sezonu!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
