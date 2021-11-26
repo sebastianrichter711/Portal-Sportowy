@@ -136,6 +136,7 @@ class PostGameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = (
+            'db_game_id',
             'name',
             'logo',
             'discipline_id'
@@ -149,4 +150,14 @@ class MatchSerializer(serializers.ModelSerializer):
             'host',
             'guest',
             'score'
+        )
+        
+class SeasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = (
+            'season',
+            'phase',
+            'round',
+            'game_id'
         )

@@ -13,6 +13,7 @@ def download_matches(game_id, round, season_number):
     url = f"https://www.thesportsdb.com/api/v1/json/2/eventsround.php?id={game_id}&r={round}&s={season_number}"
     data = requests.get(url)
     html = BeautifulSoup(data.text, 'html.parser')
+    print(html)
     string_matches = str(html)
     json_matches = json.loads(string_matches)
     #formatted_json_matches = json.dumps(json_matches, indent=2)
@@ -20,7 +21,10 @@ def download_matches(game_id, round, season_number):
     for event in json_matches["events"]:
         game = Game.objects.get(db_game_id=game_id)
         season = Season.objects.get(season=season_number, round=str(round), game_id=game)
-        score = event['intHomeScore'] + ':' + event['intAwayScore']
+        if event['intHomeScore'] == None and event['intAwayScore'] == None:
+            score = "-:-"
+        else:
+            score = event['intHomeScore'] + ':' + event['intAwayScore']
         new_match = Match.objects.create(match_date=event['strTimestamp'], host=event['strHomeTeam'],
                                         guest=event['strAwayTeam'], score=score, season_id=season)
         new_match.save()
@@ -47,3 +51,31 @@ def get_newest_matches(request):
             return JsonResponse(list_newest_matches, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono najnowszych meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
     
+@csrf_exempt
+def edit_match(request, match_id):
+    if request.method=='PUT':
+        match_data = JSONParser().parse(request)
+        match=Match.objects.get(match_id=match_id)
+        match_serial=MatchSerializer(match, data=match_data)
+        if match_serial.is_valid():
+            match_serial.save()
+            return JsonResponse(match_serial.data, safe=False)
+        return JsonResponse("Nie zaktualizowano meczu!", safe=False, status=status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+def get_matches_for_season(request, game_id):
+    if request.method == "GET":
+        season_data = JSONParser().parse(request)
+        game = Game.objects.get(game_id=game_id)
+        if game:
+            season = Season.objects.get(season=season_data['season'], phase=season_data['phase'], round=season_data['round'],
+                                    game_id=game)
+            if season:
+                matches = Match.objects.filter(season_id=season).order_by('match_date')
+                if matches:
+                    matches_serial = MatchSerializer(matches, many = True)
+                return JsonResponse(matches_serial.data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse("Nie znaleziono spotkań!", safe=False, status=status.HTTP_404_NOT_FOUND)
+                
+        
+            

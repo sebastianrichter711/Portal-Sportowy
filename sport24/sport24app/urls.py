@@ -34,6 +34,10 @@ urlpatterns = [
     path('game/<int:game_id>', views_game.edit_game),
     path('comment/<int:comment_id>/<int:article_id>', views_comment.delete_comment_from_article),
     path('newest_matches', views_match.get_newest_matches),
-    path('add_matches/<int:game_id>/<int:round>/<str:season>', views_match.add_matches)
+    path('add_matches/<int:game_id>/<int:round>/<str:season>', views_match.add_matches),
+    path('edit_match/<int:match_id>', views_match.edit_match),
+    path('get_matches/<int:game_id>', views_match.get_matches_for_season),
+    path('add_season', views_season.add_season),
+    path('edit_season/<int:season_id>', views_season.edit_season)
 ]
 

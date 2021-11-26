@@ -95,7 +95,7 @@ class Season(models.Model):
     game_id = models.ForeignKey(Game, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f"{self.game_id.name} {self.season} {self.phase} {self.stage}"
+        return f"{self.game_id.name} {self.season} {self.phase} {self.round}"
 
 class Match(models.Model):
     match_id = models.AutoField(primary_key=True)
