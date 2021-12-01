@@ -62,9 +62,7 @@ ROOT_URLCONF = 'sport24.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'frontsport24/build')
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -143,7 +141,3 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontsport24/build/static')
-]

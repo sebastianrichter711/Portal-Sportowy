@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import requests
 from bs4 import BeautifulSoup
 import re
+from PIL import Image
 
 def download_article(url, section_name):
 
@@ -138,6 +139,7 @@ def get_newest_article(request, id=0):
         newest_article = Article.objects.filter(date_of_create__gte=yesterday_time).order_by('-date_of_create').first()
         if newest_article:
             newest_article_serial = NewestArticleSerializer(newest_article)
+            print(newest_article_serial.data)
             return JsonResponse(newest_article_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono najnowszego artykułu!", safe=False, status = status.HTTP_404_NOT_FOUND)
     

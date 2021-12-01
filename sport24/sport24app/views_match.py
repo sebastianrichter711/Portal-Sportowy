@@ -54,8 +54,8 @@ def get_newest_matches(request):
             list_newest_matches = []
             for match in newest_matches:
                 new_score = match.score.split(':')
-                print(new_score)
-                match = {"match_date": match.match_date, "host": match.host, "host_score": new_score[0],
+                new_date = match.match_date.strftime("%d.%m.%Y %H:%M")
+                match = {"match_date": new_date, "host": match.host, "host_score": new_score[0],
                          "guest": match.guest, "guest_score": new_score[1]}
                 list_newest_matches.append(match)
             return JsonResponse(list_newest_matches, safe=False, status=status.HTTP_200_OK)
