@@ -8,19 +8,29 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-def download_matches(game_id, round, season_number):
+def download_matches(game_id, phase, round, season):
     
-    url = f"https://www.thesportsdb.com/api/v1/json/2/eventsround.php?id={game_id}&r={round}&s={season_number}"
+    if phase == 'grupowa':
+        id_round = round
+    elif phase == 'pucharowa' and round == 'ćwierćfinał':
+        id_round = "125"
+    elif phase == 'pucharowa' and round == 'półfinał':
+        id_round = "150"
+    elif phase == 'pucharowa' and round == 'finał':
+        id_round = "200"
+        
+    url = f"https://www.thesportsdb.com/api/v1/json/2/eventsround.php?id={game_id}&r={id_round}&s={season}"
     data = requests.get(url)
     html = BeautifulSoup(data.text, 'html.parser')
-    print(html)
+    #print(html)
     string_matches = str(html)
     json_matches = json.loads(string_matches)
     #formatted_json_matches = json.dumps(json_matches, indent=2)
 
+    game = Game.objects.get(db_game_id=game_id)
+    season = Season.objects.get(season=season, phase=phase, round=round, game_id=game)
+    
     for event in json_matches["events"]:
-        game = Game.objects.get(db_game_id=game_id)
-        season = Season.objects.get(season=season_number, round=str(round), game_id=game)
         if event['intHomeScore'] == None and event['intAwayScore'] == None:
             score = "-:-"
         else:
@@ -30,9 +40,9 @@ def download_matches(game_id, round, season_number):
         new_match.save()
 
 @csrf_exempt
-def add_matches(request, game_id, round, season):
+def add_matches(request, game_id, phase, round, season):
     if request.method == "POST":
-        download_matches(game_id, round, season)
+        download_matches(game_id, phase, round, season)
         return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
     return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
