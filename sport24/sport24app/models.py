@@ -48,7 +48,7 @@ class Article(models.Model):
     date_of_last_change = models.DateTimeField(blank=True, null=True)
     lead_text = models.TextField()
     text = models.TextField()
-    big_title_photo = models.ImageField(upload_to='img art big photo', null=True, blank=True)
+    big_title_photo = models.ImageField(null=True, blank=True)
     small_title_photo = models.ImageField(upload_to='img art small photo', null=True, blank=True)
     add_photo = models.ImageField(upload_to='img art add photo', null=True, blank=True)
     page_views = models.IntegerField(default=0, blank=True)
