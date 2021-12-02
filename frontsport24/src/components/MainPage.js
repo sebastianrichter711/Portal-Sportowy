@@ -11,9 +11,10 @@ class MainPage extends React.Component {
     super(props);
     this.state = {
       newestMatches: [],
-      newestArticle: [],
       newestArticles: [],
-      sections: []
+      newestArticle: [],
+      sections: [],
+      quote: []
     }
     this.fetchTasks = this.fetchTasks.bind(this)
   };
@@ -58,21 +59,31 @@ class MainPage extends React.Component {
         })
       )
     
+      fetch('http://127.0.0.1:8000/quote')
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          quote: data
+        })
+      )
 
   }
 
   render() {
     var matches = this.state.newestMatches
-    var newArticle = this.state.newestArticle
     var newArticles = this.state.newestArticles
     var section = this.state.sections
+    var newArticle = this.state.newestArticle
+    var q = this.state.quote
     return (
       <div className="div">
         <img className="logo" src={logo} alt="logo" />
         <Expo />
+        <div class="fb">
         <a href="https://facebook.com">
           <img className="fbImg" src={fb} alt="fb" />
         </a>
+        </div>
         <a href="https://twitter.com">
           <img className="twImg" src={twit} alt="twit" />
         </a>
@@ -94,8 +105,8 @@ class MainPage extends React.Component {
           })}
         </div>
         <div className="newestArticle">
-            <img className="mainImg" src={newArticle.big_title_photo} alt="main_img"/>
-            <p className="mainTitle">{newArticle.title}</p>
+            <img className ="mainImg" src={newArticle.big_title_photo} alt="main_img"/> 
+            <div className="mainTitle">{newArticle.title}</div>
         </div>
         <div className="sections">
           {section.map(function (sct, index) {
@@ -118,7 +129,10 @@ class MainPage extends React.Component {
             )
           })}
         </div>
-        
+        <div className="quote">
+            <p className="q">{q.quote}</p><br/><br/>
+            <div className="des">{q.description}</div>
+        </div>
       </div>
     );
   }

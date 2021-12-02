@@ -21,7 +21,7 @@ body{
 	width: 100vw;
 	position: absolute;
 	top: 20%;
-	left: 18%;
+	left: 18.4%;
 	transform: translate(-50%,-50%);
 	display: flex;
 	align-items: flex-end;
@@ -83,7 +83,7 @@ body{
 .newestNews{
 	width: 100vw;
 	position: absolute;
-	top: 53%;
+	top: 63%;
 	left: 9%;
 	color: #ffffff;
 	font-size: 32px;
@@ -134,10 +134,11 @@ body{
 	font-weight:normal;
 }
 .newestArticles{
+	position: absolute;
 	color:#ffffff;
-	padding-left: 140px;
-	padding-top: 150px;
-	width: 400px;
+	top: 510px;
+	left: 140px;
+	width: 300px;
 }
 .articleDate{
 	color:#ffff00;
@@ -147,12 +148,40 @@ body{
 	font-weight: bold;
 	text-align: right;
 }
-/* .mainTitle{
+.fbImg:hover{
+	opacity: 0.7;
+}
+.twImg:hover{
+	opacity: 0.7;
+}
+.insImg:hover{
+	opacity: 0.7;
+}
+.mainTitle{
 	background-color: #ffff00;
 	color:#006600;
 	font-size: 64px;
-	width: 1000px;
-	padding-top: 9%;
 	font-weight: bold;
-}  */
-
+	position: absolute;
+	top: 309px;
+	text-align: center;
+}  
+.quote{
+	position: absolute;
+	top:120%;
+	left:9%;
+}
+.q{
+	color:#ffff00;
+	font-style: italic;
+	text-align: center;
+	font-size: 48px;
+	width: 1290px;
+}
+.des{
+	position: absolute;
+	color:#ffffff;
+	font-weight: bold;
+	font-size: 20px;
+	right: 1%;
+}
