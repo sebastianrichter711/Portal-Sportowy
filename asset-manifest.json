@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Portal-Sportowy/static/css/main.fe923bcf.chunk.css",
-    "main.js": "/Portal-Sportowy/static/js/main.a71de492.chunk.js",
-    "main.js.map": "/Portal-Sportowy/static/js/main.a71de492.chunk.js.map",
+    "main.css": "/Portal-Sportowy/static/css/main.31fc68ce.chunk.css",
+    "main.js": "/Portal-Sportowy/static/js/main.e4adecd9.chunk.js",
+    "main.js.map": "/Portal-Sportowy/static/js/main.e4adecd9.chunk.js.map",
     "runtime-main.js": "/Portal-Sportowy/static/js/runtime-main.ed0b9e2b.js",
     "runtime-main.js.map": "/Portal-Sportowy/static/js/runtime-main.ed0b9e2b.js.map",
     "static/js/2.0b591b83.chunk.js": "/Portal-Sportowy/static/js/2.0b591b83.chunk.js",
@@ -10,7 +10,7 @@
     "static/js/3.3ad93e4d.chunk.js": "/Portal-Sportowy/static/js/3.3ad93e4d.chunk.js",
     "static/js/3.3ad93e4d.chunk.js.map": "/Portal-Sportowy/static/js/3.3ad93e4d.chunk.js.map",
     "index.html": "/Portal-Sportowy/index.html",
-    "static/css/main.fe923bcf.chunk.css.map": "/Portal-Sportowy/static/css/main.fe923bcf.chunk.css.map",
+    "static/css/main.31fc68ce.chunk.css.map": "/Portal-Sportowy/static/css/main.31fc68ce.chunk.css.map",
     "static/js/2.0b591b83.chunk.js.LICENSE.txt": "/Portal-Sportowy/static/js/2.0b591b83.chunk.js.LICENSE.txt",
     "static/media/fb.e88109b0.png": "/Portal-Sportowy/static/media/fb.e88109b0.png",
     "static/media/insta.4fae33bb.png": "/Portal-Sportowy/static/media/insta.4fae33bb.png",
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.ed0b9e2b.js",
     "static/js/2.0b591b83.chunk.js",
-    "static/css/main.fe923bcf.chunk.css",
-    "static/js/main.a71de492.chunk.js"
+    "static/css/main.31fc68ce.chunk.css",
+    "static/js/main.e4adecd9.chunk.js"
   ]
 }
