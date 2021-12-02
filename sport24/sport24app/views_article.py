@@ -56,10 +56,14 @@ def download_article(url, section_name):
     comma = image_link.find("',")
     full_image_link = image_link[https:comma]
     print(full_image_link)
-
+    
+    im = Image.open(requests.get(full_image_link, stream=True).raw)
+    image_name = 'foto.png'
+    im.save(image_name)
+    
     section = Section.objects.get(name=section_name)
     new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj,
-               lead_text = lead_text.text, text = main_text_to_db, big_title_photo = full_image_link, section_id = section)
+               lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
     if new_article != None:
         new_article.save()
         articles_number = getattr(section, 'number_of_articles')

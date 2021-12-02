@@ -143,3 +143,5 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
