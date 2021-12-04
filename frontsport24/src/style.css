@@ -13,9 +13,6 @@ body{
 	top: 3%;
 	left: 9%;
 	color: #ffffff;
-	font-size: 72px;
-	font-family: 'Roboto', sans-serif;
-    font-style: italic;
 }
 .date{
 	width: 100vw;
@@ -83,7 +80,7 @@ body{
 .newestNews{
 	width: 100vw;
 	position: absolute;
-	top: 63%;
+	top: 190%;
 	left: 9%;
 	color: #ffffff;
 	font-size: 32px;
@@ -136,7 +133,7 @@ body{
 .newestArticles{
 	position: absolute;
 	color:#ffffff;
-	top: 510px;
+	top: 1440px;
 	left: 140px;
 	width: 300px;
 }
@@ -163,12 +160,14 @@ body{
 	font-size: 64px;
 	font-weight: bold;
 	position: absolute;
-	top: 309px;
+	top: 809px;
+	left:160px;
+	width: 80vw;
 	text-align: center;
 }  
 .quote{
 	position: absolute;
-	top:120%;
+	top:270%;
 	left:9%;
 }
 .q{
@@ -176,7 +175,7 @@ body{
 	font-style: italic;
 	text-align: center;
 	font-size: 48px;
-	width: 1290px;
+	width: 1290px;	
 }
 .des{
 	position: absolute;
@@ -184,4 +183,27 @@ body{
 	font-weight: bold;
 	font-size: 20px;
 	right: 1%;
+}
+.mainImg{
+	width: 70vw;
+	height:45vw;
+	position: absolute;
+	top: 40%;
+	left: 16%;
+	color: #ffffff;
+	font-size: 72px;
+	font-family: 'Roboto', sans-serif;
+    font-style: italic;
+}
+.sec{
+	tab-size: 2;
+	left:19%;
+}
+.sec_img{
+	width:40px;
+	height:40px;
+	top:23px;
+}
+.sec_name{
+	font-size: 28px;
 }

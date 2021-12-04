@@ -5,6 +5,7 @@ import fb from '../images/fb.png'
 import insta from '../images/insta.png'
 import twit from '../images/twit.png'
 import logo from '../images/logo.png'
+import { mergeClasses } from '@material-ui/styles';
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class MainPage extends React.Component {
       .then(response => response.json())
       .then(data =>
         this.setState({
-            section: data
+            sections: data
           })
       )
       
@@ -66,7 +67,6 @@ class MainPage extends React.Component {
           quote: data
         })
       )
-
   }
 
   render() {
@@ -75,6 +75,8 @@ class MainPage extends React.Component {
     var section = this.state.sections
     var newArticle = this.state.newestArticle
     var q = this.state.quote
+    var newArticleUrl = 'http://localhost:8000' + newArticle.big_title_photo
+    console.log(newArticleUrl)
     return (
       <div className="div">
         <img className="logo" src={logo} alt="logo" />
@@ -104,16 +106,17 @@ class MainPage extends React.Component {
             )
           })}
         </div>
-        <div className="newestArticle">
-            <img className ="mainImg" src={newArticle.big_title_photo} alt="main_img"/> 
-            <div className="mainTitle">{newArticle.title}</div>
+        <div className="newArticle">
+                <img className="mainImg" src={newArticleUrl} alt="main_img"/>
+                <p className="mainTitle">{newArticle.title}</p>
         </div>
         <div className="sections">
           {section.map(function (sct, index) {
+            var url = 'http://localhost:8000' + sct.icon
+            console.log(url)
             return (
-              <div key={index}>
-                <img className="sectionIcon" src={sct.icon} alt="section_img"/>
-                <p className="sectionName">{sct.name}</p>
+              <div key={index} className="sec">
+                <img className = "sec_img" src={url} alt="section_img"/><div className="sec_name">{sct.name}</div>
               </div>
             )
           })}
