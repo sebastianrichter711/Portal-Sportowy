@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/Portal-Sportowy/static/css/main.c1c79526.chunk.css",
-    "main.js": "/Portal-Sportowy/static/js/main.d5ac7187.chunk.js",
-    "main.js.map": "/Portal-Sportowy/static/js/main.d5ac7187.chunk.js.map",
-    "runtime-main.js": "/Portal-Sportowy/static/js/runtime-main.ed0b9e2b.js",
-    "runtime-main.js.map": "/Portal-Sportowy/static/js/runtime-main.ed0b9e2b.js.map",
-    "static/js/2.0b591b83.chunk.js": "/Portal-Sportowy/static/js/2.0b591b83.chunk.js",
-    "static/js/2.0b591b83.chunk.js.map": "/Portal-Sportowy/static/js/2.0b591b83.chunk.js.map",
-    "static/js/3.3ad93e4d.chunk.js": "/Portal-Sportowy/static/js/3.3ad93e4d.chunk.js",
-    "static/js/3.3ad93e4d.chunk.js.map": "/Portal-Sportowy/static/js/3.3ad93e4d.chunk.js.map",
+    "main.css": "/Portal-Sportowy/static/css/main.bc659f07.chunk.css",
+    "main.js": "/Portal-Sportowy/static/js/main.3559017b.chunk.js",
+    "main.js.map": "/Portal-Sportowy/static/js/main.3559017b.chunk.js.map",
+    "runtime-main.js": "/Portal-Sportowy/static/js/runtime-main.aacdd3e9.js",
+    "runtime-main.js.map": "/Portal-Sportowy/static/js/runtime-main.aacdd3e9.js.map",
+    "static/js/2.fda61f3d.chunk.js": "/Portal-Sportowy/static/js/2.fda61f3d.chunk.js",
+    "static/js/2.fda61f3d.chunk.js.map": "/Portal-Sportowy/static/js/2.fda61f3d.chunk.js.map",
+    "static/js/3.e3f5e36f.chunk.js": "/Portal-Sportowy/static/js/3.e3f5e36f.chunk.js",
+    "static/js/3.e3f5e36f.chunk.js.map": "/Portal-Sportowy/static/js/3.e3f5e36f.chunk.js.map",
     "index.html": "/Portal-Sportowy/index.html",
-    "static/css/main.c1c79526.chunk.css.map": "/Portal-Sportowy/static/css/main.c1c79526.chunk.css.map",
-    "static/js/2.0b591b83.chunk.js.LICENSE.txt": "/Portal-Sportowy/static/js/2.0b591b83.chunk.js.LICENSE.txt",
+    "static/css/main.bc659f07.chunk.css.map": "/Portal-Sportowy/static/css/main.bc659f07.chunk.css.map",
+    "static/js/2.fda61f3d.chunk.js.LICENSE.txt": "/Portal-Sportowy/static/js/2.fda61f3d.chunk.js.LICENSE.txt",
     "static/media/fb.e88109b0.png": "/Portal-Sportowy/static/media/fb.e88109b0.png",
     "static/media/insta.4fae33bb.png": "/Portal-Sportowy/static/media/insta.4fae33bb.png",
     "static/media/logo.62188fec.png": "/Portal-Sportowy/static/media/logo.62188fec.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.ed0b9e2b.js",
-    "static/js/2.0b591b83.chunk.js",
-    "static/css/main.c1c79526.chunk.css",
-    "static/js/main.d5ac7187.chunk.js"
+    "static/js/runtime-main.aacdd3e9.js",
+    "static/js/2.fda61f3d.chunk.js",
+    "static/css/main.bc659f07.chunk.css",
+    "static/js/main.3559017b.chunk.js"
   ]
 }
