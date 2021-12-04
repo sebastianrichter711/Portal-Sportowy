@@ -3,8 +3,12 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
+
+def upload_to_profiles(instance, filename):
+    return 'profiles/{filename}'.format(filename=filename)
 
 class Profile(models.Model):
     profile_id = models.AutoField(primary_key=True)
@@ -17,7 +21,7 @@ class Profile(models.Model):
     authorize_date = models.DateField(null=True, blank=True)
     end_authorize_date = models.DateField(null=True, blank=True)
     comments_number = models.IntegerField(blank=True, default=0)
-    avatar = models.ImageField(upload_to='images', null=True, blank=True)
+    avatar = models.ImageField(_("Image"), upload_to=upload_to_profiles, default='media/ludzik.png', null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username} ({self.user.first_name} {self.user.last_name})"
@@ -31,16 +35,22 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+def upload_to_sections(instance, filename):
+    return 'sections/{filename}'.format(filename=filename)
+
 class Section(models.Model):
     section_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     number_of_articles = models.IntegerField(default=0, blank=True)
-    icon = models.ImageField(upload_to='img sekcje', null=True, blank=True)
+    icon = models.ImageField(_("Image"), upload_to=upload_to_sections, default='media/ludzik.png', null=True, blank=True)
     moderator_id = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.name
     
+def upload_to_articles(instance, filename):
+    return 'articles/{filename}'.format(filename=filename)
+
 class Article(models.Model):
     article_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
@@ -48,9 +58,7 @@ class Article(models.Model):
     date_of_last_change = models.DateTimeField(blank=True, null=True)
     lead_text = models.TextField()
     text = models.TextField()
-    big_title_photo = models.ImageField(null=True, blank=True)
-    small_title_photo = models.ImageField(upload_to='img art small photo', null=True, blank=True)
-    add_photo = models.ImageField(upload_to='img art add photo', null=True, blank=True)
+    big_title_photo = models.ImageField(_("Image"), upload_to=upload_to_articles, default='media/ludzik.png', null=True, blank=True)
     page_views = models.IntegerField(default=0, blank=True)
     comments_number = models.IntegerField(default=0, blank=True)
     section_id = models.ForeignKey(Section, on_delete=models.DO_NOTHING)
@@ -69,19 +77,25 @@ class Comment(models.Model):
     def __str__(self):
         return f"Komentarz {self.comment_id} ({self.author_id.user.username})"
 
+def upload_to_disciplines(instance, filename):
+    return 'disciplines/{filename}'.format(filename=filename)
+
 class Discipline(models.Model):
     discipline_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    icon = models.ImageField(upload_to='img dyscypliny', null=True, blank=True)
+    icon = models.ImageField(_("Image"), upload_to=upload_to_disciplines, default='media/ludzik.png', null=True, blank=True)
 
     def __str__(self):
         return self.name
+
+def upload_to_games(instance, filename):
+    return 'games/{filename}'.format(filename=filename)
 
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
     db_game_id = models.IntegerField()
     name = models.CharField(max_length=100)
-    logo = models.ImageField(upload_to='img rozgrywki', null=True, blank=True)
+    logo = models.ImageField(_("Image"), upload_to=upload_to_games, default='media/ludzik.png', null=True, blank=True)
     discipline_id = models.ForeignKey(Discipline, on_delete=models.DO_NOTHING)
 
     def __str__(self):

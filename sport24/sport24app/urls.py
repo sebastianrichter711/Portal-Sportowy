@@ -38,6 +38,8 @@ urlpatterns = [
     path('edit_match/<int:match_id>', views_match.edit_match),
     path('get_matches/<int:game_id>', views_match.get_matches_for_season),
     path('add_season', views_season.add_season),
-    path('edit_season/<int:season_id>', views_season.edit_season)
+    path('edit_season/<int:season_id>', views_season.edit_season),
+    path('add_discipline/', views_discipline.CreateDiscipline.as_view(), name='add_discipline'),
+    path('search/', views_article.PostListDetailfilter.as_view(), name='postsearch')
 ]
 

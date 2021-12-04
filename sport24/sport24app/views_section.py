@@ -6,7 +6,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 
 @csrf_exempt
-def sections_api(request, id = 0):
+def sections_api(request):
     if request.method == "GET":
         sections = Section.objects.all()
         if sections:

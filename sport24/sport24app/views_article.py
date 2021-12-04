@@ -1,5 +1,4 @@
-from rest_framework import status
-
+from rest_framework import status,generics,filters
 from sport24.settings import BASE_DIR
 from .models import *
 from .serializers import *
@@ -12,6 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from PIL import Image
+import os
 
 def download_article(url, section_name):
 
@@ -56,10 +56,14 @@ def download_article(url, section_name):
     comma = image_link.find("',")
     full_image_link = image_link[https:comma]
     print(full_image_link)
-    
+
     im = Image.open(requests.get(full_image_link, stream=True).raw)
-    image_name = 'foto.png'
+    image_name = 'articles/' + proper_title + '.png'
+    current_location = os.getcwd()
+    os.chdir(BASE_DIR)
+    os.chdir('media')
     im.save(image_name)
+    os.chdir(current_location)
     
     section = Section.objects.get(name=section_name)
     new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj,
@@ -182,3 +186,10 @@ def get_articles_for_home_page(request, id=0):
             articles_for_home_page_serial = HomePageArticlesSerializer(articles_for_home_page, many=True)
             return JsonResponse(articles_for_home_page_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułów na stronę główną!", safe=False, status = status.HTTP_404_NOT_FOUND)
+    
+class PostListDetailfilter(generics.ListAPIView):
+
+    queryset = Article.objects.all()
+    serializer_class = ShortArticleSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['^title']

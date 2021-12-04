@@ -98,7 +98,7 @@ class NewArticlesSerializer(serializers.ModelSerializer):
             'title'
         )
         
-class NewestArticleSerializer(serializers.ModelSerializer):
+class NewestArticleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Article
         fields = (
@@ -112,8 +112,8 @@ class ShortArticleSerializer(serializers.ModelSerializer):
         fields = (
             'date_of_create',
             'title',
-            'lead_text',
-            'small_title_photo'
+            'lead_text'
+            #'small_title_photo'
         )
 
 class QuoteSerializer(serializers.ModelSerializer):
