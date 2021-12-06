@@ -102,7 +102,10 @@ export default function Create() {
         formData.append('name', postData.name);
         formData.append('icon', postImage.image[0]);
 		axiosInstance.post(`add_discipline/`, formData);
-	    //window.location.reload(false);
+		history.push({
+			pathname: 'add_discipline/'
+		});
+	    window.location.reload();
 	};
 
 	const classes = useStyles();

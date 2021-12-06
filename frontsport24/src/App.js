@@ -1,48 +1,26 @@
-import React, {useState} from 'react';
-import './style.css'
-import MainPage from './components/MainPage';
-import Create from './components/AddDiscipline';
-import Search from './components/SearchArticles';
-import SearchBar from 'material-ui-search-bar';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import axiosInstance from './axios';
 
-const useStyles = makeStyles((theme) => ({
-	appBar: {
-		borderBottom: `1px solid ${theme.palette.divider}`,
-	},
-	link: {
-		margin: theme.spacing(1, 1.5),
-	},
-	toolbarTitle: {
-		flexGrow: 1,
-	},
-}));
+function App() {
+	// const PostLoading = PostLoadingComponent(Posts);
+	// const [appState, setAppState] = useState({
+	// 	loading: true,
+	// 	posts: null,
+	// });
 
-
-function App () {
-  const classes = useStyles();
-	let history = useHistory();
-	const [data, setData] = useState({ search: '' });
-
-	const goSearch = (e) => {
-		history.push({
-			pathname: '/search/',
-			search: '?search=' + data.search,
-		});
-		window.location.reload();
-	};
-
-    return (
-      <div className="div">
-        <SearchBar
-						value={data.search}
-						onChange={(newValue) => setData({ search: newValue })}
-						onRequestSearch={() => goSearch(data.search)}
-					/>
-      </div>
-    );
-  }
-
+	// useEffect(() => {
+	// 	axiosInstance.get().then((res) => {
+	// 		const allPosts = res.data;
+	// 		setAppState({ loading: false, posts: allPosts });
+	// 		console.log(res.data);
+	// 	});
+	// }, [setAppState]);
+	return (
+		<div className="App">
+			<h1>Latest Posts</h1>
+			{/* <PostLoading isLoading={appState.loading} posts={appState.posts} /> */}
+		</div>
+	);
+}
 export default App;

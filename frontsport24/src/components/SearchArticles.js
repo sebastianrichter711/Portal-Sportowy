@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axios';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -43,13 +42,13 @@ const Search = () => {
 	const search = 'search';
 	const [appState, setAppState] = useState({
 		search: '',
-		posts: [],
+		articles: [],
 	});
 
 	useEffect(() => {
 		axiosInstance.get(search + '/' + window.location.search).then((res) => {
-			const allPosts = res.data;
-			setAppState({ posts: allPosts });
+			const allArticles = res.data;
+			setAppState({ posts: allArticles });
 			console.log(res.data);
 		});
 	}, [setAppState]);
@@ -58,11 +57,28 @@ const Search = () => {
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
 				<Grid container spacing={5} alignItems="flex-end">
-					{appState.posts.map((post) => {
+					{appState.articles.map((article) => {
 						return (
-                            <div className = "found">
-                                {post.date_of_create} {post.title} {post.lead_text}
-                            </div>
+							// Enterprise card is full width at sm breakpoint
+							<Grid item key={article.id} xs={12} md={4}>
+								<Card className={classes.card}>
+									<CardContent className={classes.cardContent}>
+										<Typography
+											gutterBottom
+											variant="h6"
+											component="h2"
+											className={classes.postTitle}
+										>
+											{article.title.substr(0, 50)}...
+										</Typography>
+										<div className={classes.postText}>
+											<Typography color="textSecondary">
+												{article.lead_text.substr(0, 40)}...
+											</Typography>
+										</div>
+									</CardContent>
+								</Card>
+							</Grid>
 						);
 					})}
 				</Grid>
