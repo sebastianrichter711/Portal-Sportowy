@@ -3,5 +3,5 @@ from .models import *
 
 # Register your models here.
 
-models = [Profile, Section, Article, Comment, Discipline, Game, Season, Match, Quote]
+models = [Section, Article, Comment, Discipline, Game, Season, Match, Quote]
 admin.site.register(models)

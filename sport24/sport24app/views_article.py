@@ -115,7 +115,7 @@ def get_newest_articles(request, id=0):
                 short_newest_articles.append(short_article)
             return JsonResponse(short_newest_articles, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono najnowszych artykułów!", safe=False, status = status.HTTP_404_NOT_FOUND)
-        
+'''       
 @csrf_exempt
 def find_articles_by_keyword(request, keyword):
     if request.method == "GET":
@@ -127,7 +127,7 @@ def find_articles_by_keyword(request, keyword):
             found_articles_serial = ShortArticleSerializer(found_articles, many = True)
             return JsonResponse(found_articles_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
-    
+''' 
 @csrf_exempt
 def get_articles_for_section(request, section_name):
     if request.method == "GET":
@@ -187,7 +187,7 @@ def get_articles_for_home_page(request, id=0):
             return JsonResponse(articles_for_home_page_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułów na stronę główną!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
-class PostListDetailfilter(generics.ListAPIView):
+class SearchedArticles(generics.ListAPIView):
 
     queryset = Article.objects.all()
     serializer_class = ShortArticleSerializer
