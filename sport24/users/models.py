@@ -34,12 +34,25 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
+def upload_to_profiles(instance, filename):
+    return 'profiles/{filename}'.format(filename=filename)
+
 class NewUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(_('email address'), unique=True)
     user_name = models.CharField(max_length=150, unique=True)
     first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    sex = models.CharField(max_length=10, blank=True)
+    phone_number = models.CharField(max_length=14, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    role = models.CharField(max_length=30, blank=True)
+    authorize_date = models.DateField(null=True, blank=True)
+    end_authorize_date = models.DateField(null=True, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(default=timezone.now)
+    comments_number = models.IntegerField(blank=True, default=0)
+    avatar = models.ImageField(_("Image"), upload_to=upload_to_profiles, default='media/ludzik.png', null=True, blank=True)
     about = models.TextField(_(
         'about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
@@ -49,6 +62,6 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name', 'first_name']
-
+    
     def __str__(self):
         return self.user_name

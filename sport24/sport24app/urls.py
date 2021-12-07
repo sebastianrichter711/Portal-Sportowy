@@ -3,6 +3,15 @@ from django.db.models.query import ValuesIterable
 from django.urls import path, include
 from rest_framework import routers
 from sport24app import views_article, views_comment, views_discipline, views_game, views_match, views_quote, views_season, views_section,views_profile, views_quote, views_season, views_section
+from sport24app.views_article import PostList, PostDetail
+from rest_framework.routers import DefaultRouter
+
+# app_name = 'blog_api'
+
+# router = DefaultRouter()
+# router.register('', PostList, basename='post')
+# urlpatterns = router.urls
+
 
 urlpatterns = [
     path('section', views_section.sections_api),
@@ -17,7 +26,7 @@ urlpatterns = [
     path('newest_article', views_article.get_newest_article),
     path('newest_articles', views_article.get_newest_articles),
     #path('found_articles/<str:keyword>', views_article.find_articles_by_keyword),
-    path('article/<int:id>', views_article.get_article),
+    path('article/<str:title>', views_article.get_article),
     path('articles/<str:section_name>', views_article.get_articles_for_section),
     path('articles_home_page', views_article.get_articles_for_home_page),
     path('quote', views_quote.get_quote),
@@ -34,7 +43,8 @@ urlpatterns = [
     path('add_season', views_season.add_season),
     path('edit_season/<int:season_id>', views_season.edit_season),
     path('add_discipline/', views_discipline.CreateDiscipline.as_view(), name='add_discipline'),
-    path('search/', views_article.SearchedArticles.as_view(), name='searched_articles')
+    path('posts/', PostDetail.as_view(), name='detailcreate'),
+    path('', PostList.as_view(), name='listcreate'),
 
 ]
 

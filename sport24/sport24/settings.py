@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'sport24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'SPORTINFO24',
+        'NAME': 'sportinfo24',
         "USER": 'postgres',
         "PASSWORD": 'postgres'
     }

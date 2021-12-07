@@ -1,4 +1,4 @@
-from rest_framework import status,generics,filters
+from rest_framework import status,generics,filters,viewsets
 from sport24.settings import BASE_DIR
 from .models import *
 from .serializers import *
@@ -12,6 +12,8 @@ from bs4 import BeautifulSoup
 import re
 from PIL import Image
 import os
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 def download_article(url, section_name):
 
@@ -88,10 +90,20 @@ def download_articles(request, section_name):
         return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
-def get_article(request, id):
+def get_article(request, title):
      if request.method == "GET":
-         article = Article.objects.get(article_id=id)
+         article = Article.objects.get(title=title)
          if article:
+            #  time = article.date_of_create
+            #  new_time = time.strftime('%d.%m.%Y %H:%M:%S')
+            #  article_data = {}
+            #  article_data['title'] = article.title
+            #  article_data['date_of_create'] = str(time)
+            #  article_data['date_of_last_change'] = str(article.date_of_last_change)
+            #  article_data['lead_text'] = article.lead_text
+            #  article_data['text'] = article.text
+            #  article_data['big_title_photo'] = str(article.big_title_photo)
+            #  article_data['page_views'] = article.page_views
              article.page_views += 1
              article.save()
              article_serial = ArticleSerializer(article)
@@ -193,3 +205,17 @@ class SearchedArticles(generics.ListAPIView):
     serializer_class = ShortArticleSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['^title']
+    
+class PostList(generics.ListAPIView):
+    serializer_class = HomePageArticlesSerializer
+
+    def get_queryset(self):
+        return Article.objects.all()
+
+class PostDetail(generics.RetrieveAPIView):
+    serializer_class = HomePageArticlesSerializer
+
+    def get_queryset(self):
+        slug = self.request.query_params.get('title', None)
+        print(slug)
+        return Article.objects.filter(title=slug)

@@ -48,8 +48,6 @@ class ArticleSerializer(serializers.ModelSerializer):
             'lead_text',
             'text',
             'big_title_photo',
-            'small_title_photo',
-            'add_photo',
             'page_views',
             'section_id'
         )
@@ -92,7 +90,7 @@ class HomePageArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = (
-            'small_title_photo',
+            'big_title_photo',
             'title'
         )
         
