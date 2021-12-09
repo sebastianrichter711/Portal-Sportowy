@@ -25,6 +25,7 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
+    #path('social_auth/', include('drf_social_oauth2.urls', namespace='drf')),
     path('admin/', admin.site.urls),
     url(r'^api/', include('sport24app.urls')),
     path('api/user/', include('users.urls', namespace='users')),

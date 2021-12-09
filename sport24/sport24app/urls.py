@@ -25,7 +25,7 @@ urlpatterns = [
     path('download_articles/<str:section_name>', views_article.download_articles),
     path('newest_article', views_article.get_newest_article),
     path('newest_articles', views_article.get_newest_articles),
-    #path('found_articles/<str:keyword>', views_article.find_articles_by_keyword),
+    path('found_articles/<str:keyword>', views_article.find_articles_by_keyword),
     path('article/<str:title>', views_article.get_article),
     path('articles/<str:section_name>', views_article.get_articles_for_section),
     path('articles_home_page', views_article.get_articles_for_home_page),
@@ -45,6 +45,7 @@ urlpatterns = [
     path('add_discipline/', views_discipline.CreateDiscipline.as_view(), name='add_discipline'),
     path('posts/', PostDetail.as_view(), name='detailcreate'),
     path('', PostList.as_view(), name='listcreate'),
+    path('search/', views_article.SearchedArticles.as_view(), name='postsearch'),
 
 ]
 

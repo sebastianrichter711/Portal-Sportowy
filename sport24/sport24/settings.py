@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     'sport24app.apps.Sport24AppConfig',
     'rest_framework',
     'users',
+    # 'oauth2_provider',
+    # 'social_django',
+    # 'drf_social_oauth2',
     'rest_framework_simplejwt.token_blacklist',
+    # "django_extensions"
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -72,6 +76,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'social_django.context_processors.backends',
+                # 'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -86,7 +92,7 @@ WSGI_APPLICATION = 'sport24.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sportinfo24',
+        'NAME': 'sportINFO24',
         "USER": 'postgres',
         "PASSWORD": 'postgres'
     }
@@ -145,6 +151,8 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         #'knox.auth.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        # 'drf_social_oauth2.authentication.SocialAuthentication'
     ]
 }
 
@@ -167,3 +175,29 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
+
+# AUTHENTICATION_BACKENDS = (
+
+#     # Facebook OAuth2
+#     'social_core.backends.facebook.FacebookAppOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+
+#     # drf_social_oauth2
+#     'drf_social_oauth2.backends.DjangoOAuth2',
+
+#     # Django
+#     'django.contrib.auth.backends.ModelBackend',
+# )
+
+# # Facebook configuration
+# SOCIAL_AUTH_FACEBOOK_KEY = '952694625679730'
+# SOCIAL_AUTH_FACEBOOK_SECRET = '91389758b2dc7400f299ba0e1811e16f'
+
+# # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from Facebook.
+# # Email is not sent by default, to get it, you must request the email permission.
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#     'fields': 'id, name, email'
+# }
+
+# SOCIAL_AUTH_USER_FIELDS = ['email', 'username', 'first_name', 'password']

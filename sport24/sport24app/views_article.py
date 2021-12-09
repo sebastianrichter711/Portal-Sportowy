@@ -70,6 +70,7 @@ def download_article(url, section_name):
     section = Section.objects.get(name=section_name)
     new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj,
                lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
+    
     if new_article != None:
         new_article.save()
         articles_number = getattr(section, 'number_of_articles')
@@ -92,23 +93,22 @@ def download_articles(request, section_name):
 @csrf_exempt
 def get_article(request, title):
      if request.method == "GET":
-         article = Article.objects.get(title=title)
-         if article:
-            #  time = article.date_of_create
-            #  new_time = time.strftime('%d.%m.%Y %H:%M:%S')
-            #  article_data = {}
-            #  article_data['title'] = article.title
-            #  article_data['date_of_create'] = str(time)
-            #  article_data['date_of_last_change'] = str(article.date_of_last_change)
-            #  article_data['lead_text'] = article.lead_text
-            #  article_data['text'] = article.text
-            #  article_data['big_title_photo'] = str(article.big_title_photo)
-            #  article_data['page_views'] = article.page_views
-             article.page_views += 1
-             article.save()
-             article_serial = ArticleSerializer(article)
-             return JsonResponse(article_serial.data, safe=False, status = status.HTTP_200_OK)
-         return JsonResponse("Nie znaleziono artykułu o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
+        article = Article.objects.get(title=title)
+        if article:
+            article_data = {}
+            article_data['title'] = article.title
+            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + str(article.date_of_create.minute)
+            if article.date_of_last_change != None:
+                article_data['date_of_last_change'] = str(article.date_of_last_change)
+            article_data['lead_text'] = article.lead_text
+            article_data['text'] = article.text
+            article_data['big_title_photo'] = str(article.big_title_photo)
+            article_data['page_views'] = article.page_views
+            article.page_views += 1
+            article.save()
+            #article_serial = ArticleSerializer(article)
+            return JsonResponse(article_data, safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono artykułu o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
      
 @csrf_exempt
 def get_newest_articles(request, id=0):
@@ -127,7 +127,7 @@ def get_newest_articles(request, id=0):
                 short_newest_articles.append(short_article)
             return JsonResponse(short_newest_articles, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono najnowszych artykułów!", safe=False, status = status.HTTP_404_NOT_FOUND)
-'''       
+       
 @csrf_exempt
 def find_articles_by_keyword(request, keyword):
     if request.method == "GET":
@@ -139,7 +139,7 @@ def find_articles_by_keyword(request, keyword):
             found_articles_serial = ShortArticleSerializer(found_articles, many = True)
             return JsonResponse(found_articles_serial.data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
-''' 
+ 
 @csrf_exempt
 def get_articles_for_section(request, section_name):
     if request.method == "GET":
@@ -204,7 +204,7 @@ class SearchedArticles(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ShortArticleSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['^title']
+    search_fields = ['^title', '^lead_text', '^text']
     
 class PostList(generics.ListAPIView):
     serializer_class = HomePageArticlesSerializer
@@ -218,4 +218,16 @@ class PostDetail(generics.RetrieveAPIView):
     def get_queryset(self):
         slug = self.request.query_params.get('title', None)
         print(slug)
-        return Article.objects.filter(title=slug)
+        article = Article.objects.filter(title=slug)
+        if article:
+            article_data = {}
+            article_data['title'] = article.title
+            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." 
+            + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + "." + str(article.date_of_create.minute)
+            if article.date_of_last_change != None:
+                article_data['date_of_last_change'] = str(article.date_of_last_change)
+            article_data['lead_text'] = article.lead_text
+            article_data['text'] = article.text
+            article_data['big_title_photo'] = str(article.big_title_photo)
+            article_data['page_views'] = article.page_views
+            return article_data

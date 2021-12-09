@@ -74,8 +74,8 @@ class ShortArticleSerializer(serializers.ModelSerializer):
         fields = (
             'date_of_create',
             'title',
-            'lead_text'
-            #'small_title_photo'
+            'lead_text',
+            'big_title_photo'
         )
 
 class QuoteSerializer(serializers.ModelSerializer):
