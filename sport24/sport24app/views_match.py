@@ -28,7 +28,9 @@ def download_matches(game_id, phase, round, season):
     #formatted_json_matches = json.dumps(json_matches, indent=2)
 
     game = Game.objects.get(db_game_id=game_id)
-    season = Season.objects.get(season=season, phase=phase, round=round, game_id=game)
+    #season = Season.objects.get(season=season, phase=phase, round=round, game_id=game)
+    season = Season.objects.create(season=season, phase=phase, round=round, game_id=game)
+    season.save()
     
     for event in json_matches["events"]:
         if event['intHomeScore'] == None and event['intAwayScore'] == None:
