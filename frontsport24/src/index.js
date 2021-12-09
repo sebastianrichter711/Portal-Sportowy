@@ -14,6 +14,7 @@ import Search from './components/SearchArticles';
 import Single from './components/single';
 import ArticlesSections from './components/ArticlesSections';
 import Disciplines from './components/Disciplines';
+import Games from './components/Games';
 
 const routing = (
 	<Router>
@@ -27,7 +28,8 @@ const routing = (
 				<Route path="/search" component={Search} />
 				<Route path="/posts/:title" component={Single} />
 				<Route path="/sections/:name" component={ArticlesSections} />
-				{/* <Route path="/disciplines" component={Disciplines} /> */}
+				<Route path="/disciplines" component={Disciplines} />
+				<Route path="/games/:name" component={Games} />
 			</Switch>
 			<Footer />
 		</React.StrictMode>

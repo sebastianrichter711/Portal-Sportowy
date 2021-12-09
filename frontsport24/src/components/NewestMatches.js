@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 import axiosInstance from '../axios';
 import { List, ListItem, ListItemButton } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     postTitle: {
         fontSize: '16px',
         textAlign: 'left',
+        fontStyle: 'bold'
     },
     postText: {
         display: 'flex',
@@ -61,42 +63,51 @@ function NewestMatches() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={5} alignItems="center">
+                <Grid container spacing={2} alignItems="center">
                     {appState.newestMatches.map((match) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
                             <Grid item key={match.id} xs={12} md={3}>
-								<Card className={classes.card}>
-									<CardContent className={classes.cardContent}>
-										<Typography
-											gutterBottom
-											variant="h6"
-											component="h2"
-											className={classes.postTitle}
-										>
-											{match.match_date}
-										</Typography>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
                                         <Typography
-											gutterBottom
-											variant="h6"
-											component="h2"
-											className={classes.postTitle}
-										>
+                                            gutterBottom
+                                            variant="h6"
+                                            component="h2"
+                                            className={classes.postTitle}
+                                        >
+                                            {match.match_date}
+                                        </Typography>
+                                        <Typography
+                                            gutterBottom
+                                            variant="h6"
+                                            component="h2"
+                                            className={classes.postTitle}
+                                        >
                                             {match.host} {match.host_score}
-										</Typography>
+                                        </Typography>
                                         <Typography
-											gutterBottom
-											variant="h6"
-											component="h2"
-											className={classes.postTitle}
-										>
+                                            gutterBottom
+                                            variant="h6"
+                                            component="h2"
+                                            className={classes.postTitle}
+                                        >
                                             {match.guest} {match.guest_score}
-										</Typography>
-									</CardContent>
-								</Card>
-							</Grid>
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
                         );
                     })}
+                    <Link
+                        color="textPrimary"
+                        href={'http://localhost:3000/disciplines'}
+                        className={classes.link}
+                    >
+                        <Button variant="contained">
+                            WYNIKI
+                        </Button>
+                    </Link>
                 </Grid>
             </Container>
         </React.Fragment>

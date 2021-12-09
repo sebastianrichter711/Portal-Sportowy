@@ -47,7 +47,7 @@ const Posts = (props) => {
                         var url = 'http://localhost:8000' + post.big_title_photo
 						return (
 							// Enterprise card is full width at sm breakpoint
-							<Grid item key={post.id} xs={12} md={4}>
+							<Grid item key={post.id} xs={4} md={4}>
 								<Card className={classes.card}>
 									<Link
 										color="textPrimary"

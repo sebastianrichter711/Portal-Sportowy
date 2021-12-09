@@ -14,6 +14,12 @@ const useStyles = makeStyles((theme) => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 	},
+	mainPhoto: {
+		width:"1100px",
+		height: "770px",
+		top: "40px",
+		alignContent: "left"
+	}
 }));
 
 export default function Post() {
@@ -33,11 +39,11 @@ export default function Post() {
     var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
 	console.log(article_url)
 	return (
-		<Container component="main" maxWidth="md">
+		<Container component="main" xs={3} md={3}>
 			<CssBaseline />
 			<div className={classes.paper}></div>
 			<div className={classes.heroContent}>
-				<Container maxWidth="sm">
+				<Container xs={3}>
 					<Typography
 						component="h1"
 						variant="h2"
@@ -57,7 +63,7 @@ export default function Post() {
 					</Typography>
                     <Typography
 						variant="h5"
-						align="left"
+						align="center"
 						color="textSecondary"
 						paragraph
 					>
@@ -79,7 +85,14 @@ export default function Post() {
 					>
 						{data.posts.text}
 					</Typography>
-
+					<Typography
+						variant="h5"
+						align="center"
+						color="textSecondary"
+						paragraph
+					>
+						Komentarze ({data.posts.comments_number})
+					</Typography>
 				</Container>
 			</div>
 		</Container>

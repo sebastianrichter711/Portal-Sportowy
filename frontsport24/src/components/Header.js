@@ -35,22 +35,22 @@ const useStyles = makeStyles((theme) => ({
         width: '300px'
     },
     fbLogo:{
-		width: '50px',
-		height: '50px',
+		width: '45px',
+		height: '45px',
 		//position: absolute,
 		//top: 4%,
 		//left: 69.5%,
 	},
 	twLogo: {
-		width: '50px',
-		height: '50px',
+		width: '45px',
+		height: '45px',
 		//position: absolute,
 		//top: 4%,
 		//left: 74.3%,
 	},
 	insLogo: {
-		width: '50px',
-		height: '50px',
+		width: '45px',
+		height: '45px',
 		//position: absolute,
 		// top: 4%,
 		// left: 79%,

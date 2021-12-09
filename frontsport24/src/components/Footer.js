@@ -33,17 +33,17 @@ function Copyright() {
 
 const footers = [
 	{
-		title: 'Company',
-		description: ['Team', 'History', 'Contact us', 'Locations'],
+		title: 'Działy',
+		description: ['Piłka nożna', 'Siatkówka', 'Koszykówka', 'Lekkoatletyka'],
 	},
 	{
-		title: 'Features',
+		title: 'Wyniki',
 		description: [
-			'Cool stuff',
-			'Random feature',
-			'Team feature',
-			'Developer stuff',
-			'Another one',
+			'PKO BP Ekstraklasa',
+			'1.Bundesliga',
+			'UEFA Champions League',
+			'UEFA Europa League',
+			'Turkish Airlines Euroleague',
 		],
 	},
 	{

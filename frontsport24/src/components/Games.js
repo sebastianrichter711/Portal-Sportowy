@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axiosInstance from '../axios';
-import { List, ListItem, ListItemButton } from '@material-ui/core';
-import ListItemText from '@material-ui/core/ListItemText';
+import Button from '@material-ui/core/Button';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -37,52 +37,50 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
     },
     photo: {
-        width: '20px',
-        height: '20px'
+        width: '30px',
+        height: '30px'
+    },
+    results: {
+        textAlign: "left"
     }
 }));
 
-function NewestArticles() {
+function Games() {
 
+    const { name } = useParams();
     const [appState, setAppState] = useState({
-        newArticles: [],
+        games: [],
     });
 
     useEffect(() => {
-        axiosInstance.get("http://localhost:8000/api/newest_articles").then((res) => {
-            const articles = res.data;
-            setAppState({ newArticles: articles });
+        var url = "http://localhost:8000/api/games/" + name;
+        axiosInstance.get(url).then((res) => {
+            const gotGames = res.data;
+            setAppState({ games: gotGames });
             console.log(res.data);
         });
     }, [setAppState]);
 
     const classes = useStyles();
-
+    console.log(appState.games)
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={1} alignItems="center">
-                    <h1> Najnowsze </h1><br/>
-                    &ensp;
-                    {appState.newArticles.map((article) => {
+                <Grid container spacing={5} xs={3} alignItems="center">
+                    <h1 className={classes.results}> WYNIKI </h1>
+                    {appState.games.map((game) => {
+                        var url = 'http://localhost:8000' + game.logo
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            //<List>
-                            <Grid container columnSpacing={{ xs: 1, sm: 4, md: 4 }} xs={12}>
-                                <Link
-										color="textPrimary"
-										href={'http://localhost:3000/posts/' + article.title}
-										className={classes.link}
-								>
-                                {/* //<ListItem disablePadding> */}
-                                    {/* //<ListItem button> */}
-                                        {/* <ListItemText primary={article.date_of_create} secondary={article.title} /> */}
-                                        {article.date_of_create} {article.title}
-                                    {/* //</ListItem> */}
-                                {/* </ListItem> */}
-                                </Link>
-                            {/* //</List> */}
-                            </Grid>
+                            <Link
+                                color="textPrimary"
+                                href={'http://localhost:3000/disciplines/' + game.name}
+                                className={classes.link}
+                            >
+                                <Button variant="contained" alignItems="center">
+                                    <img className={classes.photo} src={url} alt="url" /> <br /> {game.name}
+                                </Button>
+                            </Link>
                         );
                     })}
                 </Grid>
@@ -91,4 +89,4 @@ function NewestArticles() {
     );
 }
 
-export default NewestArticles;
+export default Games;

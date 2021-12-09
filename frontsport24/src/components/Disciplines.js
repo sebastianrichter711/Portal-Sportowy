@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     photo: {
         width: '30px',
         height: '30px'
+    },
+    results: {
+        textAlign: "left"
     }
 }));
 
@@ -50,7 +53,7 @@ function Disciplines() {
     useEffect(() => {
         axiosInstance.get("http://localhost:8000/api/discipline").then((res) => {
             const gotDisciplines = res.data;
-            setAppState({ sections: gotDisciplines });
+            setAppState({ disciplines: gotDisciplines });
             console.log(res.data);
         });
     }, [setAppState]);
@@ -60,17 +63,18 @@ function Disciplines() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={5} alignItems="flex-end">
+                <Grid container spacing={5} xs={3} alignItems="center">
+                    <h1 className={classes.results}> WYNIKI </h1>
                     {appState.disciplines.map((discipline) => {
                         var url = 'http://localhost:8000' + discipline.icon
                         return (
                             // Enterprise card is full width at sm breakpoint
                             <Link
 										color="textPrimary"
-										href={'http://localhost:3000/' + discipline.name}
+										href={'games/' + discipline.name}
 										className={classes.link}
 							>
-                            <Button variant="contained">
+                            <Button variant="contained" alignItems="center">
                                 <img className={classes.photo} src={url} alt="url" /> <br /> {discipline.name}
                             </Button>
                             </Link>

@@ -36,15 +36,6 @@ function App() {
 	return (
 		<div className="App">
 			<NewestMatches/>
-			<Link
-										color="textPrimary"
-										href={'http://localhost:3000/disciplines'}
-										className={classes.link}
-			>
-			<Button variant="contained">
-                        WYNIKI
-            </Button>
-			</Link>
 			<MainArticle />
 			<Posts posts={appState.posts} />
 			<Sections/>

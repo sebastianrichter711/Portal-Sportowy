@@ -61,7 +61,7 @@ function Sections() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={5} alignItems="flex-end">
+                <Grid container spacing={5} xs={4} alignItems="flex-end">
                         {appState.sections.map((section) => {
                             var url = 'http://localhost:8000' + section.icon
                             return (
@@ -71,13 +71,11 @@ function Sections() {
                                     href={'http://localhost:3000/sections/' + section.name}
                                     className={classes.link}
                                 >
-                                <span>
                                     <Button variant="contained">
                                         <img className={classes.photo} src={url} alt="url" /> <br /> {section.name}
                                     </Button>
                                     <br/>
-                                </span>
-                                                                </Link>
+                                </Link>
                             );
                         })}
                 </Grid>
