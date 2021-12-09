@@ -78,7 +78,7 @@ export default function SignIn() {
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Logowanie
 				</Typography>
 				<form className={classes.form} noValidate>
 					<TextField
@@ -87,7 +87,7 @@ export default function SignIn() {
 						required
 						fullWidth
 						id="email"
-						label="Email Address"
+						label="E-mail"
 						name="email"
 						autoComplete="email"
 						autoFocus
@@ -99,7 +99,7 @@ export default function SignIn() {
 						required
 						fullWidth
 						name="password"
-						label="Password"
+						label="Hasło"
 						type="password"
 						id="password"
 						autoComplete="current-password"
@@ -107,7 +107,7 @@ export default function SignIn() {
 					/>
 					<FormControlLabel
 						control={<Checkbox value="remember" color="primary" />}
-						label="Remember me"
+						label="Zapamiętaj mnie"
 					/>
 					<Button
 						type="submit"
@@ -117,17 +117,17 @@ export default function SignIn() {
 						className={classes.submit}
 						onClick={handleSubmit}
 					>
-						Sign In
+						Zaloguj się
 					</Button>
 					<Grid container>
 						<Grid item xs>
 							<Link href="#" variant="body2">
-								Forgot password?
+								Zapomniałeś hasła?
 							</Link>
 						</Grid>
 						<Grid item>
 							<Link href="#" variant="body2">
-								{"Don't have an account? Sign Up"}
+								{"NIe masz konta? Zarejestruj się!"}
 							</Link>
 						</Grid>
 					</Grid>

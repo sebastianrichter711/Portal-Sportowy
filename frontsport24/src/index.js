@@ -12,6 +12,8 @@ import Logout from './components/logout';
 import reportWebVitals from './reportWebVitals';
 import Search from './components/SearchArticles';
 import Single from './components/single';
+import ArticlesSections from './components/ArticlesSections';
+import Disciplines from './components/Disciplines';
 
 const routing = (
 	<Router>
@@ -24,6 +26,8 @@ const routing = (
 				<Route path="/logout" component={Logout} />
 				<Route path="/search" component={Search} />
 				<Route path="/posts/:title" component={Single} />
+				<Route path="/sections/:name" component={ArticlesSections} />
+				{/* <Route path="/disciplines" component={Disciplines} /> */}
 			</Switch>
 			<Footer />
 		</React.StrictMode>

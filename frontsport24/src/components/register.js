@@ -77,7 +77,7 @@ export default function SignUp() {
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}></Avatar>
 				<Typography component="h1" variant="h5">
-					Sign up
+					Rejestracja
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
@@ -87,7 +87,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								id="email"
-								label="Email Address"
+								label="E-mail"
 								name="email"
 								autoComplete="email"
 								onChange={handleChange}
@@ -99,7 +99,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								id="username"
-								label="Username"
+								label="Login"
 								name="username"
 								autoComplete="username"
 								onChange={handleChange}
@@ -111,7 +111,7 @@ export default function SignUp() {
 								required
 								fullWidth
 								name="password"
-								label="Password"
+								label="Hasło"
 								type="password"
 								id="password"
 								autoComplete="current-password"
@@ -127,12 +127,12 @@ export default function SignUp() {
 						className={classes.submit}
 						onClick={handleSubmit}
 					>
-						Sign Up
+						Zarejestruj się
 					</Button>
 					<Grid container justify="flex-end">
 						<Grid item>
 							<Link href="#" variant="body2">
-								Already have an account? Sign in
+								Masz już konto? Zaloguj się!
 							</Link>
 						</Grid>
 					</Grid>

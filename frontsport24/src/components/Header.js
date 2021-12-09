@@ -7,12 +7,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import { NavLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
+import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Zoom from '@material-ui/core/Zoom';
 import logo from '../images/logo.png'
 import SearchBar from 'material-ui-search-bar';
 import { useHistory } from 'react-router-dom';
 import fb from '../images/fb.png'
 import insta from '../images/insta.png'
 import twit from '../images/twit.png'
+import Box from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -31,27 +35,74 @@ const useStyles = makeStyles((theme) => ({
         width: '300px'
     },
     fbLogo:{
-		width: '60px',
-		height: '60px',
+		width: '50px',
+		height: '50px',
 		//position: absolute,
 		//top: 4%,
 		//left: 69.5%,
 	},
 	twLogo: {
-		width: '0.000000001px',
-		height: '0.00000001px',
+		width: '50px',
+		height: '50px',
 		//position: absolute,
 		//top: 4%,
 		//left: 74.3%,
 	},
 	insLogo: {
-		width: '0.1px',
-		height: '0.1px',
+		width: '50px',
+		height: '50px',
 		//position: absolute,
 		// top: 4%,
 		// left: 79%,
 	}
 }));
+
+function ScrollTop(props) {
+	const { children, window } = props;
+	// Note that you normally won't need to set the window ref as useScrollTrigger
+	// will default to window.
+	// This is only being set here because the demo is in an iframe.
+	const trigger = useScrollTrigger({
+	  target: window ? window() : undefined,
+	  disableHysteresis: true,
+	  threshold: 100,
+	});
+  
+	const handleClick = (event) => {
+	  const anchor = (event.target.ownerDocument || document).querySelector(
+		'#back-to-top-anchor',
+	  );
+  
+	  if (anchor) {
+		anchor.scrollIntoView({
+		  behavior: 'smooth',
+		  block: 'center',
+		});
+	  }
+	};
+  
+	return (
+	  <Zoom in={trigger}>
+		<Box
+		  onClick={handleClick}
+		  role="presentation"
+		  sx={{ position: 'fixed', bottom: 16, right: 16 }}
+		>
+		  {children}
+		</Box>
+	  </Zoom>
+	);
+  }
+  
+  ScrollTop.propTypes = {
+	children: PropTypes.element.isRequired,
+	/**
+	 * Injected by the documentation to work in an iframe.
+	 * You won't need it on your project.
+	 */
+	window: PropTypes.func,
+  };
+
 
 function Header() {
 	const classes = useStyles();
@@ -74,7 +125,7 @@ function Header() {
 				elevation={0}
 				className={classes.appBar}
 			>
-				<Toolbar className={classes.toolbar}>
+				<Toolbar className={classes.toolbar} id="back-to-top-anchor">
 					<Typography
 						variant="h6"
 						color="inherit"
@@ -90,36 +141,25 @@ function Header() {
 							<img src={logo} alt="logo" className={classes.logo}/>
 						</Link>
 					</Typography>
+				    <a href="https://facebook.com">
+							<img src={fb} alt="fb" className={classes.fbLogo}/>
+						</a>
+						&nbsp;
+						<a href="https://twitter.com">
+							<img src={twit} alt="twit" className={classes.twLogo}/>
+						</a>
+						&nbsp;
+						<a href="https://instagram.com">
+							<img src={insta} alt="insta" className={classes.insLogo}/>
+						</a>
+						&ensp;
                     <SearchBar
+					    placeholder="Szukaj..."
 						value={data.search}
 						onChange={(newValue) => setData({ search: newValue })}
 						onRequestSearch={() => goSearch(data.search)}
 					/>
 					<nav>
-					{/* <Link
-							component={NavLink}
-							to="/"
-							underline="none"
-							color="textPrimary"
-						>
-							<img src={fb} alt="fb" className={classes.fbLogo}/>
-						</Link>
-						<Link
-							component={NavLink}
-							to="/"
-							underline="none"
-							color="textPrimary"
-						>
-							<img src={twit} alt="insta" className={classes.twitLogo}/>
-						</Link>
-						<Link
-							component={NavLink}
-							to="/"
-							underline="none"
-							color="textPrimary"
-						>
-							<img src={insta} alt="twit" className={classes.instaLogo}/>
-						</Link> */}
 						<Link
 							color="textPrimary"
 							href="#"
@@ -127,7 +167,7 @@ function Header() {
 							component={NavLink}
 							to="/register"
 						>
-							Register
+							REJESTRACJA
 						</Link>
 					</nav>
 					<Button
@@ -138,7 +178,7 @@ function Header() {
 						component={NavLink}
 						to="/login"
 					>
-						Login
+						ZALOGUJ SIĘ
 					</Button>
 					<Button
 						href="#"
@@ -148,7 +188,7 @@ function Header() {
 						component={NavLink}
 						to="/logout"
 					>
-						Logout
+						WYLOGUJ SIĘ
 					</Button>
 				</Toolbar>
 			</AppBar>

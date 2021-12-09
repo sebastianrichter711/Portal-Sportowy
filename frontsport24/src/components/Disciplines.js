@@ -9,7 +9,6 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axiosInstance from '../axios';
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -42,16 +41,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Sections() {
+function Disciplines() {
 
     const [appState, setAppState] = useState({
-        sections: [],
+        disciplines: [],
     });
 
     useEffect(() => {
-        axiosInstance.get("http://localhost:8000/api/section").then((res) => {
-            const gotSections = res.data;
-            setAppState({ sections: gotSections });
+        axiosInstance.get("http://localhost:8000/api/discipline").then((res) => {
+            const gotDisciplines = res.data;
+            setAppState({ sections: gotDisciplines });
             console.log(res.data);
         });
     }, [setAppState]);
@@ -62,28 +61,25 @@ function Sections() {
         <React.Fragment>
             <Container maxWidth="md" component="main">
                 <Grid container spacing={5} alignItems="flex-end">
-                        {appState.sections.map((section) => {
-                            var url = 'http://localhost:8000' + section.icon
-                            return (
-                                // Enterprise card is full width at sm breakpoint
-                                <Link
-                                    color="textPrimary"
-                                    href={'http://localhost:3000/sections/' + section.name}
-                                    className={classes.link}
-                                >
-                                <span>
-                                    <Button variant="contained">
-                                        <img className={classes.photo} src={url} alt="url" /> <br /> {section.name}
-                                    </Button>
-                                    <br/>
-                                </span>
-                                                                </Link>
-                            );
-                        })}
+                    {appState.disciplines.map((discipline) => {
+                        var url = 'http://localhost:8000' + discipline.icon
+                        return (
+                            // Enterprise card is full width at sm breakpoint
+                            <Link
+										color="textPrimary"
+										href={'http://localhost:3000/' + discipline.name}
+										className={classes.link}
+							>
+                            <Button variant="contained">
+                                <img className={classes.photo} src={url} alt="url" /> <br /> {discipline.name}
+                            </Button>
+                            </Link>
+                        );
+                    })}
                 </Grid>
             </Container>
         </React.Fragment>
     );
 }
 
-export default Sections;
+export default Disciplines;

@@ -38,31 +38,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Search = () => {
+const ArticlesSections = () => {
 	const classes = useStyles();
-	const search = 'search';
+	const {name} = useParams();
 	const [appState, setAppState] = useState({
 		search: '',
 		articles: [],
 	});
 
 	useEffect(() => {
-		axiosInstance.get(search + '/' + window.location.search).then((res) => {
+        var url = "http://localhost:8000/api/articles/" + name
+		axiosInstance.get(url).then((res) => {
 			const allPosts = res.data;
 			setAppState({ articles: allPosts });
 			console.log(res.data);
 		});
 	}, [setAppState]);
 
+    if (!appState.articles || appState.articles.length === 0) return <h1>Nie znaleziono artykułów dla działu {name}!</h1>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
 				<Grid container spacing={5} alignItems="flex-end">
 					<br/>
-					<h1> Wyniki wyszukiwania dla słowa "{window.location.search.slice(1).split("&")[0].split("=")[1]}" </h1> 
+					<h1> {name} </h1> 
 					<br/>
 					{appState.articles.map((article) => {
-						//var url = 'http://localhost:8000/' + article.big_title_photo
+						var url = 'http://localhost:8000' + article.big_title_photo
+                        console.log(url)
 						return (
 							// Enterprise card is full width at sm breakpoint
 							<Grid item key={article.id} xs={12} md={4}>
@@ -74,7 +77,7 @@ const Search = () => {
 									>
 										<CardMedia
 											className={classes.cardMedia}
-											image={article.big_title_photo}
+											image={url}
 											title="Image title"
 										/>
 									</Link>
@@ -97,4 +100,4 @@ const Search = () => {
 		</React.Fragment>
 	);
 };
-export default Search;
+export default ArticlesSections;

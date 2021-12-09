@@ -30,7 +30,8 @@ export default function Post() {
 		});
 	}, [setData]);
 
-    var article_url = 'http://localhost:8000' + data.posts.big_title_photo
+    var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
+	console.log(article_url)
 	return (
 		<Container component="main" maxWidth="md">
 			<CssBaseline />

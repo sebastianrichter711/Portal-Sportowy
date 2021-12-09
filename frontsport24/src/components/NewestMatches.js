@@ -42,16 +42,16 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function NewestArticles() {
+function NewestMatches() {
 
     const [appState, setAppState] = useState({
-        newArticles: [],
+        newestMatches: [],
     });
 
     useEffect(() => {
-        axiosInstance.get("http://localhost:8000/api/newest_articles").then((res) => {
-            const articles = res.data;
-            setAppState({ newArticles: articles });
+        axiosInstance.get("http://localhost:8000/api/newest_matches").then((res) => {
+            const matches = res.data;
+            setAppState({ newestMatches: matches });
             console.log(res.data);
         });
     }, [setAppState]);
@@ -61,30 +61,40 @@ function NewestArticles() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={1} alignItems="flex-end">
-                    <h1> Najnowsze </h1><br/>
-                    {appState.newArticles.map((article) => {
+                <Grid container spacing={5} alignItems="center">
+                    {appState.newestMatches.map((match) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            //<List>
-                            <Grid item xs={4}>
-                                <span>
-                                <Link
-										color="textPrimary"
-										href={'http://localhost:3000/posts/' + article.title}
-										className={classes.link}
-								>
-                                {/* //<ListItem disablePadding> */}
-                                    {/* //<ListItem button> */}
-                                        {/* <ListItemText primary={article.date_of_create} secondary={article.title} /> */}
-                                        {article.date_of_create} {article.title}
-                                    {/* //</ListItem> */}
-                                {/* </ListItem> */}
-                                </Link>
-                                <br/>
-                                </span>
-                            {/* //</List> */}
-                            </Grid>
+                            <Grid item key={match.id} xs={12} md={3}>
+								<Card className={classes.card}>
+									<CardContent className={classes.cardContent}>
+										<Typography
+											gutterBottom
+											variant="h6"
+											component="h2"
+											className={classes.postTitle}
+										>
+											{match.match_date}
+										</Typography>
+                                        <Typography
+											gutterBottom
+											variant="h6"
+											component="h2"
+											className={classes.postTitle}
+										>
+                                            {match.host} {match.host_score}
+										</Typography>
+                                        <Typography
+											gutterBottom
+											variant="h6"
+											component="h2"
+											className={classes.postTitle}
+										>
+                                            {match.guest} {match.guest_score}
+										</Typography>
+									</CardContent>
+								</Card>
+							</Grid>
                         );
                     })}
                 </Grid>
@@ -93,4 +103,4 @@ function NewestArticles() {
     );
 }
 
-export default NewestArticles;
+export default NewestMatches;
