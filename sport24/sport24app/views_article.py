@@ -104,6 +104,7 @@ def get_article(request, title):
             article_data['text'] = article.text
             article_data['big_title_photo'] = str(article.big_title_photo)
             article_data['page_views'] = article.page_views
+            article_data['comments_number'] = article.comments_number
             article.page_views += 1
             article.save()
             #article_serial = ArticleSerializer(article)
