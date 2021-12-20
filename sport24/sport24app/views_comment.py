@@ -6,6 +6,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 import datetime
 from datetime import datetime
+from users.models import NewUser
 
 @csrf_exempt
 def comment_api(request, id):
@@ -36,7 +37,7 @@ def add_comment_to_article(request, article_id, profile_id):
     if request.method == "POST":
         comment_data=JSONParser().parse(request)
         comment_text = comment_data["text"]
-        profile = Profile.objects.get(profile_id = profile_id)
+        profile = NewUser.objects.get(profile_id = profile_id)
         article = Article.objects.get(article_id=article_id)
         if profile and article:
             new_comment = Comment.objects.create(author_id=profile, date_of_create=datetime.now(), text=comment_text,
@@ -56,10 +57,20 @@ def get_comments_for_article(request, article_id):
         if article:
             comments = Comment.objects.filter(article_id=article_id).order_by('-date_of_create')
             comments_data = []
-            comments_data.append({"Komentarze": + article.comments_number})
+            #comments_data.append({"Komentarze": + article.comments_number})
             for comment in comments:
-                new_comment = {"login": comment.author_id.user.username, "avatar": str(comment.author_id.avatar), "date_of_create": comment.date_of_create,
-                               "modified": comment.date_of_last_change, "text": comment.text}
-                comments_data.append(new_comment)
+                if comment.date_of_last_change == None:
+                    new_comment = {"login": comment.author_id.user_name, 
+                                "avatar": str(comment.author_id.avatar), 
+                                "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + str(comment.date_of_create.minute),
+                                "text": comment.text}
+                    comments_data.append(new_comment)
+                else:
+                    new_comment = {"login": comment.author_id.user_name, 
+                                "avatar": str(comment.author_id.avatar), 
+                                "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + str(comment.date_of_create.minute),
+                                "modified": str(comment.date_of_last_change.day) + "." + str(comment.date_of_last_change.month) + "." + str(comment.date_of_last_change.year) + " " + str(comment.date_of_last_change.hour) + ":" + str(comment.date_of_last_change.minute),
+                                "text": comment.text}
+                    comments_data.append(new_comment)
             return JsonResponse(comments_data, safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułu o podanym ID!", safe=False, status = status.HTTP_404_NOT_FOUND)

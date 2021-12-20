@@ -96,6 +96,7 @@ def get_article(request, title):
         article = Article.objects.get(title=title)
         if article:
             article_data = {}
+            article_data['id'] = article.article_id
             article_data['title'] = article.title
             article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + str(article.date_of_create.minute)
             if article.date_of_last_change != None:

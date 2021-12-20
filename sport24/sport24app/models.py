@@ -47,7 +47,7 @@ class Comment(models.Model):
     article_id = models.ForeignKey(Article, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f"Komentarz {self.comment_id} ({self.author_id.user.username})"
+        return f"Komentarz {self.comment_id} ({self.author_id.user_name})"
 
 def upload_to_disciplines(instance, filename):
     return 'disciplines/{filename}'.format(filename=filename)
