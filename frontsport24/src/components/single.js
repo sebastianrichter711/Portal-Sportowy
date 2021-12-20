@@ -6,6 +6,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import ArticleComments from './ArticleComments';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -93,6 +95,8 @@ export default function Post() {
 					>
 						Komentarze ({data.posts.comments_number})
 					</Typography>
+					<TextField id="outlined-basic" label="Napisz komentarz..." variant="outlined" />
+					<ArticleComments art_id={data.posts.id}/>
 				</Container>
 			</div>
 		</Container>
