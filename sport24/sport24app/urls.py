@@ -39,7 +39,7 @@ urlpatterns = [
     path('newest_matches', views_match.get_newest_matches),
     path('add_matches/<int:game_id>/<str:phase>/<str:round>/<str:season>', views_match.add_matches),
     path('edit_match/<int:match_id>', views_match.edit_match),
-    path('get_matches/<int:game_id>', views_match.get_matches_for_season),
+    path('get_matches/<str:season>/<str:phase>/<str:round>/<str:name>', views_match.get_matches_for_season),
     path('add_season', views_season.add_season),
     path('edit_season/<int:season_id>', views_season.edit_season),
     path('add_discipline/', views_discipline.CreateDiscipline.as_view(), name='add_discipline'),

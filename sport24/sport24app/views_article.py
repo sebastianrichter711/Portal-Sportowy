@@ -60,7 +60,14 @@ def download_article(url, section_name):
     print(full_image_link)
 
     im = Image.open(requests.get(full_image_link, stream=True).raw)
-    image_name = 'articles/' + proper_title + '.png'
+
+    signs = [',','.',':',';','!','?','"'] 
+    for i in proper_title:                               
+      if i in signs:                       
+            modified_title = proper_title.replace(i, '')
+                  
+    print(modified_title)
+    image_name = 'articles/' + modified_title + '.png'
     current_location = os.getcwd()
     os.chdir(BASE_DIR)
     os.chdir('media')
