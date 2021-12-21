@@ -45,17 +45,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ArticleComments({art_id}) {
+const ArticleComments = (props) => {
 
-    //const {id} = props
+    const {art_id} = props
     var xxx = {art_id}
     console.log(xxx)
     const [appState, setAppState] = useState({
         articleComments: [],
     });
 
-    var url = 'http://localhost:8000/api/article/' + 9 + '/comments'
-    console.log(url)
+    var url = 'http://localhost:8000/api/article/'+ props.art_id +'/comments';
+    // var s1 = 'http://localhost:8000/api/article/';
+    // var s2 = {art_id}.toString();
+    // var s3 = "/comments";
+    // var s4 = s1.concat(s2,s3);
+    // console.log(s4)
+    console.log(url);
     useEffect(() => {
         axiosInstance.get(url).then((res) => {
             const comments = res.data;
@@ -74,8 +79,8 @@ export default function ArticleComments({art_id}) {
                     {appState.articleComments.map((comment) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <Grid item key={comment.id} xs={12} md={3}>
-                                <Card className={classes.card}>
+                            <Grid item xs={12} md={3}>
+                                <Card className={classes.card} key={comment}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography
                                             gutterBottom
@@ -111,3 +116,5 @@ export default function ArticleComments({art_id}) {
         </React.Fragment>
     );
 }
+
+export default ArticleComments;

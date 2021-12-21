@@ -39,6 +39,7 @@ export default function Post() {
 	}, [setData]);
 
     var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
+	var id = data.posts.id
 	console.log(article_url)
 	return (
 		<Container component="main" xs={3} md={3}>

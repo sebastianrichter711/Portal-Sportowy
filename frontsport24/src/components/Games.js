@@ -67,14 +67,14 @@ function Games() {
         <React.Fragment>
             <Container maxWidth="md" component="main">
                 <Grid container spacing={5} xs={3} alignItems="center">
-                    <h1 className={classes.results}> WYNIKI </h1>
+                    <h1 className={classes.results}> WYNIKI</h1>
                     {appState.games.map((game) => {
                         var url = 'http://localhost:8000' + game.logo
                         return (
                             // Enterprise card is full width at sm breakpoint
                             <Link
                                 color="textPrimary"
-                                href={'/disciplines/' + game.name + '/matches'}
+                                href={"http://localhost:3000/matches/" + game.name}
                                 className={classes.link}
                             >
                                 <Button variant="contained" alignItems="center">

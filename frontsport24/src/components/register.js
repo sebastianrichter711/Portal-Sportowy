@@ -117,25 +117,30 @@ export default function SignUp() {
 								autoComplete="current-password"
 								onChange={handleChange}
 							/>
+							<p> Twoje hasło musi zawierać: </p>
+							<p> * co najmniej 8 znaków </p>
+							<p> * 1 dużą i małą literę </p>
+							<p> * 1 cyfrę </p>
+							<p> * 1 znak specjalny </p>
 						</Grid>
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						onClick={handleSubmit}
-					>
-						Zarejestruj się
-					</Button>
-					<Grid container justify="flex-end">
-						<Grid item>
-							<Link href="#" variant="body2">
-								Masz już konto? Zaloguj się!
-							</Link>
+						<Button
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+							onClick={handleSubmit}
+						>
+							Zarejestruj się
+						</Button>
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Link href="#" variant="body2">
+									Masz już konto? Zaloguj się!
+								</Link>
+							</Grid>
 						</Grid>
-					</Grid>
+						</Grid>
 				</form>
 			</div>
 		</Container>

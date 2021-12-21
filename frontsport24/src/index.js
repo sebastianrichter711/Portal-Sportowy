@@ -15,7 +15,7 @@ import Single from './components/single';
 import ArticlesSections from './components/ArticlesSections';
 import Disciplines from './components/Disciplines';
 import Games from './components/Games';
-import Matches from './components/Games';
+import Matches from './components/Matches';
 
 const routing = (
 	<Router>
@@ -31,7 +31,7 @@ const routing = (
 				<Route path="/sections/:name" component={ArticlesSections} />
 				<Route path="/disciplines" component={Disciplines} />
 				<Route path="/games/:name" component={Games} />
-				<Route path="/disciplines/:name/matches" component={Matches} />
+				<Route path="/matches/:name" component={Matches} />
 			</Switch>
 			<Footer />
 		</React.StrictMode>
