@@ -30,3 +30,62 @@ class BlacklistTokenUpdateView(APIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+from .models import *
+from .serializers import *
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser
+
+@csrf_exempt
+def user_api(request, username):
+    if request.method == "GET":
+        user = NewUser.objects.get(user_name=username)
+        if user:
+            user_data = {}
+            user_data['login'] = user.user_name
+            user_data['email'] = user.email
+            user_data['first_name'] = user.first_name
+            user_data['last_name'] = user.last_name
+            user_data['sex'] = user.sex
+            user_data['birth_date'] = user.birth_date 
+            user_data['phone_number'] = user.phone_number
+            user_data['comments_number'] = user.comments_number
+            user_data['avatar'] = str(user.avatar)
+            return JsonResponse(user_data, safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono użytkownika o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == "PUT":
+        user_data=JSONParser().parse(request)
+        user = NewUser.objects.get(user_name=username)
+        if user:
+            user.user_name = user_data['login']
+            user.email = user_data['email']
+            user.first_name = user_data['first_name']
+            user.last_name = user_data['last_name']
+            user.sex = user_data['sex']
+            user.birth_date = user_data['birth_date']
+            user.phone_number = user_data['phone_number']
+            user.save()
+            return JsonResponse(user_data, safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono użytkownika o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)
+    
+    elif request.method=='DELETE':
+        user=NewUser.objects.get(user_name=username)
+        if user:
+            user.delete()
+            return JsonResponse("Użytkownik usunięty.", safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)   
+
+
+# @csrf_exempt
+# def get_short_user_data(request, id):
+#     if request.method == "GET":
+#         user = Profile.objects.get(user__id=id)
+#         if user:
+#             user_data = {}
+#             user_data['login'] = user.user.username
+#             user_data['email'] = user.user.email
+#             user_data['avatar'] = str(user.avatar)
+#             return JsonResponse(user_data, safe=False, status = status.HTTP_200_OK)
+#         return JsonResponse("Nie znaleziono użytkownika o takim ID!", safe=False, status=status.HTTP_404_NOT_FOUND)

@@ -66,17 +66,16 @@ def download_article(url, section_name):
       if i in signs:                       
             modified_title = proper_title.replace(i, '')
                   
-    print(modified_title)
-    image_name = 'articles/' + modified_title + '.png'
+    #print(modified_title)
+    image_name = 'articles/' + proper_title + '.png'
     current_location = os.getcwd()
     os.chdir(BASE_DIR)
     os.chdir('media')
     im.save(image_name)
     os.chdir(current_location)
-    
+    print(len(proper_title))
     section = Section.objects.get(name=section_name)
-    new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj,
-               lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
+    new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj, lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
     
     if new_article != None:
         new_article.save()
@@ -150,14 +149,25 @@ def find_articles_by_keyword(request, keyword):
         return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
  
 @csrf_exempt
-def get_articles_for_section(request, section_name):
+def get_articles_for_section(request, section_name, art_number):
     if request.method == "GET":
         section = Section.objects.get(name=section_name)
         if section:
-            section_articles = Article.objects.filter(section_id = section)
+            if art_number == 0:
+                section_articles = Article.objects.filter(section_id = section)
+            else:
+                section_articles = Article.objects.filter(section_id = section)[:art_number]
             if section_articles:
-                section_articles_serial = ShortArticleSerializer(section_articles, many = True)
-                return JsonResponse(section_articles_serial.data, safe=False, status=status.HTTP_200_OK)
+                article_data = []
+                for article in section_articles:
+                    new_article = {
+                    'date_of_create' : str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + "." + str(article.date_of_create.minute),
+                    'title' : article.title,
+                    'lead_text' : article.lead_text,
+                    'big_title_photo' : str(article.big_title_photo)}
+                    article_data.append(new_article)
+                #section_articles_serial = ShortArticleSerializer(section_articles, many = True)
+                return JsonResponse(article_data, safe=False, status=status.HTTP_200_OK)
             return JsonResponse("Nie znaleziono artykułów dla działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
         return JsonResponse("Nie znaleziono działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
     

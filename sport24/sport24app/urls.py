@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.db.models.query import ValuesIterable
 from django.urls import path, include
 from rest_framework import routers
-from sport24app import views_article, views_comment, views_discipline, views_game, views_match, views_quote, views_season, views_section,views_profile, views_quote, views_season, views_section
+from sport24app import views_article, views_comment, views_discipline, views_game, views_match, views_quote, views_season, views_section, views_quote, views_season, views_section
 from sport24app.views_article import PostList, PostDetail
 from rest_framework.routers import DefaultRouter
 
@@ -12,22 +12,19 @@ from rest_framework.routers import DefaultRouter
 # router.register('', PostList, basename='post')
 # urlpatterns = router.urls
 
-
 urlpatterns = [
     path('section', views_section.sections_api),
     path('delete_section/<int:id>', views_section.delete_section),
     path('discipline', views_discipline.disciplines_api),
     path('games/<str:name>', views_game.discipline_games),
     path('game', views_game.add_game),
-    #path('profile/<int:id>', views_profile.user_api),
-    #path('short_profile/<int:id>', views_profile.get_short_user_data),
     path('comment/<int:id>', views_comment.comment_api),
     path('download_articles/<str:section_name>', views_article.download_articles),
     path('newest_article', views_article.get_newest_article),
     path('newest_articles', views_article.get_newest_articles),
     path('found_articles/<str:keyword>', views_article.find_articles_by_keyword),
     path('article/<str:title>', views_article.get_article),
-    path('articles/<str:section_name>', views_article.get_articles_for_section),
+    path('articles/<str:section_name>/<int:art_number>', views_article.get_articles_for_section),
     path('articles_home_page', views_article.get_articles_for_home_page),
     path('quote', views_quote.get_quote),
     #path('add_comment/<int:article_id>/<int:profile_id>', views_comment.add_comment_to_article),
