@@ -35,7 +35,19 @@ function App() {
 
 	return (
 		<div className="App">
+			<br/>
+			<br/>
+			<br/>
 			<NewestMatches/>
+			<Link
+                        color="textPrimary"
+                        className={classes.link}
+						to="/profile"
+                    >
+                        <Button variant="contained">
+                           TWÓJ PROFIL
+                        </Button>
+                    </Link>
 			<MainArticle />
 			<Posts posts={appState.posts} />
 			<Sections/>

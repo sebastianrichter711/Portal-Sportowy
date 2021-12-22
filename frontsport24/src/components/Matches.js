@@ -12,6 +12,9 @@ import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Select } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -65,83 +68,92 @@ function Matches() {
     const [appState, setAppState] = useState({
         games: [],
     });
-    const [season, setSeasonState] = useState("2021-2022"
-    );
-    const [phase, setPhaseState] = useState("grupowa");
-    const [round, setRoundState] = useState("17");
+    const [season, setSeasonState] = React.useState('');
+    const [phase, setPhaseState] = useState('');
+    const [round, setRoundState] = useState('');
 
-    var new_season, new_phase, new_round; 
-    const handleChangeSeason = (e) => {
-        const selectedSeason = e.target.value;
-        setSeasonState(selectedSeason);
-        new_season = e.target.value;
-    }
+    const handleSeasonChange = (event) => {
+        setSeasonState(event.target.value);
+    };
 
-    const handleChangePhase = (e) => {
-        const selectedPhase = e.target.value;
-        setPhaseState(selectedPhase);
-        new_phase = e.target.value;
-    }
+    const handlePhaseChange = (event) => {
+        setPhaseState(event.target.value);
+    };
 
-    const handleChangeRound = (e) => {
-        const selectedRound = e.target.value;
-        setRoundState(selectedRound);
-        new_round = e.target.value;
-    }
+    const handleRoundChange = (event) => {
+        setRoundState(event.target.value);
+    };
 
-    useEffect(() => {
-        setSeasonState("2021-2022");
-        setPhaseState("grupowa");
-        setRoundState("1");
-        var url = "http://localhost:8000/api/get_matches/" + new_season + "/" + new_phase + "/" + new_round + "/" + name
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        var url = "http://localhost:8000/api/get_matches/" + season + "/" + phase + "/" + round + "/" + name
+        console.log(url);
         axiosInstance.get(url).then((res) => {
             const gotGames = res.data;
             setAppState({ games: gotGames });
             console.log(res.data);
-        });
-    }, [setAppState, setSeasonState, setPhaseState, setRoundState]);
+        })
+        return <p>Can not find any posts, sorry</p>;
+        //if (!appState.games || appState.games.length === 0) return <p>Can not find any posts, sorry</p>
+    };
 
     const classes = useStyles();
     //console.log(appState.games)
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={1} xs={8} alignItems="center">
+                <br/>
+                <br/>
+                <br/>
+                <Grid container spacing={3} xs={8} alignItems="center">
+                    <br/>
+                    <br/>
+                    <br/>
                     <h1 className={classes.results}> WYNIKI - {name} </h1>
                     <br />
                     <div className="container 1">
-                        <select className="custom-select1"
+                        <Select className="custom-select1"
                             value={season}
-                            onChange={handleChangeSeason}
+                            onChange={handleSeasonChange}
+
                         >
-                            <option value="2021-2022">2021-2022</option>
-                            <option value="2020-2021">2020-2021</option>
-                            <option value="2019-2020">2019-2020</option>
-                        </select>
+                            <MenuItem value="2021-2022">2021-2022</MenuItem>
+                            <MenuItem value="2020-2021">2020-2021</MenuItem>
+                            <MenuItem value="2019-2020">2019-2020</MenuItem>
+                        </Select>
                     </div>
                     <div className="container 2">
-                        <select className="custom-select2"
+                        <Select className="custom-select2"
                             value={phase}
-                            onChange={handleChangePhase}
+                            onChange={handlePhaseChange}
                         >
-                            <option value="grupowa">grupowa</option>
-                            <option value="pucharowa">pucharowa</option>
-                        </select>
+                            <MenuItem value="grupowa">grupowa</MenuItem>
+                            <MenuItem value="pucharowa">pucharowa</MenuItem>
+                        </Select>
                     </div>
                     <div className="container 3">
-                        <select className="custom-select3"
+                        <Select className="custom-select3"
                             value={round}
-                            onChange={handleChangeRound}
+                            onChange={handleRoundChange}
                         >
-                            <option value="1">1</option>
-                            <option value="17">17</option>
-                            <option value="6">6</option>
-                        </select>
+                            <MenuItem value="1">1</MenuItem>
+                            <MenuItem value="17">17</MenuItem>
+                            <MenuItem value="6">6</MenuItem>
+                        </Select>
                     </div>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmit}
+                    >
+                        Pokaż wyniki
+                    </Button>
                     {appState.games.map((game) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <p>{game.match_date} {game.host} {game.score} {game.guest}</p>
+                            <p>{game?.match_date} {game?.host} {game?.score} {game?.guest}</p>
                         );
                     })}
                 </Grid>

@@ -120,8 +120,6 @@ export default function SignUp() {
 							<p> Twoje hasło musi zawierać: </p>
 							<p> * co najmniej 8 znaków </p>
 							<p> * 1 dużą i małą literę </p>
-							<p> * 1 cyfrę </p>
-							<p> * 1 znak specjalny </p>
 						</Grid>
 						<Button
 							type="submit"

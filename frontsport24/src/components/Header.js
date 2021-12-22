@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +17,7 @@ import insta from '../images/insta.png'
 import twit from '../images/twit.png'
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
+import { Slide } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -28,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
 	toolbarTitle: {
 		flexGrow: 1,
 	},
-    toolbar: {
-        backgroundColor: '#006600'
-    },
-    logo: {
-        width: '300px'
-    },
-    fbLogo:{
+	toolbar: {
+		backgroundColor: '#006600'
+	},
+	logo: {
+		width: '300px'
+	},
+	fbLogo: {
 		width: '45px',
 		height: '45px',
 		//position: absolute,
@@ -63,38 +64,63 @@ function ScrollTop(props) {
 	// will default to window.
 	// This is only being set here because the demo is in an iframe.
 	const trigger = useScrollTrigger({
-	  target: window ? window() : undefined,
+		target: window ? window() : undefined,
+		disableHysteresis: true,
+		threshold: 100,
+	});
+
+	const handleClick = (event) => {
+		const anchor = (event.target.ownerDocument || document).querySelector(
+			'#back-to-top-anchor',
+		);
+
+		if (anchor) {
+			anchor.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			});
+		}
+	};
+
+	return (
+		<Zoom in={trigger}>
+			<Box
+				onClick={handleClick}
+				role="presentation"
+				sx={{ position: 'fixed', bottom: 16, right: 16 }}
+			>
+				{children}
+			</Box>
+		</Zoom>
+	);
+}
+
+ScrollTop.propTypes = {
+	children: PropTypes.element.isRequired,
+	/**
+	 * Injected by the documentation to work in an iframe.
+	 * You won't need it on your project.
+	 */
+	window: PropTypes.func,
+};
+
+function ElevationScroll(props) {
+	const { children, window } = props;
+	// Note that you normally won't need to set the window ref as useScrollTrigger
+	// will default to window.
+	// This is only being set here because the demo is in an iframe.
+	const trigger = useScrollTrigger({
 	  disableHysteresis: true,
-	  threshold: 100,
+	  threshold: 0,
+	  target: window ? window() : undefined,
 	});
   
-	const handleClick = (event) => {
-	  const anchor = (event.target.ownerDocument || document).querySelector(
-		'#back-to-top-anchor',
-	  );
-  
-	  if (anchor) {
-		anchor.scrollIntoView({
-		  behavior: 'smooth',
-		  block: 'center',
-		});
-	  }
-	};
-  
-	return (
-	  <Zoom in={trigger}>
-		<Box
-		  onClick={handleClick}
-		  role="presentation"
-		  sx={{ position: 'fixed', bottom: 16, right: 16 }}
-		>
-		  {children}
-		</Box>
-	  </Zoom>
-	);
+	return React.cloneElement(children, {
+	  elevation: trigger ? 4 : 0,
+	});
   }
   
-  ScrollTop.propTypes = {
+  ElevationScroll.propTypes = {
 	children: PropTypes.element.isRequired,
 	/**
 	 * Injected by the documentation to work in an iframe.
@@ -103,11 +129,10 @@ function ScrollTop(props) {
 	window: PropTypes.func,
   };
 
-
-function Header() {
+export default function Header(props) {
 	const classes = useStyles();
-    let history = useHistory();
-    const [data, setData] = useState({ search: '' });
+	let history = useHistory();
+	const [data, setData] = useState({ search: '' });
 
 	const goSearch = (e) => {
 		history.push({
@@ -115,14 +140,15 @@ function Header() {
 			search: '?search=' + data.search,
 		});
 		window.location.reload();
-    };
+	};
 	return (
 		<React.Fragment>
 			<CssBaseline />
+			<ElevationScroll {...props}> 
 			<AppBar
-				position="static"
+			posiiton="static"
+			 	elevation={0}
 				color='#006600'
-				elevation={0}
 				className={classes.appBar}
 			>
 				<Toolbar className={classes.toolbar} id="back-to-top-anchor">
@@ -138,23 +164,23 @@ function Header() {
 							underline="none"
 							color="textPrimary"
 						>
-							<img src={logo} alt="logo" className={classes.logo}/>
+							<img src={logo} alt="logo" className={classes.logo} />
 						</Link>
 					</Typography>
-				    <a href="https://facebook.com">
-							<img src={fb} alt="fb" className={classes.fbLogo}/>
-						</a>
-						&nbsp;
-						<a href="https://twitter.com">
-							<img src={twit} alt="twit" className={classes.twLogo}/>
-						</a>
-						&nbsp;
-						<a href="https://instagram.com">
-							<img src={insta} alt="insta" className={classes.insLogo}/>
-						</a>
-						&ensp;
-                    <SearchBar
-					    placeholder="Szukaj..."
+					<a href="https://facebook.com">
+						<img src={fb} alt="fb" className={classes.fbLogo} />
+					</a>
+					&nbsp;
+					<a href="https://twitter.com">
+						<img src={twit} alt="twit" className={classes.twLogo} />
+					</a>
+					&nbsp;
+					<a href="https://instagram.com">
+						<img src={insta} alt="insta" className={classes.insLogo} />
+					</a>
+					&ensp;
+					<SearchBar
+						placeholder="Szukaj..."
 						value={data.search}
 						onChange={(newValue) => setData({ search: newValue })}
 						onRequestSearch={() => goSearch(data.search)}
@@ -192,8 +218,9 @@ function Header() {
 					</Button>
 				</Toolbar>
 			</AppBar>
+			</ElevationScroll>
 		</React.Fragment>
 	);
 }
 
-export default Header;
+//export default Header;

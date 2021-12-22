@@ -16,6 +16,7 @@ import ArticlesSections from './components/ArticlesSections';
 import Disciplines from './components/Disciplines';
 import Games from './components/Games';
 import Matches from './components/Matches';
+import UserData from './components/UserData';
 
 const routing = (
 	<Router>
@@ -32,6 +33,7 @@ const routing = (
 				<Route path="/disciplines" component={Disciplines} />
 				<Route path="/games/:name" component={Games} />
 				<Route path="/matches/:name" component={Matches} />
+				<Route path="/profile" component={UserData} />
 			</Switch>
 			<Footer />
 		</React.StrictMode>
