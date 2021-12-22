@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     mainPhoto: {
-        width: "1100px",
-        height: "770px",
+        width: "110px",
+        height: "110px",
         top: "40px",
         alignContent: "left"
     }
@@ -33,14 +33,14 @@ export default function UserData() {
     const [data, setData] = useState({ userData: [] });
 
     useEffect(() => {
-        var url = "http://localhost:8000/api/user/profile/Seba"
+        var url = "http://localhost:8000/api/user/profile/dfsdf"
         axiosInstance.get(url).then((res) => {
             setData({ userData: res.data });
             console.log(res.data);
         });
     }, [setData]);
 
-    var userAvatar = 'http://localhost:8000/media/' + data.userData.avatar
+    var userAvatar = 'http://localhost:8000/' + data.userData.avatar
     console.log(userAvatar)
     return (
         <Container component="main" xs={3} md={3}>
