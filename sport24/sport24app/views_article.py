@@ -61,19 +61,20 @@ def download_article(url, section_name):
 
     im = Image.open(requests.get(full_image_link, stream=True).raw)
 
-    signs = [',','.',':',';','!','?','"'] 
+    #signs = [',','.',':',';','!','?','"','*'] 
+    signs = '",.:;!?'
     for i in proper_title:                               
       if i in signs:                       
-            modified_title = proper_title.replace(i, '')
+        modified_title = proper_title.replace(i, '')
                   
-    #print(modified_title)
-    image_name = 'articles/' + proper_title + '.png'
+    print(modified_title)
+    image_name = 'articles/' + modified_title + '.png'
     current_location = os.getcwd()
     os.chdir(BASE_DIR)
     os.chdir('media')
     im.save(image_name)
     os.chdir(current_location)
-    print(len(proper_title))
+    #print(len(proper_title))
     section = Section.objects.get(name=section_name)
     new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj, lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
     

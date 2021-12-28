@@ -34,6 +34,7 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = (
+            'game_id',
             'name',
             'logo'
         )
@@ -122,4 +123,28 @@ class SeasonSerializer(serializers.ModelSerializer):
             'phase',
             'round',
             'game_id'
+        )
+        
+class ShortSeasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = (
+            'season_id',
+            'season'
+        )
+        
+class ShortPhaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = (
+            'season_id',
+            'phase'
+        )
+
+class ShortRoundSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Season
+        fields = (
+            'season_id',
+            'round'
         )

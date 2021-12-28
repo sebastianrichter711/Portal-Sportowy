@@ -75,12 +75,12 @@ def edit_match(request, match_id):
         return JsonResponse("Nie zaktualizowano meczu!", safe=False, status=status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
-def get_matches_for_season(request, season, phase, round, name):
+def get_matches_for_season(request, season, round, name):
     if request.method == "GET":
         #season_data = JSONParser().parse(request)
         game = Game.objects.get(name=name)
         if game:
-            season = Season.objects.get(season=season, phase=phase, round=round, game_id=game)
+            season = Season.objects.get(season=season, round=round, game_id=game)
             if season:
                 matches = Match.objects.filter(season_id=season).order_by('match_date')
                 if matches:
