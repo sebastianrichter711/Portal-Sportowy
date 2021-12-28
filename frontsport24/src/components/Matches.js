@@ -15,6 +15,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { InputLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -50,17 +51,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const seasons = [
-    { label: '2021-2022' },
-    { label: '2020-2021' },
-    { label: '2019-2020' }
-]
-
-const phases = [
-    { label: 'grupowa' },
-    { label: 'pucharowa' }
-]
-
 
 function Matches() {
 
@@ -72,75 +62,116 @@ function Matches() {
     const [phase, setPhaseState] = useState('');
     const [round, setRoundState] = useState('');
 
+    const [seasons, setSeasonsState] = useState({
+        seasons: []
+    })
+    const [rounds, setRoundsState] = useState({
+        rounds: []
+    })
+
     const handleSeasonChange = (event) => {
         setSeasonState(event.target.value);
+        var url = "http://localhost:8000/api/get_rounds/" + event.target.value + "/" +  name
+        axiosInstance.get(url).then((res) => {
+            const gotRounds = res.data;
+            setRoundsState({ rounds: gotRounds });
+            console.log(res.data);
+        });
     };
 
     const handlePhaseChange = (event) => {
         setPhaseState(event.target.value);
+        // var url = "http://localhost:8000/api/get_rounds/" + season + "/" + event.target.value + "/" +  name
+        // axiosInstance.get(url).then((res) => {
+        //     const gotRounds = res.data;
+        //     setRoundsState({ rounds: gotRounds });
+        //     console.log(res.data);
+        // });
     };
 
     const handleRoundChange = (event) => {
         setRoundState(event.target.value);
     };
 
+    useEffect(() => {
+        var url = "http://localhost:8000/api/get_seasons/" + name
+        axiosInstance.get(url).then((res) => {
+            const gotSeasons = res.data;
+            setSeasonsState({ seasons: gotSeasons });
+            console.log(res.data);
+        });
+    }, [setSeasonsState]);
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        var url = "http://localhost:8000/api/get_matches/" + season + "/" + phase + "/" + round + "/" + name
+        var url = "http://localhost:8000/api/get_matches/" + season + "/" + round + "/" + name
         console.log(url);
         axiosInstance.get(url).then((res) => {
             const gotGames = res.data;
             setAppState({ games: gotGames });
             console.log(res.data);
-        })
-        return <p>Can not find any posts, sorry</p>;
+        });
         //if (!appState.games || appState.games.length === 0) return <p>Can not find any posts, sorry</p>
     };
 
     const classes = useStyles();
     //console.log(appState.games)
+    //if (!appState.games || appState.games.length === 0) return <p>Can not find any posts, sorry</p>
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <br/>
-                <br/>
-                <br/>
+                <br />
+                <br />
+                <br />
                 <Grid container spacing={3} xs={8} alignItems="center">
-                    <br/>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
+                    <br />
                     <h1 className={classes.results}> WYNIKI - {name} </h1>
                     <br />
-                    <div className="container 1">
+                </Grid>
+                <Grid container spacing={5} xs={8} alignItems="center">
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-standard-label">Sezon</InputLabel>
                         <Select className="custom-select1"
                             value={season}
                             onChange={handleSeasonChange}
 
                         >
-                            <MenuItem value="2021-2022">2021-2022</MenuItem>
-                            <MenuItem value="2020-2021">2020-2021</MenuItem>
-                            <MenuItem value="2019-2020">2019-2020</MenuItem>
+                            {seasons.seasons.map((s) => (
+                                <MenuItem value={s.season}>
+                                    {s.season}
+                                </MenuItem>
+                            ))}
                         </Select>
-                    </div>
-                    <div className="container 2">
+                    </FormControl>
+                    {/* <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-standard-label">Faza</InputLabel>
                         <Select className="custom-select2"
                             value={phase}
                             onChange={handlePhaseChange}
                         >
-                            <MenuItem value="grupowa">grupowa</MenuItem>
-                            <MenuItem value="pucharowa">pucharowa</MenuItem>
+                           {phases.phases.map((p) => (
+                                <MenuItem value={p.phase}>
+                                    {p.phase}
+                                </MenuItem>
+                            ))}
                         </Select>
-                    </div>
-                    <div className="container 3">
+                    </FormControl> */}
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                        <InputLabel id="demo-simple-select-standard-label">Runda</InputLabel>
                         <Select className="custom-select3"
                             value={round}
                             onChange={handleRoundChange}
                         >
-                            <MenuItem value="1">1</MenuItem>
-                            <MenuItem value="17">17</MenuItem>
-                            <MenuItem value="6">6</MenuItem>
+                            {rounds.rounds.map((r) => (
+                                <MenuItem value={r.round}>
+                                    {r.round}
+                                </MenuItem>
+                            ))}
                         </Select>
-                    </div>
+                    </FormControl>
                     <Button
                         type="submit"
                         fullWidth

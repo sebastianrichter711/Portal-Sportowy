@@ -11,12 +11,13 @@ import Login from './components/login';
 import Logout from './components/logout';
 import reportWebVitals from './reportWebVitals';
 import Search from './components/SearchArticles';
-import Single from './components/single';
+import Post from './components/Post';
 import ArticlesSections from './components/ArticlesSections';
 import Disciplines from './components/Disciplines';
 import Games from './components/Games';
 import Matches from './components/Matches';
 import UserData from './components/UserData';
+import ArticleComments from './components/ArticleComments';
 
 const routing = (
 	<Router>
@@ -28,7 +29,7 @@ const routing = (
 				<Route path="/login" component={Login} />
 				<Route path="/logout" component={Logout} />
 				<Route path="/search" component={Search} />
-				<Route path="/posts/:title" component={Single} />
+				<Route path="/posts/:title" component={Post} />
 				<Route path="/sections/:name" component={ArticlesSections} />
 				<Route path="/disciplines" component={Disciplines} />
 				<Route path="/games/:name" component={Games} />

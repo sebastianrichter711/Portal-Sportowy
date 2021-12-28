@@ -44,23 +44,28 @@ const Posts = (props) => {
 			<Container maxWidth="md" component="main">
 				<Grid container spacing={5} alignItems="flex-end">
 					{posts.map((post) => {
-                        var url = 'http://localhost:8000' + post.big_title_photo
+                        //var url = 'http://localhost:8000' + post.big_title_photo
 						return (
 							// Enterprise card is full width at sm breakpoint
 							<Grid item key={post.id} xs={4} md={4}>
 								<Card className={classes.card}>
 									<Link
 										color="textPrimary"
-										href={'posts/' + post.title}
+										href={'http://localhost:3000/posts/' + post.title}
 										className={classes.link}
 									>
-										<CardMedia
+										{/* <CardMedia
 											className={classes.cardMedia}
 											image={url}
 											title="Image title"
-										/>
+										/> */}
 									</Link>
 									<CardContent className={classes.cardContent}>
+									<Link
+										color="textPrimary"
+										href={'http://localhost:3000/posts/' + post.title}
+										className={classes.link}
+									>
 										<Typography
 											gutterBottom
 											variant="h6"
@@ -69,6 +74,7 @@ const Posts = (props) => {
 										>
 											{post.title}
 										</Typography>
+										</Link>
 									</CardContent>
 								</Card>
 							</Grid>

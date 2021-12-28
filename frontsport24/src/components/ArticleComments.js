@@ -11,7 +11,7 @@ import axiosInstance from '../axios';
 import { List, ListItem, ListItemButton } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Button } from '@material-ui/core';
-import Post from './single';
+import Post from './Post';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -47,14 +47,14 @@ const useStyles = makeStyles((theme) => ({
 
 const ArticleComments = (props) => {
 
-    const {art_id} = props
-    var xxx = {art_id}
+    const {id} = props
+    var xxx = {id}
     console.log(xxx)
     const [appState, setAppState] = useState({
         articleComments: [],
     });
 
-    var url = 'http://localhost:8000/api/article/'+ props.art_id +'/comments';
+    var url = 'http://localhost:8000/api/article/'+ props.id +'/comments';
     // var s1 = 'http://localhost:8000/api/article/';
     // var s2 = {art_id}.toString();
     // var s3 = "/comments";
