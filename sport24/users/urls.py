@@ -8,4 +8,5 @@ urlpatterns = [
     path('logout/blacklist/', BlacklistTokenUpdateView.as_view(),
          name='blacklist'),
     path('profile/<str:username>', user_api),
+    path('get_user_data', GetUserData.as_view(), name='as_view')
 ]

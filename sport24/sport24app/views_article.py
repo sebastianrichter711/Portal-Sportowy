@@ -98,14 +98,18 @@ def download_articles(request, section_name):
         return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)
 
 @csrf_exempt
-def get_article(request, title):
+def get_article(request, article_id):
      if request.method == "GET":
-        article = Article.objects.get(title=title)
+        article = Article.objects.get(article_id=article_id)
         if article:
+            if 0 <= article.date_of_create.minute <= 9:
+                minute = "0" + str(article.date_of_create.minute)
+            else:
+                minute = str(article.date_of_create.minute)
             article_data = {}
             article_data['id'] = article.article_id
             article_data['title'] = article.title
-            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + str(article.date_of_create.minute)
+            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute
             if article.date_of_last_change != None:
                 article_data['date_of_last_change'] = str(article.date_of_last_change)
             article_data['lead_text'] = article.lead_text
@@ -131,7 +135,8 @@ def get_newest_articles(request, id=0):
                     minute = '0' + str(article.date_of_create.minute)
                 else:
                     minute = str(article.date_of_create.minute)
-                short_article = {'date_of_create': str(article.date_of_create.hour) + ":" + minute,
+                short_article = {'article_id': article.article_id, 
+                                 'date_of_create': str(article.date_of_create.hour) + ":" + minute,
                                  'title': article.title}
                 short_newest_articles.append(short_article)
             return JsonResponse(short_newest_articles, safe=False, status=status.HTTP_200_OK)
@@ -150,19 +155,24 @@ def find_articles_by_keyword(request, keyword):
         return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
  
 @csrf_exempt
-def get_articles_for_section(request, section_name, art_number):
+def get_articles_for_section(request, section_name):
     if request.method == "GET":
         section = Section.objects.get(name=section_name)
         if section:
-            if art_number == 0:
-                section_articles = Article.objects.filter(section_id = section)
-            else:
-                section_articles = Article.objects.filter(section_id = section)[:art_number]
+            #if art_number == 0:
+            #    section_articles = Article.objects.filter(section_id = section)
+            #else:
+            section_articles = Article.objects.filter(section_id = section).order_by('-date_of_create')
             if section_articles:
                 article_data = []
                 for article in section_articles:
+                    if 0 <= article.date_of_create.minute <= 9:
+                        minute = '0' + str(article.date_of_create.minute)
+                    else:
+                        minute = str(article.date_of_create.minute)
                     new_article = {
-                    'date_of_create' : str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + "." + str(article.date_of_create.minute),
+                    'article_id': article.article_id,
+                    'date_of_create' : str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute,
                     'title' : article.title,
                     'lead_text' : article.lead_text,
                     'big_title_photo' : str(article.big_title_photo)}
@@ -224,7 +234,7 @@ class SearchedArticles(generics.ListAPIView):
     queryset = Article.objects.all()
     serializer_class = ShortArticleSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['^title', '^lead_text', '^text']
+    search_fields = ['title', 'lead_text', 'text']
     
 class PostList(generics.ListAPIView):
     serializer_class = HomePageArticlesSerializer

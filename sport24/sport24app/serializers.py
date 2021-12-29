@@ -65,6 +65,7 @@ class NewestArticleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Article
         fields = (
+            'article_id',
             'big_title_photo',
             'title'
         )
@@ -73,6 +74,7 @@ class ShortArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = (
+            'article_id',
             'date_of_create',
             'title',
             'lead_text',
@@ -91,6 +93,7 @@ class HomePageArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = (
+            'article_id',
             'big_title_photo',
             'title'
         )

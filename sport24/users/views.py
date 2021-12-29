@@ -3,8 +3,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import CustomUserSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from .models import *
+from .serializers import *
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser
 
 class CustomUserCreate(APIView):
     permission_classes = [AllowAny]
@@ -31,11 +36,35 @@ class BlacklistTokenUpdateView(APIView):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
-from .models import *
-from .serializers import *
-from django.views.decorators.csrf import csrf_exempt
-from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+
+        # Add extra responses here
+        data['username'] = self.user.user_name
+        return data
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+    
+class GetUserData(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = ()
+
+    def get(self, request):
+        try:
+            refresh_token = request.data['username']
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @csrf_exempt
 def user_api(request, username):
