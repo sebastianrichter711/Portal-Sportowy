@@ -71,7 +71,7 @@ function NewestArticles() {
                             <Grid container columnSpacing={{ xs: 1, sm: 4, md: 4 }} xs={12}>
                                 <Link
 										color="textPrimary"
-										href={'http://localhost:3000/posts/' + article.title}
+										href={'http://localhost:3000/posts/' + article.article_id}
 										className={classes.link}
 								>
                                 {/* //<ListItem disablePadding> */}

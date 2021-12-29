@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import axiosInstance from '../axios';
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -35,35 +36,48 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Posts = (props) => {
-	const { posts } = props;
+export default function Posts () {
+
+	const [appState, setAppState] = useState({
+		posts: []
+	});
+
+	useEffect(() => {
+		axiosInstance.get("http://localhost:8000/api/articles_home_page").then((res) => {
+			const allPosts = res.data;
+			setAppState({ posts: allPosts });
+			console.log(res.data);
+		});
+	}, [setAppState]);
+
+	
 	const classes = useStyles();
-	if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
+	if (!appState.posts || appState.posts.length === 0) return <p>Can not find any posts, sorry</p>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
 				<Grid container spacing={5} alignItems="flex-end">
-					{posts.map((post) => {
-                        //var url = 'http://localhost:8000' + post.big_title_photo
+					{appState.posts.map((post) => {
+                        var url = 'http://localhost:8000' + post.big_title_photo
 						return (
 							// Enterprise card is full width at sm breakpoint
 							<Grid item key={post.id} xs={4} md={4}>
 								<Card className={classes.card}>
 									<Link
 										color="textPrimary"
-										href={'http://localhost:3000/posts/' + post.title}
+										href={'http://localhost:3000/posts/' + post.article_id}
 										className={classes.link}
 									>
-										{/* <CardMedia
+										<CardMedia
 											className={classes.cardMedia}
 											image={url}
 											title="Image title"
-										/> */}
+										/>
 									</Link>
 									<CardContent className={classes.cardContent}>
 									<Link
 										color="textPrimary"
-										href={'http://localhost:3000/posts/' + post.title}
+										href={'posts/' + post.article_id}
 										className={classes.link}
 									>
 										<Typography
@@ -85,4 +99,3 @@ const Posts = (props) => {
 		</React.Fragment>
 	);
 };
-export default Posts;

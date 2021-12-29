@@ -65,7 +65,7 @@ export default function MainArticle() {
             <CardContent>
                 <Link
                     color="textPrimary"
-                    href={'posts/' + data.posts.title}
+                    href={'posts/' + data.posts.article_id}
                     className={classes.link}
                 >
                     <CardMedia
@@ -74,9 +74,15 @@ export default function MainArticle() {
                         title="Image title"
                     />
                 </Link>
+                <Link
+                    color="textPrimary"
+                    href={'posts/' + data.posts.article_id}
+                    className={classes.link}
+                >
                 <Typography variant="h5" component="div">
                     {data.posts.title}
                 </Typography>
+                </Link>
             </CardContent>
         </Card>
     );

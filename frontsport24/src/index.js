@@ -29,7 +29,7 @@ const routing = (
 				<Route path="/login" component={Login} />
 				<Route path="/logout" component={Logout} />
 				<Route path="/search" component={Search} />
-				<Route path="/posts/:title" component={Post} />
+				<Route path="/posts/:id" component={Post} />
 				<Route path="/sections/:name" component={ArticlesSections} />
 				<Route path="/disciplines" component={Disciplines} />
 				<Route path="/games/:name" component={Games} />

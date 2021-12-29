@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import Posts from './components/posts';
+import Posts from './components/Posts';
 import axiosInstance from './axios';
 import MainArticle from './components/MainArticle';
 import Sections from './components/Sections';
@@ -18,18 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-
-	const [appState, setAppState] = useState({
-		posts: null,
-	});
-
-	useEffect(() => {
-		axiosInstance.get("http://localhost:8000/api/articles_home_page").then((res) => {
-			const allPosts = res.data;
-			setAppState({ posts: allPosts });
-			console.log(res.data);
-		});
-	}, [setAppState]);
 
 	const classes = useStyles();
 
@@ -49,7 +37,7 @@ function App() {
                         </Button>
                     </Link>
 			<MainArticle />
-			<Posts posts={appState.posts} />
+			<Posts/>
 			<Sections/>
 			<NewestArticles/>
 			<Quote/>

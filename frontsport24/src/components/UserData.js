@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../axios';
+//import axiosInstance from '../axios';
 import { useParams } from 'react-router-dom';
 //MaterialUI
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +10,7 @@ import ArticleComments from './ArticleComments';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,9 +33,14 @@ export default function UserData() {
 
     const [data, setData] = useState({ userData: [] });
 
+    const config = {
+        headers: {
+            Authorization: 'JWT' + localStorage.getItem('access_token')
+        }
+    }
     useEffect(() => {
-        var url = "http://localhost:8000/api/user/profile/dfsdf"
-        axiosInstance.get(url).then((res) => {
+        var url = "http://localhost:8000/api/user/profile"
+        axios.get(url,config).then((res) => {
             setData({ userData: res.data });
             console.log(res.data);
         });
@@ -66,7 +72,7 @@ export default function UserData() {
                         color="textPrimary"
                         gutterBottom
                     >
-                        <p>Login: {data.userData.login}</p>
+                        <p>{data.userData.login}</p>
                     </Typography>
                     <Typography
                         variant="h5"

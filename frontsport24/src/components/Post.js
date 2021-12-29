@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import ArticleComments from './ArticleComments';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -26,10 +27,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Post () {
-	const { title } = useParams();
+
+	const { id } = useParams();
 	const [data, setAppState] = useState({ posts: [] });
 
-    var url = "http://localhost:8000/api/article/" + title
+    var url = "http://localhost:8000/api/article/" + id
+    console.log(url)
 	useEffect(() => {
         axiosInstance.get(url).then((res) => {
             const gotPost = res.data;
@@ -38,10 +41,9 @@ export default function Post () {
         });
     }, [setAppState]);
 
-    console.log(url)
     console.log(data.posts.title)
     var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
-	var id = data.posts.id
+	//var id = data.posts.id
 	console.log(article_url)
     const classes = useStyles();
 	return (
@@ -100,7 +102,15 @@ export default function Post () {
 						Komentarze ({data.posts.comments_number})
 					</Typography>
 					<TextField id="outlined-basic" label="Napisz komentarz..." variant="outlined" />
-					<ArticleComments id={data.posts.id}/>
+                    <Button
+						type="submit"
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+						//onClick={handleSubmit}
+					>Dodaj</Button>
+					<ArticleComments id={id}/>
+
 				</Container>
 			</div>
 		</Container>

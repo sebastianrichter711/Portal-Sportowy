@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import { Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { Button } from '@material-ui/core';
+import ReactPaginate from 'react-paginate';
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -48,27 +49,13 @@ const ArticlesSections = () => {
 		search: '',
 		articles: [],
 	});
+	const [pageNumber, setPageNumber] = useState(0);
 
-	const [artNumber, setArtNumber] = useState(10);
-
-    const handleArtNoChange = (event) => {
-        setArtNumber(event.target.value);
-    };
-
-	const handleSubmit = (e) => {
-        e.preventDefault();
-        var url = "http://localhost:8000/api/articles/" + name + '/' + artNumber
-		axiosInstance.get(url).then((res) => {
-			const allPosts = res.data;
-			setAppState({ articles: allPosts });
-			console.log(res.data);
-		});
-        return <p>Can not find any posts, sorry</p>;
-        //if (!appState.games || appState.games.length === 0) return <p>Can not find any posts, sorry</p>
-    };
+	const usersPerPage = 5;
+	const pagesVisited = pageNumber * usersPerPage;
 
 	useEffect(() => {
-		var url = "http://localhost:8000/api/articles/" + name + '/' + artNumber
+		var url = "http://localhost:8000/api/articles/" + name
 		axiosInstance.get(url).then((res) => {
 			const allPosts = res.data;
 			setAppState({ articles: allPosts });
@@ -76,99 +63,83 @@ const ArticlesSections = () => {
 		});
 	}, [setAppState]);
 
+	var currUrl = window.location.href;
+
+	const displayUsers = appState.articles
+		.slice(pagesVisited, pagesVisited + usersPerPage)
+		.map((article) => {
+			var url = 'http://localhost:8000/media/' + article.big_title_photo
+			console.log(url)
+			return (
+				// Enterprise card is full width at sm breakpoint
+				<Grid item key={article.id} xs={12} md={4}>
+					<Card className={classes.card}>
+						<Link
+							color="textPrimary"
+							href={'http://localhost:3000/posts/' + article.article_id}
+							className={classes.link}
+						>
+							<CardMedia
+								className={classes.cardMedia}
+								image={url}
+								title="Image title"
+							/>
+						</Link>
+						<CardContent className={classes.cardContent}>
+							<Typography
+								gutterBottom
+								variant="h6"
+								component="h2"
+								className={classes.postTitle}
+							>
+								{article.date_of_create}
+								<br />
+								{article.title}
+							</Typography>
+						</CardContent>
+					</Card>
+				</Grid>
+			);
+		});
+
+	const pageCount = Math.ceil(appState.articles.length / usersPerPage);
+
+	const changePage = ({ selected }) => {
+		setPageNumber(selected);
+	};
+
+
 	//if (!appState.articles || appState.articles.length === 0) return <h1>Nie znaleziono artykułów dla działu {name}!</h1>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
-				<Grid container spacing={4} alignItems="flex-end">
-					<br />
-					<h1> {name} </h1>
-					<br />
-					<p> Liczba artykułów: </p>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={artNumber}
-						label="Liczba artykułów"
-						onChange={handleArtNoChange}
-						defaultValue={1}
-					>
-						<MenuItem value={1}>1</MenuItem>
-						<MenuItem value={2}>2</MenuItem>
-						<MenuItem value={5}>5</MenuItem>
-						<MenuItem value={10}>10</MenuItem>
-						<MenuItem value={20}>20</MenuItem>
-					</Select>
-					<Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSubmit}
-                    >
-                        Wykonaj
-                    </Button>
-				</Grid>
+				<br />
+				<br />
+				<br/>
+				<h1>{name}</h1>
 				<Grid container spacing={5} alignItems="flex-end">
-					{appState.articles.map((article) => {
-						var url = 'http://localhost:8000/media/' + article.big_title_photo
-						console.log(url)
-						return (
-							// Enterprise card is full width at sm breakpoint
-							<Grid item key={article.id} xs={12} md={4}>
-								<Card className={classes.card}>
-									<Link
-										color="textPrimary"
-										href={'http://localhost:3000/posts/' + article.title}
-										className={classes.link}
-									>
-										<CardMedia
-											className={classes.cardMedia}
-											image={url}
-											title="Image title"
-										/>
-									</Link>
-									<CardContent className={classes.cardContent}>
-										<Typography
-											gutterBottom
-											variant="h6"
-											component="h2"
-											className={classes.postTitle}
-										>
-											{article.date_of_create}
-											<br/>
-											{article.title}
-										</Typography>
-									</CardContent>
-								</Card>
-							</Grid>
-						);
-					})}
+					{displayUsers}
 				</Grid>
-				<Grid container spacing={4} alignItems="flex-end">
-					<br />
-					<p> Liczba artykułów: </p>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={artNumber}
-						label="Liczba artykułów"
-						onChange={handleArtNoChange}
-						defaultValue={1}
-					>
-						<MenuItem value={1}>1</MenuItem>
-						<MenuItem value={2}>2</MenuItem>
-						<MenuItem value={5}>5</MenuItem>
-						<MenuItem value={10}>10</MenuItem>
-						<MenuItem value={20}>20</MenuItem>
-					</Select>
-					<Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleSubmit}
-                    >
-                        Wykonaj
-                    </Button>
+				<Grid container spacing={1} alignItems="flex-end">
+					<ReactPaginate
+						previousLabel={"previous"}
+						nextLabel={"next"}
+						breakLabel={"..."}
+						pageCount={pageCount}
+						marginPagesDisplayed={2}
+						pageRangeDisplayed={3}
+						onPageChange={changePage}
+						containerClassName={"pagination justify-content-center"}
+						pageClassName={"page-item"}
+						pageLinkClassName={"page-link"}
+						previousClassName={"page-item"}
+						previousLinkClassName={"page-link"}
+						nextClassName={"page-item"}
+						nextLinkClassName={"page-link"}
+						breakClassName={"page-item"}
+						breakLinkClassName={"page-link"}
+						activeClassName={"active"}
+					/>
 				</Grid>
 			</Container>
 		</React.Fragment>

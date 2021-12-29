@@ -31,11 +31,14 @@ function Copyright() {
 	);
 }
 
-const footers = [
+const sections = [
 	{
 		title: 'Działy',
 		description: ['Piłka nożna', 'Siatkówka', 'Koszykówka', 'Lekkoatletyka'],
-	},
+	}
+];
+
+const results = [
 	{
 		title: 'Wyniki',
 		description: [
@@ -46,28 +49,23 @@ const footers = [
 			'Turkish Airlines Euroleague',
 		],
 	},
+]
+
+const deliver = [
 	{
-		title: 'Resources',
+		title: 'Źródła',
 		description: [
-			'Resource',
-			'Resource name',
-			'Another resource',
-			'Final resource',
+			'Sport.pl',
 		],
 	},
-	{
-		title: 'Legal',
-		description: ['Privacy policy', 'Terms of use'],
-	},
-];
-
+]
 function Footer() {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="footer" className={classes.footer}>
 				<Grid container spacing={4} justify="space-evenly">
-					{footers.map((footer) => (
+					{sections.map((footer) => (
 						<Grid item xs={6} sm={3} key={footer.title}>
 							<Typography variant="h6" color="textPrimary" gutterBottom>
 								{footer.title}
@@ -75,7 +73,39 @@ function Footer() {
 							<ul>
 								{footer.description.map((item) => (
 									<li key={item}>
-										<Link href="#" variant="subtitle1" color="textSecondary">
+										<Link href= {"/sections/" + item} variant="subtitle1" color="textSecondary">
+											{item}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</Grid>
+					))}
+					{results.map((footer) => (
+						<Grid item xs={6} sm={3} key={footer.title}>
+							<Typography variant="h6" color="textPrimary" gutterBottom>
+								{footer.title}
+							</Typography>
+							<ul>
+								{footer.description.map((item) => (
+									<li key={item}>
+										<Link href= {"/matches/" + item} variant="subtitle1" color="textSecondary">
+											{item}
+										</Link>
+									</li>
+								))}
+							</ul>
+						</Grid>
+					))}
+					{deliver.map((footer) => (
+						<Grid item xs={6} sm={3} key={footer.title}>
+							<Typography variant="h6" color="textPrimary" gutterBottom>
+								{footer.title}
+							</Typography>
+							<ul>
+								{footer.description.map((item) => (
+									<li key={item}>
+										<Link href="https://www.sport.pl/sport-hp/0,0.html" variant="subtitle1" color="textSecondary">
 											{item}
 										</Link>
 									</li>

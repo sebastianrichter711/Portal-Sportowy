@@ -74,7 +74,7 @@ const Search = () => {
 								<Card className={classes.card}>
 									<Link
 										color="textPrimary"
-										href={'http://localhost:3000/posts/' + article.title}
+										href={'http://localhost:3000/posts/' + article.article_id}
 										className={classes.link}
 									>
 										<CardMedia
