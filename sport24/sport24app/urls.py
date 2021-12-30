@@ -27,7 +27,7 @@ urlpatterns = [
     path('articles/<str:section_name>', views_article.get_articles_for_section),
     path('articles_home_page', views_article.get_articles_for_home_page),
     path('quote', views_quote.get_quote),
-    #path('add_comment/<int:article_id>/<int:profile_id>', views_comment.add_comment_to_article),
+    #path('add_comment/<int:article_id>/<str:username>', views_comment.add_comment_to_article),
     path('article/<int:article_id>/comments', views_comment.get_comments_for_article),
     path('section/<int:section_id>', views_section.edit_section),
     path('discipline/<int:discipline_id>', views_discipline.edit_discipline),
@@ -46,6 +46,7 @@ urlpatterns = [
     path('posts/', PostDetail.as_view(), name='detailcreate'),
     path('', PostList.as_view(), name='listcreate'),
     path('search/', views_article.SearchedArticles.as_view(), name='postsearch'),
+    path('add_comment/<int:article_id>/<str:username>', views_comment.CreateCom.as_view()),
 
 ]
 

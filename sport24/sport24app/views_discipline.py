@@ -42,7 +42,7 @@ class CreateDiscipline(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
     def post(self,request,format=None):
-        print(request.data)
+        print(request.data['name'])
         serializer = DisciplineSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

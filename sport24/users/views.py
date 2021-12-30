@@ -10,6 +10,7 @@ from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
+from rest_framework.generics import GenericAPIView
 
 class CustomUserCreate(APIView):
     permission_classes = [AllowAny]
@@ -40,16 +41,16 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
-        data['refresh'] = str(refresh)
-        data['access'] = str(refresh.access_token)
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
-        # Add extra responses here
-        data['username'] = self.user.user_name
-        return data
+        # Add custom claims
+        token['username'] = user.user_name
+        token['role'] = user.role
+        # ...
 
+        return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -104,9 +105,8 @@ def user_api(request, username):
         if user:
             user.delete()
             return JsonResponse("Użytkownik usunięty.", safe=False, status = status.HTTP_200_OK)
-        return JsonResponse("Nie usunięto użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)   
-
-
+        return JsonResponse("Nie usunięto użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)  
+    
 # @csrf_exempt
 # def get_short_user_data(request, id):
 #     if request.method == "GET":
