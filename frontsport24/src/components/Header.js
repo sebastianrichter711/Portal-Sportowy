@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +18,7 @@ import twit from '../images/twit.png'
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import { Slide } from '@material-ui/core';
+import AuthContext from './AuthContext';
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -59,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ScrollTop(props) {
+
 	const { children, window } = props;
 	// Note that you normally won't need to set the window ref as useScrollTrigger
 	// will default to window.
@@ -130,6 +132,7 @@ function ElevationScroll(props) {
   };
 
 export default function Header(props) {
+	let {logoutUser} = useContext(AuthContext)
 	const classes = useStyles();
 	let history = useHistory();
 	const [data, setData] = useState({ search: '' });
@@ -206,16 +209,16 @@ export default function Header(props) {
 					>
 						ZALOGUJ SIĘ
 					</Button>
-					<Button
-						href="#"
+					<p
+						href="/login"
 						color="white"
 						variant="outlined"
 						className={classes.link}
 						component={NavLink}
-						to="/logout"
+						onClick={logoutUser}
 					>
 						WYLOGUJ SIĘ
-					</Button>
+					</p>
 				</Toolbar>
 			</AppBar>
 			</ElevationScroll>

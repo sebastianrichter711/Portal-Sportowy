@@ -10,6 +10,7 @@ import ArticleComments from './ArticleComments';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
+import AddComment from './AddComment';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -101,14 +102,7 @@ export default function Post () {
 					>
 						Komentarze ({data.posts.comments_number})
 					</Typography>
-					<TextField id="outlined-basic" label="Napisz komentarz..." variant="outlined" />
-                    <Button
-						type="submit"
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						//onClick={handleSubmit}
-					>Dodaj</Button>
+					<AddComment art_id={id}/>
 					<ArticleComments id={id}/>
 
 				</Container>

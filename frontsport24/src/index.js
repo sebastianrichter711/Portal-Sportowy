@@ -18,25 +18,31 @@ import Games from './components/Games';
 import Matches from './components/Matches';
 import UserData from './components/UserData';
 import ArticleComments from './components/ArticleComments';
+import { AuthProvider } from './components/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import AddDiscipline from './components/AddDiscipline';
 
 const routing = (
 	<Router>
 		<React.StrictMode>
-			<Header />
-			<Switch>
-				<Route exact path="/" component={App} />
-				<Route path="/register" component={Register} />
-				<Route path="/login" component={Login} />
-				<Route path="/logout" component={Logout} />
-				<Route path="/search" component={Search} />
-				<Route path="/posts/:id" component={Post} />
-				<Route path="/sections/:name" component={ArticlesSections} />
-				<Route path="/disciplines" component={Disciplines} />
-				<Route path="/games/:name" component={Games} />
-				<Route path="/matches/:name" component={Matches} />
-				<Route path="/profile" component={UserData} />
-			</Switch>
-			<Footer />
+			<AuthProvider>
+				<Header />
+				<Switch>
+					<Route component={App} path="/" exact />
+					<Route path="/register" component={Register} />
+					<Route path="/login" component={Login} />
+					<Route path="/logout" component={Logout} />
+					<Route path="/search" component={Search} />
+					<Route path="/posts/:id" component={Post} />
+					<Route path="/sections/:name" component={ArticlesSections} />
+					<Route path="/disciplines" component={Disciplines} />
+					<Route path="/games/:name" component={Games} />
+					<Route path="/matches/:name" component={Matches} />
+					<Route path="/profile" component={UserData} />
+					<Route path="/dis" component={AddDiscipline} />
+				</Switch>
+				<Footer />
+			</AuthProvider>
 		</React.StrictMode>
 	</Router>
 );

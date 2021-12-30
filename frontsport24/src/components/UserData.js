@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 //import axiosInstance from '../axios';
 import { useParams } from 'react-router-dom';
 //MaterialUI
@@ -11,6 +11,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from './AuthContext';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserData() {
+    let {user} = useContext(AuthContext);
     const { title } = useParams();
     const classes = useStyles();
 
@@ -39,7 +42,7 @@ export default function UserData() {
         }
     }
     useEffect(() => {
-        var url = "http://localhost:8000/api/user/profile"
+        var url = "http://localhost:8000/api/user/profile/" + user.username
         axios.get(url,config).then((res) => {
             setData({ userData: res.data });
             console.log(res.data);
@@ -112,16 +115,16 @@ export default function UserData() {
                         color="textSecondary"
                         paragraph
                     >
-                    </Typography>
                     <p>Data urodzenia: {data.userData.birth_date} </p>
+                    </Typography>
                     <Typography
                             variant="h5"
                             align="center"
                             color="textSecondary"
                             paragraph
                     >
-                    </Typography>
                     <p>Numer telefonu: {data.userData.phone_number}</p>
+                    </Typography>
                     <Typography
                         variant="h5"
                         align="center"

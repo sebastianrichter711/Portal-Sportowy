@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useHistory } from 'react-router-dom';
 //MaterialUI
@@ -13,6 +13,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import AuthContext from './AuthContext';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -35,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
+
+	let {loginUser} = useContext(AuthContext);
 	const history = useHistory();
 	const initialFormData = Object.freeze({
 		email: '',
@@ -81,7 +84,10 @@ export default function SignIn() {
 				<Typography component="h1" variant="h5">
 					Logowanie
 				</Typography>
-				<form className={classes.form} noValidate>
+				<form className={classes.form} noValidate onSubmit={loginUser}>
+				{/* <input type="text" name="email" placeholder="Enter Username" />
+                <input type="password" name="password" placeholder="Enter Password" />
+                <input type="submit" name="sss"/> */}
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -116,7 +122,7 @@ export default function SignIn() {
 						variant="contained"
 						color="primary"
 						className={classes.submit}
-						onClick={handleSubmit}
+						//onClick={handleSubmit}
 					>
 						Zaloguj się
 					</Button>
@@ -127,7 +133,7 @@ export default function SignIn() {
 							</Link>
 						</Grid>
 						<Grid item>
-							<Link href="#" variant="body2">
+							<Link href="/register" variant="body2">
 								{"NIe masz konta? Zarejestruj się!"}
 							</Link>
 						</Grid>

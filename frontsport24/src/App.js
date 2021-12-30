@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './App.css';
 import Posts from './components/Posts';
 import axiosInstance from './axios';
@@ -10,6 +10,7 @@ import Quote from './components/Quote';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import AuthContext from './components/AuthContext'
 
 const useStyles = makeStyles((theme) => ({
 	link: {
@@ -19,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 
+	let {user} = useContext(AuthContext);
+
 	const classes = useStyles();
 
 	return (
@@ -27,6 +30,12 @@ function App() {
 			<br/>
 			<br/>
 			<NewestMatches/>
+			{/* {user ? (
+                 <p onClick={logoutUser}>Logout</p>
+            ): (
+                <Link to="/login" >Login</Link>
+            )} */}
+			{user && <p> Witaj, {user.username}</p>}
 			<Link
                         color="textPrimary"
                         className={classes.link}
@@ -35,7 +44,10 @@ function App() {
                         <Button variant="contained">
                            TWÓJ PROFIL
                         </Button>
-                    </Link>
+            </Link> 
+			<Link to='/dis'>
+				DIS
+			</Link>
 			<MainArticle />
 			<Posts/>
 			<Sections/>

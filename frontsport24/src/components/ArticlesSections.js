@@ -86,6 +86,11 @@ const ArticlesSections = () => {
 							/>
 						</Link>
 						<CardContent className={classes.cardContent}>
+						<Link
+							color="textPrimary"
+							href={'http://localhost:3000/posts/' + article.article_id}
+							className={classes.link}
+						>
 							<Typography
 								gutterBottom
 								variant="h6"
@@ -96,6 +101,7 @@ const ArticlesSections = () => {
 								<br />
 								{article.title}
 							</Typography>
+						</Link>
 						</CardContent>
 					</Card>
 				</Grid>
