@@ -34,24 +34,24 @@ def delete_comment_from_article(request, comment_id, article_id):
             return JsonResponse("Komentarz usunięty.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie usunięto komentarza!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
-@csrf_exempt
-def add_comment_to_article(request, article_id, username):
-    if request.method == "POST":
-        print(request)
-        #comment_data=JSONParser().parse(request)
-        #comment_text = comment_data["text"]
-        profile = NewUser.objects.get(user_name = username)
-        article = Article.objects.get(article_id=article_id)
-        if profile and article:
-            new_comment = Comment.objects.create(author_id=profile, date_of_create=datetime.now(), text=request.data,
-                                                 article_id = article)
-            new_comment.save()
-            profile.comments_number += 1
-            profile.save()
-            article.comments_number += 1
-            article.save()
-            return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
-        return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
+# @csrf_exempt
+# def add_comment_to_article(request, article_id, username):
+#     if request.method == "POST":
+#         print(request)
+#         #comment_data=JSONParser().parse(request)
+#         #comment_text = comment_data["text"]
+#         profile = NewUser.objects.get(user_name = username)
+#         article = Article.objects.get(article_id=article_id)
+#         if profile and article:
+#             new_comment = Comment.objects.create(author_id=profile, date_of_create=datetime.now(), text=request.data,
+#                                                  article_id = article)
+#             new_comment.save()
+#             profile.comments_number += 1
+#             profile.save()
+#             article.comments_number += 1
+#             article.save()
+#             return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
+#         return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
 def get_comments_for_article(request, article_id):

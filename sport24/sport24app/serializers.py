@@ -48,9 +48,8 @@ class ArticleSerializer(serializers.ModelSerializer):
             'date_of_last_change',
             'lead_text',
             'text',
-            'big_title_photo',
             'page_views',
-            'section_id'
+            'comments_number'
         )
 
 class NewArticlesSerializer(serializers.ModelSerializer):

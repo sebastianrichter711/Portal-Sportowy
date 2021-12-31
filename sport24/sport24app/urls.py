@@ -19,7 +19,7 @@ urlpatterns = [
     path('games/<str:name>', views_game.discipline_games),
     path('game', views_game.add_game),
     path('comment/<int:id>', views_comment.comment_api),
-    path('download_articles/<str:section_name>', views_article.download_articles),
+    path('download_articles/<str:section_name>', views_article.AddArticle.as_view()),
     path('newest_article', views_article.get_newest_article),
     path('newest_articles', views_article.get_newest_articles),
     path('found_articles/<str:keyword>', views_article.find_articles_by_keyword),
@@ -47,6 +47,8 @@ urlpatterns = [
     path('', PostList.as_view(), name='listcreate'),
     path('search/', views_article.SearchedArticles.as_view(), name='postsearch'),
     path('add_comment/<int:article_id>/<str:username>', views_comment.CreateCom.as_view()),
+    path('moderator/delete/<int:pk>/', views_article.DeleteArticle.as_view(), name='deletepost'),
+    path('moderator/edit/<int:pk>/', views_article.EditArticle.as_view(), name='editpost'),
 
 ]
 

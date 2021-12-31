@@ -1,10 +1,11 @@
 from rest_framework import status,generics,filters,viewsets
+from rest_framework.views import APIView
 from sport24.settings import BASE_DIR
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 import datetime
 from datetime import datetime, timedelta
 import requests
@@ -131,7 +132,7 @@ def get_newest_articles(request, id=0):
         if newest_articles: 
             short_newest_articles = []  
             for article in newest_articles:
-                if 0 < article.date_of_create.minute < 9:
+                if 0 <= article.date_of_create.minute <= 9:
                     minute = '0' + str(article.date_of_create.minute)
                 else:
                     minute = str(article.date_of_create.minute)
@@ -175,7 +176,10 @@ def get_articles_for_section(request, section_name):
                     'date_of_create' : str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute,
                     'title' : article.title,
                     'lead_text' : article.lead_text,
-                    'big_title_photo' : str(article.big_title_photo)}
+                    'big_title_photo' : str(article.big_title_photo),
+                    'page_views' : article.page_views,
+                    'comments_number' : article.comments_number
+                    }
                     article_data.append(new_article)
                 #section_articles_serial = ShortArticleSerializer(section_articles, many = True)
                 return JsonResponse(article_data, safe=False, status=status.HTTP_200_OK)
@@ -261,3 +265,22 @@ class PostDetail(generics.RetrieveAPIView):
             article_data['big_title_photo'] = str(article.big_title_photo)
             article_data['page_views'] = article.page_views
             return article_data
+
+class AddArticle(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self,request,section_name,format=None):
+        download_data = download_article(request.data["url"], section_name="Piłka nożna")
+        if download_data == True:
+            return JsonResponse("Dodano artykuł/-y.", safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)
+
+class EditArticle(generics.UpdateAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
+
+class DeleteArticle(generics.RetrieveDestroyAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
