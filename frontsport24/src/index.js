@@ -23,6 +23,8 @@ import PrivateRoute from './components/PrivateRoute';
 import AddDiscipline from './components/AddDiscipline';
 import Admin from './Admin';
 import AddArticle from './components/moderator/create';
+import AddGame from './components/moderator/AddGame';
+import AddMatches from './components/moderator/AddMatches';
 import Edit from './components/moderator/edit';
 import Delete from './components/moderator/delete';
 
@@ -46,6 +48,8 @@ const routing = (
 					<Route path="/dis" component={AddDiscipline} />
 					<Route exact path="/moderator" component={Admin} />
 					<Route exact path="/moderator/create" component={AddArticle} />
+					<Route exact path="/moderator/create_game" component={AddGame} />
+					<Route exact path="/moderator/create_matches" component={AddMatches} />
 					<Route exact path="/moderator/edit/:id" component={Edit} />
 					<Route exact path="/moderator/delete/:id" component={Delete} />
 				</Switch>

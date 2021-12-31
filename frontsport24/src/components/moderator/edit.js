@@ -30,7 +30,8 @@ export default function Edit() {
     const history = useHistory();
     const { id } = useParams();
     const initialFormData = Object.freeze({
-        articleId: '',
+        //articleId: '',
+        title: '',
         dateOfCreate: '',
         dateOfLastChange: '',
         leadText: '',
@@ -45,7 +46,7 @@ export default function Edit() {
         axiosInstance.get("http://localhost:8000/api/article/" + id).then((res) => {
             updateFormData({
                 ...formData,
-                ['articleId']: res.data.id,
+                //['articleId']: res.data.id,
                 ['title']: res.data.title,
                 ['dateOfCreate']: res.data.date_of_create,
                 ['dateOfLastChange']: res.data.date_of_last_change,
@@ -71,8 +72,9 @@ export default function Edit() {
         e.preventDefault();
         console.log(formData);
 
-        axiosInstance.put('http://localhost:8000/api/moderator/edit/' + id + '/', {
-            articleId: formData.articleId,
+        axiosInstance.put('moderator/edit/' + id, {
+            //articleId: formData.articleId,
+            title: formData.title,
             dateOfCreate: formData.dateOfCreate,
             dateOfLastChange: formData.dateOfLastChange,
             leadText: formData.leadText,
@@ -80,11 +82,14 @@ export default function Edit() {
             pageViews: formData.pageViews,
             commentsNumber: formData.commentsNumber
         });
-    };
+
         history.push({
-            pathname: '/moderator/',
+            pathname: '/moderator/edit/' + id,
         });
-    //window.location.reload();
+
+        //window.location.reload();
+    };
+        
 
     const classes = useStyles();
 
@@ -97,7 +102,7 @@ return (
             </Typography>
             <form className={classes.form} noValidate>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                    {/* <Grid item xs={12}>
                         <TextField
                             variant="outlined"
                             required
@@ -107,6 +112,19 @@ return (
                             name="articleId"
                             autoComplete="articleId"
                             value={formData.articleId}
+                            onChange={handleChange}
+                        />
+                    </Grid> */}
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="title"
+                            label="Tytuł"
+                            name="title"
+                            autoComplete="title"
+                            value={formData.title}
                             onChange={handleChange}
                         />
                     </Grid>
