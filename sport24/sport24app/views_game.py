@@ -4,6 +4,10 @@ from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.views import APIView
+
+
 
 @csrf_exempt
 def discipline_games(request, name):
@@ -35,3 +39,13 @@ def edit_game(request, game_id):
             game.save()
             return JsonResponse("Zmieniono dane dot. rozgrywki!", safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie zmieniono danych dot. rozgrywki", safe=False, status=status.HTTP_404_NOT_FOUND)
+    
+class AddGame(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self,request,format=None):
+        serializer = PostGameSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse("Nie dodano dyscypliny.", status=status.HTTP_404_NOT_FOUND)

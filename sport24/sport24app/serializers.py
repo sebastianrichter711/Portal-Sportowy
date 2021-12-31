@@ -43,6 +43,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = (
+            #'article_id',
             'title', 
             'date_of_create',
             'date_of_last_change',

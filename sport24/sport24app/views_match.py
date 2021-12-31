@@ -7,6 +7,10 @@ from rest_framework.parsers import JSONParser
 import json
 import requests
 from bs4 import BeautifulSoup
+from rest_framework.views import APIView
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+
+
 
 def download_matches(game_id, phase, round, season):
     
@@ -101,5 +105,13 @@ def get_matches_for_season(request, season, round, name):
                 return JsonResponse(matches_list, safe=False, status=status.HTTP_200_OK)
             return JsonResponse("Nie znaleziono spotkań!", safe=False, status=status.HTTP_404_NOT_FOUND)
                 
+                
+class AddMatches(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self,request,format=None):
+        download_matches(request.data['gameId'], request.data['phase'], request.data['round'], request.data['season'])
+        return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
+    #return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
         
             
