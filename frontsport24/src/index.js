@@ -21,6 +21,10 @@ import ArticleComments from './components/ArticleComments';
 import { AuthProvider } from './components/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import AddDiscipline from './components/AddDiscipline';
+import Admin from './Admin';
+import AddArticle from './components/moderator/create';
+import Edit from './components/moderator/edit';
+import Delete from './components/moderator/delete';
 
 const routing = (
 	<Router>
@@ -40,6 +44,10 @@ const routing = (
 					<Route path="/matches/:name" component={Matches} />
 					<Route path="/profile" component={UserData} />
 					<Route path="/dis" component={AddDiscipline} />
+					<Route exact path="/moderator" component={Admin} />
+					<Route exact path="/moderator/create" component={AddArticle} />
+					<Route exact path="/moderator/edit/:id" component={Edit} />
+					<Route exact path="/moderator/delete/:id" component={Delete} />
 				</Switch>
 				<Footer />
 			</AuthProvider>
