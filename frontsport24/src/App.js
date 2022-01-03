@@ -45,9 +45,6 @@ function App() {
                            TWÓJ PROFIL
                         </Button>
             </Link> 
-			<Link to='/dis'>
-				DIS
-			</Link>
 			<MainArticle />
 			<Posts/>
 			<Sections/>

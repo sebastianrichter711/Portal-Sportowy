@@ -22,11 +22,16 @@ import { AuthProvider } from './components/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import AddDiscipline from './components/AddDiscipline';
 import Admin from './Admin';
-import AddArticle from './components/moderator/create';
-import AddGame from './components/moderator/AddGame';
-import AddMatches from './components/moderator/AddMatches';
-import Edit from './components/moderator/edit';
-import Delete from './components/moderator/delete';
+import AddArticle from './components/moderator/articles/create';
+import AddGame from './components/moderator/games/AddGame';
+import AddMatches from './components/moderator/matches/AddMatches';
+import Edit from './components/moderator/articles/edit';
+import Delete from './components/moderator/articles/delete';
+import EditDis from './components/moderator/discipline/edit';
+import DeleteDis from './components/moderator/discipline/delete';
+import EditGame from './components/moderator/games/edit';
+import DeleteGame from './components/moderator/games/delete';
+
 
 const routing = (
 	<Router>
@@ -52,6 +57,12 @@ const routing = (
 					<Route exact path="/moderator/create_matches" component={AddMatches} />
 					<Route exact path="/moderator/edit/:id" component={Edit} />
 					<Route exact path="/moderator/delete/:id" component={Delete} />
+					<Route exact path="/moderator/edit_dis/:id" component={EditDis} />
+					<Route exact path="/moderator/delete_dis/:id" component={DeleteDis} />
+					<Route exact path="/moderator/edit_game/:id" component={EditGame} />
+					<Route exact path="/moderator/delete_game/:id" component={DeleteGame} />
+					<Route path="/add_discipline" component={AddDiscipline} />
+
 				</Switch>
 				<Footer />
 			</AuthProvider>

@@ -117,13 +117,6 @@ const Posts = (props) => {
 										>
 											Dodaj mecze
 										</Button>
-										<Button
-											href={'/moderator/create_game'}
-											variant="contained"
-											color="primary"
-										>
-											Dodaj rozgrywki
-										</Button>
 									</TableCell>
 								</TableRow>
 							</TableBody>

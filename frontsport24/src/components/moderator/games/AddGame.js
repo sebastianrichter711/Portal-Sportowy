@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import axiosInstance from '../../axios';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../../axios';
 import { useHistory } from 'react-router-dom';
-import axios from '../../axios';
+import axios from '../../../axios';
+//MaterialUI
 //MaterialUI
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,8 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-//import logo from '../images/logo.png'
-import '../../style.css'
+import '../../../style.css'
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function AddArticle() {
+export default function AddDiscipline() {
 	function slugify(string) {
 		const a =
 			'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
@@ -55,14 +55,31 @@ export default function AddArticle() {
 
 	const history = useHistory();
 	const initialFormData = Object.freeze({
-	    url: '',
+		name: '',
 	});
 
 	const [postData, updateFormData] = useState(initialFormData);
     const [postImage, setPostImage] = useState(null);
 
+	const [disciplines, setDisciplinesState] = useState({
+		disciplines: []
+	});
+
+    const [discipline, setDisciplineState] = useState('')
+
+	const handleDisciplineChange = (event) => {
+        setDisciplineState(event.target.value);
+    };
+
+
 	const handleChange = (e) => {
-		if ([e.target.name] == 'url') {
+        if ([[e.target.name] == 'image']){
+            setPostImage({
+                image: e.target.files,
+            });
+            console.log(e.target.files);
+        }
+		if ([e.target.name] == 'name') {
 			updateFormData({
 				...postData,
 				// Trimming any whitespace
@@ -77,6 +94,14 @@ export default function AddArticle() {
 			});
 		}
 	};
+
+	useEffect(() => {
+		axiosInstance.get("http://localhost:8000/api/discipline").then((res) => {
+			const allDisciplines = res.data;
+			setDisciplinesState({ disciplines: allDisciplines });
+			console.log(res.data);
+		});
+	}, [setDisciplinesState]);
 
     // const config = {headers: {'Content-Type': 'multipart/form-data'}};
     // const URL = 'http://127.0.0.1:8000/add_discipline/';
@@ -93,11 +118,12 @@ export default function AddArticle() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
         let formData = new FormData();
-        formData.append('url', postData.url);
-		axiosInstance.post("http://localhost:8000/api/download_articles/Piłka nożna", formData);
-		// history.push({
-		// 	pathname: 'add_discipline/'
-		// });
+        formData.append('name', postData.name);
+        formData.append('icon', postImage.image[0]);
+		axiosInstance.post(`add_game/`, formData);
+		history.push({
+			pathname: 'add_game/'
+		});
 	    window.location.reload();
 	};
 
@@ -108,7 +134,7 @@ export default function AddArticle() {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Typography component="h1" variant="h5">
-					Dodaj artykuł
+					Utwórz rozgrywki
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
@@ -117,13 +143,31 @@ export default function AddArticle() {
 								variant="outlined"
 								required
 								fullWidth
-								id="url"
-								label="Adres strony"
-								name="url"
-								autoComplete="url"
+								id="name"
+								label="Nazwa"
+								name="name"
+								autoComplete="name"
 								onChange={handleChange}
 							/>
 						</Grid>
+                        <input
+                        accept='image/*'
+                        className={classes.input}
+                        id="post-image"
+                        onChange={handleChange}
+                        name="image"
+                        type="file"
+                        />
+						<TextField
+								variant="outlined"
+								required
+								fullWidth
+								id="disciplineName"
+								label="Dyscyplina"
+								name="disciplineName"
+								autoComplete="disciplineName"
+								onChange={handleChange}
+							/>
 					</Grid>
 					<Button
 						type="submit"
@@ -133,7 +177,7 @@ export default function AddArticle() {
 						className={classes.submit}
 						onClick={handleSubmit}
 					>
-						Dodaj
+						Utwórz rozgrywki
 					</Button>
 				</form>
 			</div>

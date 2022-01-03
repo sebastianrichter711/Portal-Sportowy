@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import axiosInstance from '../../axios';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../../../axios';
 import { useHistory } from 'react-router-dom';
-import axios from '../../axios';
+import axios from '../../../axios';
 //MaterialUI
 //MaterialUI
 import Button from '@material-ui/core/Button';
@@ -11,7 +11,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import '../../style.css'
+import '../../../style.css'
+import { FormControl } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { Select } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -55,15 +59,23 @@ export default function AddDiscipline() {
 
 	const history = useHistory();
 	const initialFormData = Object.freeze({
-	    gameId: '',
-        phase: '',
-        round: '',
-        season: '',
+		gameId: '',
+		phase: '',
+		round: '',
+		season: '',
 
 	});
 
 	const [postData, updateFormData] = useState(initialFormData);
-    const [postImage, setPostImage] = useState(null);
+	const [games, setGamesState] = useState({
+		games: []
+	});
+
+    const [game, setGameState] = useState('')
+
+	const handleGameChange = (event) => {
+        setGameState(event.target.value);
+    };
 
 	const handleChange = (e) => {
 		if ([e.target.name] == 'gameId') {
@@ -74,7 +86,7 @@ export default function AddDiscipline() {
 				//['slug']: slugify(e.target.value.trim()),
 			});
 		}
-        if ([e.target.name] == 'phase') {
+		if ([e.target.name] == 'phase') {
 			updateFormData({
 				...postData,
 				// Trimming any whitespace
@@ -82,7 +94,7 @@ export default function AddDiscipline() {
 				//['slug']: slugify(e.target.value.trim()),
 			});
 		}
-        if ([e.target.name] == 'round') {
+		if ([e.target.name] == 'round') {
 			updateFormData({
 				...postData,
 				// Trimming any whitespace
@@ -90,7 +102,7 @@ export default function AddDiscipline() {
 				//['slug']: slugify(e.target.value.trim()),
 			});
 		}
-        if ([e.target.name] == 'season') {
+		if ([e.target.name] == 'season') {
 			updateFormData({
 				...postData,
 				// Trimming any whitespace
@@ -98,7 +110,7 @@ export default function AddDiscipline() {
 				//['slug']: slugify(e.target.value.trim()),
 			});
 		}
-        else {
+		else {
 			updateFormData({
 				...postData,
 				// Trimming any whitespace
@@ -107,30 +119,38 @@ export default function AddDiscipline() {
 		}
 	};
 
-    // const config = {headers: {'Content-Type': 'multipart/form-data'}};
-    // const URL = 'http://127.0.0.1:8000/add_discipline/';
-    // let formData = new FormData();
-    // formData.append('name', postData.name);
-    // formData.append('icon', postImage.image[0]);
-    // axios
-    //     .post(URL,formData,config)
-    //     .then((res) => {
-    //     console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    
+	useEffect(() => {
+		axiosInstance.get("http://localhost:8000/api/get_all_games").then((res) => {
+			const allGames = res.data;
+			setGamesState({ games: allGames });
+			console.log(res.data);
+		});
+	}, [setGamesState]);
+
+	// const config = {headers: {'Content-Type': 'multipart/form-data'}};
+	// const URL = 'http://127.0.0.1:8000/add_discipline/';
+	// let formData = new FormData();
+	// formData.append('name', postData.name);
+	// formData.append('icon', postImage.image[0]);
+	// axios
+	//     .post(URL,formData,config)
+	//     .then((res) => {
+	//     console.log(res.data);
+	//     })
+	//     .catch((err) => console.log(err));
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        let formData = new FormData();
-        formData.append('gameId', postData.gameId);
-        formData.append('phase', postData.phase);
-        formData.append('round', postData.round);
-        formData.append('season', postData.season);
-		axiosInstance.post(`add_matches`, formData);
+		let formData = new FormData();
+		formData.append('gameId', postData.gameId);
+		formData.append('phase', postData.phase);
+		formData.append('round', postData.round);
+		formData.append('season', postData.season);
+		axiosInstance.post('add_matches/' + game, formData);
 		history.push({
 			pathname: 'add_matches/'
 		});
-	    window.location.reload();
+		window.location.reload();
 	};
 
 	const classes = useStyles();
@@ -144,19 +164,20 @@ export default function AddDiscipline() {
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
+						<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+							<InputLabel id="demo-simple-select-standard-label">Runda</InputLabel>
+							<Select className="custom-select3"
+								//value={xxx}
+								onChange={handleGameChange}
+							>
+								{games.games.map((g) => (
+									<MenuItem value={g.name}>
+										{g.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="gameId"
-								label="Rozgrywki"
-								name="gameId"
-								autoComplete="gameId"
-								onChange={handleChange}
-							/>
-						</Grid>
-                        <Grid item xs={12}>
 							<TextField
 								variant="outlined"
 								required
@@ -168,7 +189,7 @@ export default function AddDiscipline() {
 								onChange={handleChange}
 							/>
 						</Grid>
-                        <Grid item xs={12}>
+						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
 								required
@@ -180,7 +201,7 @@ export default function AddDiscipline() {
 								onChange={handleChange}
 							/>
 						</Grid>
-                        <Grid item xs={12}>
+						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
 								required

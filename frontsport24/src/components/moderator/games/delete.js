@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../axios';
+import axiosInstance from '../../../axios';
 import { useHistory, useParams } from 'react-router-dom';
 //MaterialUI
 import Container from '@material-ui/core/Container';
@@ -13,7 +13,7 @@ export default function Delete() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axiosInstance
-			.delete('moderator/delete/' + id)
+			.delete('moderator/delete_game/' + id)
 			.catch(function (error) {
 				if (error.response) {
 					console.log(error.response.data);
