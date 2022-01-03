@@ -12,7 +12,8 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 
 
-def download_matches(game_id, phase, round, season):
+def download_matches(game, phase, round, season):
+    
     
     if phase == 'grupowa':
         id_round = round
@@ -23,6 +24,10 @@ def download_matches(game_id, phase, round, season):
     elif phase == 'pucharowa' and round == 'finał':
         id_round = "200"
         
+    game = Game.objects.get(name=game)
+    if game:
+        game_id = game.db_game_id
+        
     url = f"https://www.thesportsdb.com/api/v1/json/2/eventsround.php?id={game_id}&r={id_round}&s={season}"
     data = requests.get(url)
     html = BeautifulSoup(data.text, 'html.parser')
@@ -30,8 +35,8 @@ def download_matches(game_id, phase, round, season):
     string_matches = str(html)
     json_matches = json.loads(string_matches)
     #formatted_json_matches = json.dumps(json_matches, indent=2)
-
-    game = Game.objects.get(db_game_id=game_id)
+    
+    
     #season = Season.objects.get(season=season, phase=phase, round=round, game_id=game)
     season = Season.objects.create(season=season, phase=phase, round=round, game_id=game)
     season.save()
@@ -109,8 +114,8 @@ def get_matches_for_season(request, season, round, name):
 class AddMatches(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
-    def post(self,request,format=None):
-        download_matches(request.data['gameId'], request.data['phase'], request.data['round'], request.data['season'])
+    def post(self,request,game, format=None):
+        download_matches(game, request.data['phase'], request.data['round'], request.data['season'])
         return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
     #return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
         

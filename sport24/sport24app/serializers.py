@@ -26,6 +26,7 @@ class DisciplineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Discipline
         fields = (
+            'discipline_id',
             'name',
             'icon'
         )
@@ -35,6 +36,7 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = (
             'game_id',
+            'db_game_id',
             'name',
             'logo'
         )

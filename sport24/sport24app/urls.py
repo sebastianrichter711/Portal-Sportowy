@@ -16,6 +16,7 @@ urlpatterns = [
     path('section', views_section.sections_api),
     path('delete_section/<int:id>', views_section.delete_section),
     path('discipline', views_discipline.disciplines_api),
+    path('get_all_games', views_game.get_all_games),
     path('games/<str:name>', views_game.discipline_games),
     path('game', views_game.add_game),
     path('comment/<int:id>', views_comment.comment_api),
@@ -34,7 +35,7 @@ urlpatterns = [
     path('game/<int:game_id>', views_game.edit_game),
     path('comment/<int:comment_id>/<int:article_id>', views_comment.delete_comment_from_article),
     path('newest_matches', views_match.get_newest_matches),
-    path('add_matches', views_match.AddMatches.as_view()),
+    path('add_matches/<str:game>', views_match.AddMatches.as_view()),
     path('edit_match/<int:match_id>', views_match.edit_match),
     path('get_matches/<str:season>/<str:round>/<str:name>', views_match.get_matches_for_season),
     path('add_season', views_season.add_season),
@@ -49,6 +50,10 @@ urlpatterns = [
     path('add_comment/<int:article_id>/<str:username>', views_comment.CreateCom.as_view()),
     path('moderator/delete/<int:pk>/', views_article.DeleteArticle.as_view(), name='deletepost'),
     path('moderator/edit/<int:pk>', views_article.EditArticle.as_view(), name='editpost'),
+    path('moderator/delete_dis/<int:pk>/', views_discipline.DeleteDiscipline.as_view()),
+    path('moderator/edit_dis/<int:pk>', views_discipline.EditDiscipline.as_view()),
+    path('moderator/delete_game/<int:pk>', views_game.DeleteGame.as_view()),
+    path('moderator/edit_game/<int:pk>', views_game.EditGame.as_view()),
 
 ]
 

@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status,generics
 from rest_framework import parsers
 from .models import *
 from .serializers import *
@@ -48,5 +48,15 @@ class CreateDiscipline(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response("Nie dodano dyscypliny.", status=status.HTTP_404_NOT_FOUND)
+
+class EditDiscipline(generics.UpdateAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = DisciplineSerializer
+    queryset = Discipline.objects.all()
+
+class DeleteDiscipline(generics.RetrieveDestroyAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = DisciplineSerializer
+    queryset = Discipline.objects.all()
         
         
