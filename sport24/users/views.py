@@ -107,6 +107,30 @@ def user_api(request, username):
             return JsonResponse("Użytkownik usunięty.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie usunięto użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)  
     
+@csrf_exempt
+def delete_user(request, username):
+    if request.method=='DELETE':
+        user=NewUser.objects.get(user_name=username)
+        if user:
+            user.delete()
+            return JsonResponse("Użytkownik usunięty.", safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)  
+    
+class EditUser(APIView):
+    def put(self,request,username,format=None):
+        user = NewUser.objects.get(user_name=username)
+        if user:
+            user.user_name = request.data['login']
+            user.email = request.data['email']
+            user.first_name = request.data['firstName']
+            user.last_name = request.data['lastName']
+            user.sex = request.data['sex']
+            user.birth_date = request.data['birthDate']
+            user.phone_number = request.data['phoneNumber']
+            user.save()
+            return JsonResponse(request.data, safe=False, status = status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono użytkownika o takim loginie!", safe=False, status=status.HTTP_404_NOT_FOUND)
+    
 # @csrf_exempt
 # def get_short_user_data(request, id):
 #     if request.method == "GET":
