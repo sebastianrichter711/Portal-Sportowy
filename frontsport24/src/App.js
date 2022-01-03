@@ -7,7 +7,7 @@ import Sections from './components/Sections';
 import NewestArticles from './components/NewestArticles';
 import NewestMatches from './components/NewestMatches';
 import Quote from './components/Quote';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AuthContext from './components/AuthContext'
@@ -45,8 +45,12 @@ function App() {
                            TWÓJ PROFIL
                         </Button>
             </Link> 
+			<Grid alignContent='right'>
 			<MainArticle />
+			</Grid>
+			<Grid>
 			<Posts/>
+			</Grid>
 			<Sections/>
 			<NewestArticles/>
 			<Quote/>

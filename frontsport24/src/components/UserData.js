@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from './AuthContext';
-
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -133,26 +133,26 @@ export default function UserData() {
                     >
                     <p>Liczba komentarzy: {data.userData.comments_number}</p>
                     </Typography>
+                   
                     <Button
-						href="#"
-						color="white"
+						href={'http://localhost:3000/edituser/' + user.username}
+                        color="white"
 						variant="outlined"
 						className={classes.link}
-						to="/logout"
+						//to="/logout"
 					>
 						EDYTUJ KONTO
 					</Button>
                     <Button
-						href="#"
+						href={'http://localhost:3000/deleteuser/' + user.username}
 						color="white"
 						variant="outlined"
 						className={classes.link}
-						to="/logout"
+						//to="/logout"
 					>
 						USUŃ KONTO
 					</Button>
-
-
+                   
                     </Container>
                     </div>
                 </Container>
