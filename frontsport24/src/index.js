@@ -33,6 +33,9 @@ import EditGame from './components/moderator/games/edit';
 import DeleteGame from './components/moderator/games/delete';
 import EditUser from './components/EditUser';
 import DeleteUser from './components/DeleteUser';
+import DeleteComment from './components/DeleteComment';
+import EditComment from './components/EditComment';
+
 
 const routing = (
 	<Router>
@@ -56,7 +59,7 @@ const routing = (
 					<Route exact path="/moderator/create" component={AddArticle} />
 					<Route exact path="/moderator/create_game" component={AddGame} />
 					<Route exact path="/moderator/create_matches" component={AddMatches} />
-					<Route exact path="/moderator/edit/:id" component={Edit} />
+					<Route exact path="/moderator/edit/:id/" component={Edit} />
 					<Route exact path="/moderator/delete/:id" component={Delete} />
 					<Route exact path="/moderator/edit_dis/:id" component={EditDis} />
 					<Route exact path="/moderator/delete_dis/:id" component={DeleteDis} />
@@ -65,6 +68,8 @@ const routing = (
 					<Route path="/add_discipline" component={AddDiscipline} />
 					<Route path="/edituser/:username" component={EditUser} />
 					<Route path="/deleteuser/:username" component={DeleteUser} />
+					<Route path="/deletecom/:id" component={DeleteComment} />
+					<Route path="/editcom/:id" component={EditComment} />
 				</Switch>
 				<Footer />
 			</AuthProvider>

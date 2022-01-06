@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,6 +12,11 @@ import { List, ListItem, ListItemButton } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Button } from '@material-ui/core';
 import Post from './Post';
+import AuthContext from './AuthContext';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
+import EditandDeleteComments from './EditAndDeleteComments';
+
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -46,15 +51,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ArticleComments = (props) => {
-
-    const {id} = props
-    var xxx = {id}
+    let { user, logoutUser } = useContext(AuthContext)
+    const { id } = props
+    var xxx = { id }
     console.log(xxx)
     const [appState, setAppState] = useState({
         articleComments: [],
     });
 
-    var url = 'http://localhost:8000/api/article/'+ props.id +'/comments';
+    var url = 'http://localhost:8000/api/article/' + props.id + '/comments';
     // var s1 = 'http://localhost:8000/api/article/';
     // var s2 = {art_id}.toString();
     // var s3 = "/comments";
@@ -105,10 +110,27 @@ const ArticleComments = (props) => {
                                             className={classes.postTitle}
                                         >
                                             {comment.modified} {comment.text}
-                                        </Typography>
+                                        </Typography> 
+                                        <EditandDeleteComments login={comment.login} comment_id={comment.comment_id}/>
+                                        {/* {(user.username == comment.login) ? (
+                                        <Link
+                                            color="textPrimary"
+                                            href={'/moderator/edit/' + comment.comment_id}
+                                            className={classes.link}
+                                        >
+                                            <EditIcon></EditIcon>
+                                        </Link>
+                                        ) : <p>NIE</p> }
+                                        <Link
+                                            color="textPrimary"
+                                            href={'/moderator/delete/' + comment.comment_id}
+                                            className={classes.link}
+                                        >
+                                            <DeleteForeverIcon></DeleteForeverIcon>
+                                        </Link> */}
                                     </CardContent>
                                 </Card>
-                            </Grid>
+                            </Grid> 
                         );
                     })}
                 </Grid>

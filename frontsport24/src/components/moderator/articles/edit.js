@@ -30,30 +30,30 @@ export default function Edit() {
     const history = useHistory();
     const { id } = useParams();
     const initialFormData = Object.freeze({
-        //articleId: '',
+        id: '',
         title: '',
-        dateOfCreate: '',
-        dateOfLastChange: '',
-        leadText: '',
+        date_of_create: '',
+        date_of_last_change: '',
+        lead_text: '',
         text: '',
-        pageViews: '',
-        commentsNumber: '',
+        page_views: '',
+        comments_number: '',
     });
 
     const [formData, updateFormData] = useState(initialFormData);
 
     useEffect(() => {
-        axiosInstance.get("http://localhost:8000/api/article/" + id).then((res) => {
+        axiosInstance.get('moderator/edit/postdetail/' + id).then((res) => {
             updateFormData({
                 ...formData,
-                //['articleId']: res.data.id,
+                //['id']: res.data.id,
                 ['title']: res.data.title,
-                ['dateOfCreate']: res.data.date_of_create,
-                ['dateOfLastChange']: res.data.date_of_last_change,
-                ['leadText']: res.data.lead_text,
+                ['date_of_create']: res.data.date_of_create,
+                ['date_of_last_change']: res.data.date_of_last_change,
+                ['lead_text']: res.data.lead_text,
                 ['text']: res.data.text,
-                ['pageViews']: res.data.page_views,
-                ['commentsNumber']: res.data.comments_number,
+                ['page_views']: res.data.page_views,
+                ['comments_number']: res.data.comments_number,
 
             });
             console.log(res.data);
@@ -72,20 +72,21 @@ export default function Edit() {
         e.preventDefault();
         console.log(formData);
 
-        axiosInstance.put('moderator/edit/' + id, {
-            //articleId: formData.articleId,
+        axiosInstance.put('moderator/edit/' + id + "/", {
+            //id: formData.id,
             title: formData.title,
-            dateOfCreate: formData.dateOfCreate,
-            dateOfLastChange: formData.dateOfLastChange,
-            leadText: formData.leadText,
+            date_of_create: formData.date_of_create,
+            date_of_last_change: formData.date_of_last_change,
+            lead_text: formData.lead_text,
             text: formData.text,
-            pageViews: formData.pageViews,
-            commentsNumber: formData.commentsNumber
+            page_views: formData.page_views,
+            comments_number: formData.comments_number
         });
 
-        history.push({
-            pathname: '/moderator/edit/' + id,
-        });
+        console.log(formData)
+        // history.push({
+        //     pathname: '/moderator/edit/' + id,
+        // });
 
         //window.location.reload();
     };
@@ -107,11 +108,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="articleId"
+                            id="id"
                             label="Id artykułu"
-                            name="articleId"
-                            autoComplete="articleId"
-                            value={formData.articleId}
+                            name="id"
+                            autoComplete="id"
+                            value={formData.id}
                             onChange={handleChange}
                         />
                     </Grid> */}
@@ -133,11 +134,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="dateOfCreate"
+                            id="date_of_create"
                             label="Data utworzenia"
-                            name="dateOfCreate"
-                            autoComplete="dateOfCreate"
-                            value={formData.dateOfCreate}
+                            name="date_of_create"
+                            autoComplete="date_of_create"
+                            value={formData.date_of_create}
                             onChange={handleChange}
                             multiline
                             rows={8}
@@ -148,11 +149,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="dateOfLastChange"
+                            id="date_of_last_change"
                             label="Data ostatniej modyfikacji"
-                            name="dateOfLastChange"
-                            autoComplete="dateOfLastChange"
-                            value={formData.dateOfLastChange}
+                            name="date_of_last_change"
+                            autoComplete="date_of_last_change"
+                            value={formData.date_of_last_change}
                             onChange={handleChange}
                         />
                     </Grid>
@@ -161,11 +162,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="leadText"
+                            id="lead_text"
                             label="Tekst początkowy"
-                            name="leadText"
-                            autoComplete="leadText"
-                            value={formData.leadText}
+                            name="lead_text"
+                            autoComplete="lead_text"
+                            value={formData.lead_text}
                             onChange={handleChange}
                             multiline
                             rows={8}
@@ -191,11 +192,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="pageViews"
+                            id="page_views"
                             label="Liczba odsłon"
-                            name="pageViews"
-                            autoComplete="pageViews"
-                            value={formData.pageViews}
+                            name="page_views"
+                            autoComplete="page_views"
+                            value={formData.page_views}
                             onChange={handleChange}
                             multiline
                             rows={8}
@@ -206,11 +207,11 @@ return (
                             variant="outlined"
                             required
                             fullWidth
-                            id="commentsNumber"
+                            id="comments_number"
                             label="Liczba komentarzy"
-                            name="commentsNumber"
-                            autoComplete="commentsNumber"
-                            value={formData.commentsNumber}
+                            name="comments_number"
+                            autoComplete="comments_number"
+                            value={formData.comments_number}
                             onChange={handleChange}
                             multiline
                             rows={8}

@@ -30,21 +30,6 @@ function App() {
 			<br/>
 			<br/>
 			<NewestMatches/>
-			{/* {user ? (
-                 <p onClick={logoutUser}>Logout</p>
-            ): (
-                <Link to="/login" >Login</Link>
-            )} */}
-			{user && <p> Witaj, {user.username}</p>}
-			<Link
-                        color="textPrimary"
-                        className={classes.link}
-						to="/profile"
-                    >
-                        <Button variant="contained">
-                           TWÓJ PROFIL
-                        </Button>
-            </Link> 
 			<Grid alignContent='right'>
 			<MainArticle />
 			</Grid>

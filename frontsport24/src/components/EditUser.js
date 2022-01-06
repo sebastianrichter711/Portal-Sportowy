@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useHistory, useParams } from 'react-router-dom';
 //MaterialUI
@@ -13,6 +13,9 @@ import { Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { InputLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
+import jwt_decode from "jwt-decode";
+import AuthContext from './AuthContext';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,38 +34,45 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Edit() {
+    let [authTokens, setAuthTokens] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
+    let [user, setUser] = useState(() => localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
+
     const history = useHistory();
     const { username } = useParams();
     const initialFormData = Object.freeze({
-        //articleId: '',
-        login: '',
+        //id: '',
+        user_name: '',
         email: '',
-        firstName: '',
-        lastName: '',
+        first_name: '',
+        last_name: '',
         sex: '',
-        birthDate: '',
-        phoneNumber: '',
+        birth_date: '',
+        phone_number: '',
+        avatar: null,
     });
 
     const [formData, updateFormData] = useState(initialFormData);
     const [sex, setSexState] = useState('');
+    const [postImage, setPostImage] = useState(null);
+
 
     const handleSexChange = (event) => {
         setSexState(event.target.value);
     };
 
     useEffect(() => {
-        axiosInstance.get("http://localhost:8000/api/user/profile/" + username).then((res) => {
+        axiosInstance.get("http://localhost:8000/api/user/edit/detail/" + user.user_id).then((res) => {
             updateFormData({
                 ...formData,
-                //['articleId']: res.data.id,
-                ['login']: res.data.login,
+                // //['id']: res.data.id,
+                ['user_name']: res.data.user_name,
                 ['email']: res.data.email,
-                ['firstName']: res.data.first_name,
-                ['lastName']: res.data.last_name,
+                ['first_name']: res.data.first_name,
+                ['last_name']: res.data.last_name,
                 ['sex']: sex,
-                ['birthDate']: res.data.birth_date,
-                ['phoneNumber']: res.data.phone_number,
+                ['birth_date']: res.data.birth_date,
+                ['phone_number']: res.data.phone_number,
+                //['avatar']: res.data.avatar
 
             });
             console.log(res.data);
@@ -70,6 +80,12 @@ export default function Edit() {
     }, [updateFormData]);
 
     const handleChange = (e) => {
+        if ([[e.target.name] == 'image']) {
+            setPostImage({
+                image: e.target.files,
+            });
+            console.log(e.target.files);
+        }
         updateFormData({
             ...formData,
             // Trimming any whitespace
@@ -81,20 +97,47 @@ export default function Edit() {
         e.preventDefault();
         console.log(formData);
 
-        axiosInstance.put('user/edit/' + username, {
+        axiosInstance.put('user/edit/' + user.user_id, {
             //articleId: formData.articleId,
-            login: formData.login,
+            user_name: formData.user_name,
             email: formData.email,
-            firstName: formData.firstName,
-            lastName: formData.lastName,
+            first_name: formData.first_name,
+            last_name: formData.last_name,
             sex: sex,
-            birthDate: formData.birthDate,
-            phoneNumber: formData.phoneNumber,
+            birth_date: formData.birth_date,
+            phone_number: formData.phone_number,
+            avatar: postImage.image[0]
+
         });
 
-        history.push({
-            pathname: '/edituser/' + formData.login,
-        });
+        console.log(postImage.image[0])
+
+        // let response = fetch('http://127.0.0.1:8000/api/token/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ 'email': formData.email, 'password': password })
+        // })
+        // let data = response.json()
+        // console.log('dta: ', data)
+        // console.log('res: ', response)
+
+        // if (response.status === 200) {
+        //     setAuthTokens(data);
+        //     setUser(jwt_decode(data.access))
+        //     console.log(authTokens)
+        //     console.log(data)
+        //     localStorage.setItem('authTokens', JSON.stringify(data))
+        //     history.push('/')
+
+        // } else {
+        //     alert("Niepoprawny email lub hasło!");
+        // }
+        // console.log(user)
+        // history.push({
+        //     pathname: '/edituser/' + formData.login,
+        // });
 
         //window.location.reload();
     };
@@ -107,7 +150,7 @@ export default function Edit() {
             <CssBaseline />
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    Edytuj artykuł
+                    Edytuj dane osobowe
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
@@ -124,16 +167,24 @@ export default function Edit() {
                             onChange={handleChange}
                         />
                     </Grid> */}
+                        <input
+                            accept='image/*'
+                            className={classes.input}
+                            id="post-image"
+                            onChange={handleChange}
+                            name="avatar"
+                            type="file"
+                        />
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="login"
+                                id="user_name"
                                 label="Login"
-                                name="login"
-                                autoComplete="login"
-                                value={formData.login}
+                                name="user_name"
+                                autoComplete="user_name"
+                                value={formData.user_name}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -157,11 +208,11 @@ export default function Edit() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="first_name"
                                 label="Imię"
-                                name="firstName"
-                                autoComplete="firstName"
-                                value={formData.firstName}
+                                name="first_name"
+                                autoComplete="first_name"
+                                value={formData.first_name}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -170,40 +221,40 @@ export default function Edit() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="last_name"
                                 label="Nazwisko"
-                                name="lastName"
-                                autoComplete="lastName"
-                                value={formData.lastName}
+                                name="last_name"
+                                autoComplete="last_name"
+                                value={formData.last_name}
                                 onChange={handleChange}
                                 multiline
                                 rows={8}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-                        <InputLabel id="demo-simple-select-standard-label">Płeć</InputLabel>
-                        <Select className="custom-select3"
-                            name = "sex"
-                            value={sex}
-                            onChange={handleSexChange}
-                        >
-                                <MenuItem value="kobieta"> Kobieta </MenuItem>
-                                <MenuItem value="mężczyzna"> Mężczyzna </MenuItem>
-                        </Select>
-                        {initialFormData.sex}
-                    </FormControl>
+                            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel id="demo-simple-select-standard-label">Płeć</InputLabel>
+                                <Select className="custom-select3"
+                                    name="sex"
+                                    value={sex}
+                                    onChange={handleSexChange}
+                                >
+                                    <MenuItem value="kobieta"> Kobieta </MenuItem>
+                                    <MenuItem value="mężczyzna"> Mężczyzna </MenuItem>
+                                </Select>
+                                {initialFormData.sex}
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="birthDate"
+                                id="birth_date"
                                 label="Data urodzenia"
-                                name="birthDate"
-                                autoComplete="birthDate"
-                                value={formData.birthDate}
+                                name="birth_date"
+                                autoComplete="birth_date"
+                                value={formData.birth_date}
                                 onChange={handleChange}
                                 multiline
                                 rows={8}
@@ -214,11 +265,11 @@ export default function Edit() {
                                 variant="outlined"
                                 required
                                 fullWidth
-                                id="phoneNumber"
+                                id="phone_number"
                                 label="Numer telefonu"
-                                name="phoneNumber"
-                                autoComplete="phoneNumber"
-                                value={formData.phoneNumber}
+                                name="phone_number"
+                                autoComplete="phone_number"
+                                value={formData.phone_number}
                                 onChange={handleChange}
                                 multiline
                                 rows={8}
@@ -232,6 +283,7 @@ export default function Edit() {
                         color="primary"
                         className={classes.submit}
                         onClick={handleSubmit}
+                    //onSubmit={loginUser}
                     >
                         Edytuj
                     </Button>

@@ -39,7 +39,8 @@ export default function SignUp() {
 	const initialFormData = Object.freeze({
 		email: '',
 		username: '',
-		password: '',
+		password1: '',
+		password2: '',
 	});
 
 	const [formData, updateFormData] = useState(initialFormData);
@@ -60,7 +61,8 @@ export default function SignUp() {
 			.post(`user/register/`, {
 				email: formData.email,
 				user_name: formData.username,
-				password: formData.password,
+				password1: formData.password1,
+				password2: formData.password2
 			})
 			.then((res) => {
 				history.push('/login');
@@ -110,10 +112,23 @@ export default function SignUp() {
 								variant="outlined"
 								required
 								fullWidth
-								name="password"
+								name="password1"
 								label="Hasło"
 								type="password"
-								id="password"
+								id="password1"
+								autoComplete="current-password"
+								onChange={handleChange}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<TextField
+								variant="outlined"
+								required
+								fullWidth
+								name="password2"
+								label="Powtórz hasło:"
+								type="password"
+								id="password2"
 								autoComplete="current-password"
 								onChange={handleChange}
 							/>
@@ -121,6 +136,7 @@ export default function SignUp() {
 							<p> * co najmniej 8 znaków </p>
 							<p> * 1 dużą i małą literę </p>
 						</Grid>
+						<p> * - pola obowiązkowe</p>
 						<Button
 							type="submit"
 							fullWidth

@@ -95,10 +95,10 @@ export default function AddArticle() {
         let formData = new FormData();
         formData.append('url', postData.url);
 		axiosInstance.post("http://localhost:8000/api/download_articles/Piłka nożna", formData);
-		// history.push({
-		// 	pathname: 'add_discipline/'
-		// });
-	    window.location.reload();
+		history.push({
+		 	pathname: '/'
+		 });
+	    //window.location.reload();
 	};
 
 	const classes = useStyles();

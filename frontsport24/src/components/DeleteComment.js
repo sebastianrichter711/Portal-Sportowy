@@ -8,9 +8,9 @@ import Box from '@material-ui/core/Box';
 import jwt_decode from "jwt-decode";
 
 
-export default function Delete() {
+export default function DeleteComment() {
 	const history = useHistory();
-	const { username } = useParams();
+	const { id } = useParams();
 	let [authTokens, setAuthTokens] = useState(() => localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
 	let [user, setUser] = useState(() => localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
 
@@ -18,7 +18,7 @@ export default function Delete() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axiosInstance
-			.delete('http://localhost:8000/api/user/deleteuser/' + username)
+			.delete('http://localhost:8000/api/deletecom/' + id)
 			.catch(function (error) {
 				if (error.response) {
 					console.log(error.response.data);
@@ -27,14 +27,11 @@ export default function Delete() {
 				}
 			})
 			.then(function () {
-				setAuthTokens(null)
-				setUser(null)
-				localStorage.removeItem('authTokens')
-				history.push('/')
+				//history.push('/')
 				// history.push({
 				// 	pathname: 'http://localhost:3000',
 				// });
-				window.location.reload();
+				//window.location.reload();
 			});
 	};
 

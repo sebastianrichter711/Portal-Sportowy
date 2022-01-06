@@ -19,6 +19,9 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import { Slide } from '@material-ui/core';
 import AuthContext from './AuthContext';
+import UnregisteredUser from './UnregisteredUser';
+import RegisteredUser from './RegisteredUser';
+
 
 const useStyles = makeStyles((theme) => ({
 	appBar: {
@@ -112,27 +115,27 @@ function ElevationScroll(props) {
 	// will default to window.
 	// This is only being set here because the demo is in an iframe.
 	const trigger = useScrollTrigger({
-	  disableHysteresis: true,
-	  threshold: 0,
-	  target: window ? window() : undefined,
+		disableHysteresis: true,
+		threshold: 0,
+		target: window ? window() : undefined,
 	});
-  
+
 	return React.cloneElement(children, {
-	  elevation: trigger ? 4 : 0,
+		elevation: trigger ? 4 : 0,
 	});
-  }
-  
-  ElevationScroll.propTypes = {
+}
+
+ElevationScroll.propTypes = {
 	children: PropTypes.element.isRequired,
 	/**
 	 * Injected by the documentation to work in an iframe.
 	 * You won't need it on your project.
 	 */
 	window: PropTypes.func,
-  };
+};
 
 export default function Header(props) {
-	let {logoutUser} = useContext(AuthContext)
+	let { user, logoutUser } = useContext(AuthContext)
 	const classes = useStyles();
 	let history = useHistory();
 	const [data, setData] = useState({ search: '' });
@@ -144,83 +147,63 @@ export default function Header(props) {
 		});
 		window.location.reload();
 	};
+
 	return (
 		<React.Fragment>
 			<CssBaseline />
-			<ElevationScroll {...props}> 
-			<AppBar
-			posiiton="static"
-			 	elevation={0}
-				color='#006600'
-				className={classes.appBar}
-			>
-				<Toolbar className={classes.toolbar} id="back-to-top-anchor">
-					<Typography
-						variant="h6"
-						color="inherit"
-						noWrap
-						className={classes.toolbarTitle}
-					>
-						<Link
-							component={NavLink}
-							to="/"
-							underline="none"
-							color="textPrimary"
+			<ElevationScroll {...props}>
+				<AppBar
+					posiiton="static"
+					elevation={0}
+					color='#006600'
+					className={classes.appBar}
+				>
+					<Toolbar className={classes.toolbar} id="back-to-top-anchor">
+						<Typography
+							variant="h6"
+							color="inherit"
+							noWrap
+							className={classes.toolbarTitle}
 						>
-							<img src={logo} alt="logo" className={classes.logo} />
-						</Link>
-					</Typography>
-					<a href="https://facebook.com">
-						<img src={fb} alt="fb" className={classes.fbLogo} />
-					</a>
-					&nbsp;
-					<a href="https://twitter.com">
-						<img src={twit} alt="twit" className={classes.twLogo} />
-					</a>
-					&nbsp;
-					<a href="https://instagram.com">
-						<img src={insta} alt="insta" className={classes.insLogo} />
-					</a>
-					&ensp;
-					<SearchBar
-						placeholder="Szukaj..."
-						value={data.search}
-						onChange={(newValue) => setData({ search: newValue })}
-						onRequestSearch={() => goSearch(data.search)}
-					/>
-					<nav>
-						<Link
-							color="textPrimary"
-							href="#"
-							className={classes.link}
-							component={NavLink}
-							to="/register"
-						>
-							REJESTRACJA
-						</Link>
-					</nav>
-					<Button
-						href="#"
-						color="white"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						to="/login"
-					>
-						ZALOGUJ SIĘ
-					</Button>
-					<p
-						href="/login"
-						color="white"
-						variant="outlined"
-						className={classes.link}
-						component={NavLink}
-						onClick={logoutUser}
-					>
-						WYLOGUJ SIĘ
-					</p>
-				</Toolbar>
-			</AppBar>
+							<Link
+								component={NavLink}
+								to="/"
+								underline="none"
+								color="textPrimary"
+							>
+								<img src={logo} alt="logo" className={classes.logo} />
+							</Link>
+						</Typography>
+						<a href="https://facebook.com">
+							<img src={fb} alt="fb" className={classes.fbLogo} />
+						</a>
+						&nbsp;
+						<a href="https://twitter.com">
+							<img src={twit} alt="twit" className={classes.twLogo} />
+						</a>
+						&nbsp;
+						<a href="https://instagram.com">
+							<img src={insta} alt="insta" className={classes.insLogo} />
+						</a>
+						&ensp;
+						<SearchBar
+							placeholder="Szukaj..."
+							value={data.search}
+							onChange={(newValue) => setData({ search: newValue })}
+							onRequestSearch={() => goSearch(data.search)}
+						/>
+						{(user!="xxx") ? (
+							<RegisteredUser />
+						) : (
+							<UnregisteredUser />
+						)}
+						{(user!="xxx") &&
+							<Button href="/profile" variant="contained">
+								{user.username}
+							</Button>
+						}
+					</Toolbar>
+				</AppBar>
 			</ElevationScroll>
 		</React.Fragment>
 	);

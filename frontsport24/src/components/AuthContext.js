@@ -9,9 +9,8 @@ export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
 
-    let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
-    let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
-    let [username, setUsername] = useState(null);
+    let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : "xxx")
+    let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : "xxx")
 
     const history = useHistory();
 
@@ -31,7 +30,6 @@ export const AuthProvider = ({ children }) => {
         if (response.status === 200) {
             setAuthTokens(data);
             setUser(jwt_decode(data.access))
-            setUsername(data.username)
             console.log(authTokens)
             console.log(data)
             localStorage.setItem('authTokens', JSON.stringify(data))
@@ -44,8 +42,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     let logoutUser = () => {
-        setAuthTokens(null)
-        setUser(null)
+        setAuthTokens("xxx")
+        setUser("xxx")
         localStorage.removeItem('authTokens')
         history.push('/login')
     }
@@ -53,7 +51,6 @@ export const AuthProvider = ({ children }) => {
 
     let contextData = {
         user: user,
-        username: username,
         loginUser: loginUser,
         logoutUser: logoutUser
     }

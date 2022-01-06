@@ -135,7 +135,7 @@ export default function UserData() {
                     </Typography>
                    
                     <Button
-						href={'http://localhost:3000/edituser/' + user.username}
+						href={'http://localhost:3000/edituser/' + user.user_id}
                         color="white"
 						variant="outlined"
 						className={classes.link}
@@ -143,6 +143,7 @@ export default function UserData() {
 					>
 						EDYTUJ KONTO
 					</Button>
+                    {(user.role != "moderator") ? (
                     <Button
 						href={'http://localhost:3000/deleteuser/' + user.username}
 						color="white"
@@ -151,7 +152,7 @@ export default function UserData() {
 						//to="/logout"
 					>
 						USUŃ KONTO
-					</Button>
+					</Button> ) : null }
                    
                     </Container>
                     </div>
