@@ -55,6 +55,18 @@ class ArticleSerializer(serializers.ModelSerializer):
             'comments_number'
         )
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = (
+            'comment_id',
+            'author_id' ,
+            'date_of_create' ,
+            'date_of_last_change',
+            'text',
+            'article_id'
+        )
+        
 class NewArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article

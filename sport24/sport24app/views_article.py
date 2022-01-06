@@ -277,10 +277,18 @@ class AddArticle(APIView):
 
 class EditArticle(generics.UpdateAPIView):
     #permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ArticleSerializer
-    queryset = Article.objects.all()
+    try:
+        serializer_class = ArticleSerializer
+        queryset = Article.objects.all()
+    except Exception as e:
+        print (type(e))
 
 class DeleteArticle(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+    
+class AdminPostDetail(generics.RetrieveAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer

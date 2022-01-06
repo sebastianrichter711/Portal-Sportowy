@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, generics
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
@@ -67,13 +67,15 @@ def get_comments_for_article(request, article_id):
                 else:
                         minute = str(comment.date_of_create.minute)
                 if comment.date_of_last_change == None:
-                    new_comment = {"login": comment.author_id.user_name, 
+                    new_comment = {"comment_id": comment.comment_id,
+                                "login": comment.author_id.user_name, 
                                 "avatar": str(comment.author_id.avatar), 
                                 "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
                                 "text": comment.text}
                     comments_data.append(new_comment)
                 else:
-                    new_comment = {"login": comment.author_id.user_name, 
+                    new_comment = {"comment_id": comment.comment_id,
+                                "login": comment.author_id.user_name, 
                                 "avatar": str(comment.author_id.avatar), 
                                 "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
                                 "modified": str(comment.date_of_last_change.day) + "." + str(comment.date_of_last_change.month) + "." + str(comment.date_of_last_change.year) + " " + str(comment.date_of_last_change.hour) + ":" + minute,
@@ -101,4 +103,21 @@ class CreateCom(APIView):
             article.save()
             return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
+
+class DeleteComment(generics.RetrieveDestroyAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = CommentSerializer
+    queryset = Comment.objects.all()
     
+class CommentDetail(generics.RetrieveAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    
+class EditComment(generics.UpdateAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    try:
+        serializer_class = CommentSerializer
+        queryset = Comment.objects.all()
+    except Exception as e:
+        print (type(e))

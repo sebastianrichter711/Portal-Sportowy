@@ -49,11 +49,18 @@ urlpatterns = [
     path('search/', views_article.SearchedArticles.as_view(), name='postsearch'),
     path('add_comment/<int:article_id>/<str:username>', views_comment.CreateCom.as_view()),
     path('moderator/delete/<int:pk>/', views_article.DeleteArticle.as_view(), name='deletepost'),
-    path('moderator/edit/<int:pk>', views_article.EditArticle.as_view(), name='editpost'),
+    path('moderator/edit/<int:pk>/', views_article.EditArticle.as_view()),
+    path('moderator/edit/postdetail/<int:pk>/', views_article.AdminPostDetail.as_view(), name='admindetailpost'),
     path('moderator/delete_dis/<int:pk>/', views_discipline.DeleteDiscipline.as_view()),
     path('moderator/edit_dis/<int:pk>', views_discipline.EditDiscipline.as_view()),
     path('moderator/delete_game/<int:pk>', views_game.DeleteGame.as_view()),
     path('moderator/edit_game/<int:pk>', views_game.EditGame.as_view()),
+    path('deletecom/<int:pk>', views_comment.DeleteComment.as_view()),
+    path('com/detail/<int:pk>', views_comment.CommentDetail.as_view()),
+    path('editcom/<int:pk>', views_comment.EditComment.as_view()),
+
+
+
 
 ]
 
