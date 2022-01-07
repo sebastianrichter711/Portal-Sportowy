@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { NavLink } from 'react-router-dom';
-import AuthContext from './AuthContext';
+import AuthContext from './AuthContext'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -58,28 +58,28 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function EditandDeleteComments({login, comment_id}) {
+export default function EditandDeleteComments({login, comment_id, section}) {
     let { user, logoutUser } = useContext(AuthContext)
     const classes = useStyles();
-
+    console.log(user.section_name)
     return (
         <React.Fragment>
-            {(user.username == login) && ( <Link
+            {(user.username == login || user.section_name == section) ? ( <Link
                     color="textPrimary"
                     href={'/editcom/' + comment_id}
                     className={classes.link}
                 >
                     <EditIcon></EditIcon>
                 </Link>
-            )}
-           {(user.username == login) && (
+            ): null}
+           {(user.username == login || user.section_name == section) ? (
             <Link
                 color="textPrimary"
                 href={'/deletecom/' + comment_id}
                 className={classes.link}
             >
                 <DeleteForeverIcon></DeleteForeverIcon>
-            </Link> ) }
+            </Link> ) : null}
         </React.Fragment>
     )
 }

@@ -67,7 +67,7 @@ function ModeratorDisciplines() {
 
     const classes = useStyles();
 
-    if (!disciplines.disciplines || disciplines.disciplines.length === 0) return <p>Can not find any posts, sorry</p>;
+    if (!disciplines.disciplines || disciplines.disciplines.length === 0) return <p>Nie znaleziono dyscyplin</p>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">

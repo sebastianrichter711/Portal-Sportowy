@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useParams, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
@@ -12,6 +12,9 @@ import TableRow from '@material-ui/core/TableRow';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
+import AuthContext from '../../AuthContext';
+import axiosInstance from '../../../axios';
+
 
 const useStyles = makeStyles((theme) => ({
 	cardMedia: {
@@ -41,12 +44,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Posts = (props) => {
-	const { posts } = props;
+	const { posts, section } = props;
 	const classes = useStyles();
-	if (!posts || posts.length === 0) return <p>Can not find any posts, sorry</p>;
+	if (!posts || posts.length === 0) return ( <React.Fragment>
+		<p>Can not find any posts, sorry</p>
+										<Button
+											href={'/moderator/create/' + section}
+											variant="contained"
+											color="primary"
+										>
+											Dodaj artykuł
+										</Button>
+										</React.Fragment>);
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
+				<h1>Artykuły - {section} </h1>
 				<Paper className={classes.root}>
 					<TableContainer className={classes.container}>
 						<Table stickyHeader aria-label="sticky table">
@@ -56,7 +69,7 @@ const Posts = (props) => {
 									<TableCell align="left">Data utworzenia</TableCell>
 									<TableCell align="left">Url zdjęcia</TableCell>
 									<TableCell align="left">Tytuł</TableCell>
-                                    <TableCell align="left">Liczba odsłon</TableCell>
+									<TableCell align="left">Liczba odsłon</TableCell>
 									<TableCell align="left">Liczba komentarzy</TableCell>
 									<TableCell align="left">Akcje</TableCell>
 								</TableRow>
@@ -69,7 +82,7 @@ const Posts = (props) => {
 												{post.article_id}
 											</TableCell>
 											<TableCell align="left">{post.date_of_create}</TableCell>
-                                            <TableCell align="left">{post.big_title_photo}</TableCell>
+											<TableCell align="left">{post.big_title_photo}</TableCell>
 											<TableCell align="left">
 												<Link
 													color="textPrimary"
@@ -79,8 +92,8 @@ const Posts = (props) => {
 													{post.title}
 												</Link>
 											</TableCell>
-                                            <TableCell align="left">{post.page_views}</TableCell>
-                                            <TableCell align="left">{post.comments_number}</TableCell>
+											<TableCell align="left">{post.page_views}</TableCell>
+											<TableCell align="left">{post.comments_number}</TableCell>
 
 											<TableCell align="left">
 												<Link
@@ -104,18 +117,11 @@ const Posts = (props) => {
 								<TableRow>
 									<TableCell colSpan={4} align="right">
 										<Button
-											href={'/moderator/create'}
+											href={'/moderator/create/' + section}
 											variant="contained"
 											color="primary"
 										>
 											Dodaj artykuł
-										</Button>
-										<Button
-											href={'/moderator/create_matches'}
-											variant="contained"
-											color="primary"
-										>
-											Dodaj mecze
 										</Button>
 									</TableCell>
 								</TableRow>
@@ -127,4 +133,5 @@ const Posts = (props) => {
 		</React.Fragment>
 	);
 };
+
 export default Posts;

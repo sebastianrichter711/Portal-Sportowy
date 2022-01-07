@@ -51,23 +51,23 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function ModeratorGames() {
+export default function ModeratorGames() {
 
-    const [disciplines, setDisciplinesState] = useState({
-		disciplines: []
+    const [games, setGamesState] = useState({
+		games: []
 	});
 
     useEffect(() => {
 		axiosInstance.get("http://localhost:8000/api/get_all_games").then((res) => {
-			const allDisciplines = res.data;
-			setDisciplinesState({ disciplines: allDisciplines });
+			const allGames = res.data;
+			setGamesState({ games: allGames });
 			console.log(res.data);
 		});
-	}, [setDisciplinesState]);
+	}, [setGamesState]);
 
     const classes = useStyles();
 
-    if (!disciplines.disciplines || disciplines.disciplines.length === 0) return <p>Can not find any posts, sorry</p>;
+    if (!games.games || games.games.length === 0) return <p>Nie znaleziono rozgrywek</p>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
@@ -84,26 +84,26 @@ function ModeratorGames() {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{disciplines.disciplines.map((discipline) => {
+								{games.games.map((game) => {
 									return (
 										<TableRow>
 											<TableCell component="th" scope="row">
-												{discipline.game_id}
+												{game.game_id}
 											</TableCell>
-											<TableCell align="left">{discipline.db_game_id}</TableCell>
-											<TableCell align="left">{discipline.name}</TableCell>
-                                            <TableCell align="left">{discipline.logo}</TableCell>
+											<TableCell align="left">{game.db_game_id}</TableCell>
+											<TableCell align="left">{game.name}</TableCell>
+                                            <TableCell align="left">{game.logo}</TableCell>
 											<TableCell align="left">
 												<Link
 													color="textPrimary"
-													href={'/moderator/edit_game/' + discipline.game_id}
+													href={'/moderator/edit_game/' + game.game_id}
 													className={classes.link}
 												>
 													<EditIcon></EditIcon>
 												</Link>
 												<Link
 													color="textPrimary"
-													href={'/moderator/delete_game/' + discipline.game_id}
+													href={'/moderator/delete_game/' + game.game_id}
 													className={classes.link}
 												>
 													<DeleteForeverIcon></DeleteForeverIcon>
@@ -132,4 +132,3 @@ function ModeratorGames() {
     );
 }
 
-export default ModeratorGames;

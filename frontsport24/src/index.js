@@ -6,9 +6,9 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import App from './App';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Register from './components/register';
-import Login from './components/login';
-import Logout from './components/logout';
+import Register from './components/auth/register';
+import Login from './components/auth/login';
+import Logout from './components/auth/logout';
 import reportWebVitals from './reportWebVitals';
 import Search from './components/SearchArticles';
 import Post from './components/Post';
@@ -35,7 +35,12 @@ import EditUser from './components/EditUser';
 import DeleteUser from './components/DeleteUser';
 import DeleteComment from './components/DeleteComment';
 import EditComment from './components/EditComment';
-
+import ModeratorArticle from './components/moderator/articles/posts';
+import ModeratorResults from './components/moderator/results/results';
+import EditSeason from './components/moderator/seasons/edit';
+import DeleteSeason from './components/moderator/seasons/delete';
+import EditMatch from './components/moderator/matches/edit';
+import DeleteMatch from './components/moderator/matches/delete';
 
 const routing = (
 	<Router>
@@ -56,7 +61,7 @@ const routing = (
 					<Route path="/profile" component={UserData} />
 					<Route path="/dis" component={AddDiscipline} />
 					<Route exact path="/moderator" component={Admin} />
-					<Route exact path="/moderator/create" component={AddArticle} />
+					<Route exact path="/moderator/create/:section_name" component={AddArticle} />
 					<Route exact path="/moderator/create_game" component={AddGame} />
 					<Route exact path="/moderator/create_matches" component={AddMatches} />
 					<Route exact path="/moderator/edit/:id/" component={Edit} />
@@ -65,11 +70,18 @@ const routing = (
 					<Route exact path="/moderator/delete_dis/:id" component={DeleteDis} />
 					<Route exact path="/moderator/edit_game/:id" component={EditGame} />
 					<Route exact path="/moderator/delete_game/:id" component={DeleteGame} />
+					<Route exact path="/moderator/edit_season/:id" component={EditSeason} />
+					<Route exact path="/moderator/delete_season/:id" component={DeleteSeason} />
+					<Route exact path="/moderator/edit_match/:id" component={EditMatch}/>
+					<Route exact path="/moderator/delete_match/:id" component={DeleteMatch} />
 					<Route path="/add_discipline" component={AddDiscipline} />
 					<Route path="/edituser/:username" component={EditUser} />
 					<Route path="/deleteuser/:username" component={DeleteUser} />
 					<Route path="/deletecom/:id" component={DeleteComment} />
 					<Route path="/editcom/:id" component={EditComment} />
+					<Route path="/moderator/results" component={ModeratorResults} />
+
+
 				</Switch>
 				<Footer />
 			</AuthProvider>

@@ -11,7 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import AuthContext from './AuthContext';
+import AuthContext from './AuthContext'
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +49,7 @@ export default function UserData() {
         });
     }, [setData]);
 
-    var userAvatar = 'http://localhost:8000/' + data.userData.avatar
+    var userAvatar = 'http://localhost:8000/media/' + data.userData.avatar
     console.log(userAvatar)
     return (
         <Container component="main" xs={3} md={3}>

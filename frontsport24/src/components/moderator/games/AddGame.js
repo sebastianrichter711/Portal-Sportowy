@@ -12,6 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import '../../../style.css'
+import { Select } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -59,26 +63,25 @@ export default function AddDiscipline() {
 	});
 
 	const [postData, updateFormData] = useState(initialFormData);
-    const [postImage, setPostImage] = useState(null);
+	const [postImage, setPostImage] = useState(null);
 
 	const [disciplines, setDisciplinesState] = useState({
 		disciplines: []
 	});
 
-    const [discipline, setDisciplineState] = useState('')
+	const [discipline, setDisciplineState] = useState('')
 
 	const handleDisciplineChange = (event) => {
-        setDisciplineState(event.target.value);
-    };
-
+		setDisciplineState(event.target.value);
+	};
 
 	const handleChange = (e) => {
-        if ([[e.target.name] == 'image']){
-            setPostImage({
-                image: e.target.files,
-            });
-            console.log(e.target.files);
-        }
+		if ([[e.target.name] == 'image']) {
+			setPostImage({
+				image: e.target.files,
+			});
+			console.log(e.target.files);
+		}
 		if ([e.target.name] == 'name') {
 			updateFormData({
 				...postData,
@@ -103,28 +106,29 @@ export default function AddDiscipline() {
 		});
 	}, [setDisciplinesState]);
 
-    // const config = {headers: {'Content-Type': 'multipart/form-data'}};
-    // const URL = 'http://127.0.0.1:8000/add_discipline/';
-    // let formData = new FormData();
-    // formData.append('name', postData.name);
-    // formData.append('icon', postImage.image[0]);
-    // axios
-    //     .post(URL,formData,config)
-    //     .then((res) => {
-    //     console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    
+	// const config = {headers: {'Content-Type': 'multipart/form-data'}};
+	// const URL = 'http://127.0.0.1:8000/add_discipline/';
+	// let formData = new FormData();
+	// formData.append('name', postData.name);
+	// formData.append('icon', postImage.image[0]);
+	// axios
+	//     .post(URL,formData,config)
+	//     .then((res) => {
+	//     console.log(res.data);
+	//     })
+	//     .catch((err) => console.log(err));
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        let formData = new FormData();
-        formData.append('name', postData.name);
-        formData.append('icon', postImage.image[0]);
+		let formData = new FormData();
+		formData.append('db_game_id', postData.db_game_id);
+		formData.append('name', postData.name);
+		formData.append('icon', postImage.image[0]);
 		axiosInstance.post(`add_game/`, formData);
 		history.push({
 			pathname: 'add_game/'
 		});
-	    window.location.reload();
+		window.location.reload();
 	};
 
 	const classes = useStyles();
@@ -138,6 +142,18 @@ export default function AddDiscipline() {
 				</Typography>
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
+					<Grid item xs={12}>
+							<TextField
+								variant="outlined"
+								required
+								fullWidth
+								id="db_game_id"
+								label="Id gry"
+								name="db_game_id"
+								autoComplete="db_game_id"
+								onChange={handleChange}
+							/>
+						</Grid>
 						<Grid item xs={12}>
 							<TextField
 								variant="outlined"
@@ -150,24 +166,29 @@ export default function AddDiscipline() {
 								onChange={handleChange}
 							/>
 						</Grid>
-                        <input
-                        accept='image/*'
-                        className={classes.input}
-                        id="post-image"
-                        onChange={handleChange}
-                        name="image"
-                        type="file"
-                        />
-						<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="disciplineName"
-								label="Dyscyplina"
-								name="disciplineName"
-								autoComplete="disciplineName"
-								onChange={handleChange}
-							/>
+						<input
+							accept='image/*'
+							className={classes.input}
+							id="post-image"
+							onChange={handleChange}
+							name="image"
+							type="file"
+						/>
+						<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+							<InputLabel id="demo-simple-select-standard-label">Dyscyplina</InputLabel>
+							<Select className="custom-select1"
+								name="discipline"
+								//value={discipline}
+								onChange={handleDisciplineChange}
+
+							>
+								{disciplines.disciplines.map((d) => (
+									<MenuItem value={d.name}>
+										{d.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</Grid>
 					<Button
 						type="submit"

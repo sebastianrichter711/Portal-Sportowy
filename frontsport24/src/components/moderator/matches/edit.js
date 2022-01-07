@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EditGame() {
+export default function EditMatch() {
     const history = useHistory();
     const { id } = useParams();
     const initialFormData = Object.freeze({

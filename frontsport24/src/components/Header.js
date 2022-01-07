@@ -202,6 +202,12 @@ export default function Header(props) {
 								{user.username}
 							</Button>
 						}
+						{(user.role == "moderator-art") && <Button href="/moderator" variant="contained">
+								PANEL MODERATROSKI 
+							</Button>}
+						{(user.role == "moderator-wyniki") && <Button href="/moderator/results" variant="contained">
+								PANEL MODERATROSKI - WYNIKI
+							</Button>}
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>

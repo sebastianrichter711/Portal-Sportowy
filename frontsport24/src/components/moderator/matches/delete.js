@@ -6,14 +6,14 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-export default function DeleteGame() {
+export default function DeleteMatch() {
 	const history = useHistory();
 	const { id } = useParams();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		axiosInstance
-			.delete('moderator/delete_game/' + id)
+			.delete('moderator/delete_match/' + id)
 			.catch(function (error) {
 				if (error.response) {
 					console.log(error.response.data);

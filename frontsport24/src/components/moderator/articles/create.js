@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axiosInstance from '../../../axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import axios from '../../../axios';
 //MaterialUI
 import Button from '@material-ui/core/Button';
@@ -54,12 +54,13 @@ export default function AddArticle() {
 	}
 
 	const history = useHistory();
+	const { section_name } = useParams();
 	const initialFormData = Object.freeze({
-	    url: '',
+		url: '',
 	});
 
 	const [postData, updateFormData] = useState(initialFormData);
-    const [postImage, setPostImage] = useState(null);
+	const [postImage, setPostImage] = useState(null);
 
 	const handleChange = (e) => {
 		if ([e.target.name] == 'url') {
@@ -78,27 +79,27 @@ export default function AddArticle() {
 		}
 	};
 
-    // const config = {headers: {'Content-Type': 'multipart/form-data'}};
-    // const URL = 'http://127.0.0.1:8000/add_discipline/';
-    // let formData = new FormData();
-    // formData.append('name', postData.name);
-    // formData.append('icon', postImage.image[0]);
-    // axios
-    //     .post(URL,formData,config)
-    //     .then((res) => {
-    //     console.log(res.data);
-    //     })
-    //     .catch((err) => console.log(err));
-    
+	// const config = {headers: {'Content-Type': 'multipart/form-data'}};
+	// const URL = 'http://127.0.0.1:8000/add_discipline/';
+	// let formData = new FormData();
+	// formData.append('name', postData.name);
+	// formData.append('icon', postImage.image[0]);
+	// axios
+	//     .post(URL,formData,config)
+	//     .then((res) => {
+	//     console.log(res.data);
+	//     })
+	//     .catch((err) => console.log(err));
+
 	const handleSubmit = (e) => {
 		e.preventDefault();
-        let formData = new FormData();
-        formData.append('url', postData.url);
-		axiosInstance.post("http://localhost:8000/api/download_articles/Piłka nożna", formData);
+		let formData = new FormData();
+		formData.append('url', postData.url);
+		axiosInstance.post("http://localhost:8000/api/download_articles/" + section_name, formData);
 		history.push({
-		 	pathname: '/'
-		 });
-	    //window.location.reload();
+		 	pathname: '/moderator/create/' + section_name,
+		});
+		window.location.reload();
 	};
 
 	const classes = useStyles();

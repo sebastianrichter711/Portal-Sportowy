@@ -12,7 +12,7 @@ import { List, ListItem, ListItemButton } from '@material-ui/core';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Button } from '@material-ui/core';
 import Post from './Post';
-import AuthContext from './AuthContext';
+import AuthContext from './AuthContext'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 import EditandDeleteComments from './EditAndDeleteComments';
@@ -111,7 +111,7 @@ const ArticleComments = (props) => {
                                         >
                                             {comment.modified} {comment.text}
                                         </Typography> 
-                                        <EditandDeleteComments login={comment.login} comment_id={comment.comment_id}/>
+                                        <EditandDeleteComments login={comment.login} comment_id={comment.comment_id} section={comment.section}/>
                                         {/* {(user.username == comment.login) ? (
                                         <Link
                                             color="textPrimary"

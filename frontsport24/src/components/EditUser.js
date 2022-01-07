@@ -14,7 +14,8 @@ import { MenuItem } from '@material-ui/core';
 import { InputLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
 import jwt_decode from "jwt-decode";
-import AuthContext from './AuthContext';
+import AuthContext from './AuthContext'
+import { CalendarComponent } from '@syncfusion/ej2-react-calendars';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ export default function Edit() {
 
     const history = useHistory();
     const { username } = useParams();
+    const dateValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const initialFormData = Object.freeze({
         //id: '',
         user_name: '',
@@ -54,11 +56,33 @@ export default function Edit() {
     const [formData, updateFormData] = useState(initialFormData);
     const [sex, setSexState] = useState('');
     const [postImage, setPostImage] = useState(null);
-
+    const [date, setDate] = useState('');
 
     const handleSexChange = (event) => {
         setSexState(event.target.value);
     };
+
+    const handleDateChange = (event) => {
+        console.log(dateValue);
+        let gotDay = new Date(event.target.value).getDate().toString();
+        if (gotDay >=0 && gotDay <=9){
+            gotDay = '0' + gotDay;
+        } 
+        let gotMonth = new Date(event.target.value).getMonth()+1;
+        let convertedMonth = gotMonth.toString();
+        console.log(convertedMonth)
+        if (convertedMonth >=0 && convertedMonth <=9){
+            convertedMonth = '0' + convertedMonth;
+        } 
+        let gotYear = new Date(event.target.value).getFullYear().toString();
+        console.log(gotDay);
+        console.log(convertedMonth);
+        console.log(gotYear);
+        let dateToApply = gotYear + "-" + convertedMonth + "-" + gotDay
+        setDate(dateToApply);
+        console.log(dateToApply);
+    };
+
 
     useEffect(() => {
         axiosInstance.get("http://localhost:8000/api/user/edit/detail/" + user.user_id).then((res) => {
@@ -69,13 +93,18 @@ export default function Edit() {
                 ['email']: res.data.email,
                 ['first_name']: res.data.first_name,
                 ['last_name']: res.data.last_name,
-                ['sex']: sex,
+                ['sex']: res.data.sex,
                 ['birth_date']: res.data.birth_date,
                 ['phone_number']: res.data.phone_number,
-                //['avatar']: res.data.avatar
+                ['avatar']: res.data.avatar
 
+                
             });
+            setSexState(res.data.sex)
+            setDate(res.data.birth_date)
+            setPostImage(res.data.avatar)
             console.log(res.data);
+            console.log(postImage)
         });
     }, [updateFormData]);
 
@@ -96,50 +125,26 @@ export default function Edit() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);
-
-        axiosInstance.put('user/edit/' + user.user_id, {
-            //articleId: formData.articleId,
-            user_name: formData.user_name,
-            email: formData.email,
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            sex: sex,
-            birth_date: formData.birth_date,
-            phone_number: formData.phone_number,
-            avatar: postImage.image[0]
-
-        });
+        let newFormData = new FormData();
+        newFormData.append('user_name', formData.user_name);
+        newFormData.append('email', formData.email);
+        newFormData.append('first_name', formData.first_name);
+        newFormData.append('last_name', formData.last_name);
+        newFormData.append('sex', sex);
+        newFormData.append('birth_date', date);
+        newFormData.append('phone_number', formData.phone_number);
+        //console.log(postImage.image[0])
+        newFormData.append('avatar', postImage.image[0]);
+        axiosInstance.put('user/edit/' + user.user_id, newFormData);
 
         console.log(postImage.image[0])
 
-        // let response = fetch('http://127.0.0.1:8000/api/token/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ 'email': formData.email, 'password': password })
-        // })
-        // let data = response.json()
-        // console.log('dta: ', data)
-        // console.log('res: ', response)
+        console.log(formData.sex)
+        history.push({
+             pathname: '/edituser/' + user.user_id,
+        });
 
-        // if (response.status === 200) {
-        //     setAuthTokens(data);
-        //     setUser(jwt_decode(data.access))
-        //     console.log(authTokens)
-        //     console.log(data)
-        //     localStorage.setItem('authTokens', JSON.stringify(data))
-        //     history.push('/')
-
-        // } else {
-        //     alert("Niepoprawny email lub hasło!");
-        // }
-        // console.log(user)
-        // history.push({
-        //     pathname: '/edituser/' + formData.login,
-        // });
-
-        //window.location.reload();
+        window.location.reload();
     };
 
 
@@ -167,14 +172,6 @@ export default function Edit() {
                             onChange={handleChange}
                         />
                     </Grid> */}
-                        <input
-                            accept='image/*'
-                            className={classes.input}
-                            id="post-image"
-                            onChange={handleChange}
-                            name="avatar"
-                            type="file"
-                        />
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -242,7 +239,6 @@ export default function Edit() {
                                     <MenuItem value="kobieta"> Kobieta </MenuItem>
                                     <MenuItem value="mężczyzna"> Mężczyzna </MenuItem>
                                 </Select>
-                                {initialFormData.sex}
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
@@ -260,6 +256,8 @@ export default function Edit() {
                                 rows={8}
                             />
                         </Grid>
+                        <CalendarComponent value={dateValue} onChange={handleDateChange}
+                            ></CalendarComponent>
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
@@ -275,6 +273,14 @@ export default function Edit() {
                                 rows={8}
                             />
                         </Grid>
+                        <input
+                            accept='image/*'
+                            className={classes.input}
+                            id="avatar"
+                            onChange={handleChange}
+                            name="avatar"
+                            type="file"
+                        />
                     </Grid>
                     <Button
                         type="submit"

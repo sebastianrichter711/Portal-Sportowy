@@ -6,7 +6,7 @@ import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-export default function Delete() {
+export default function Discipline() {
 	const history = useHistory();
 	const { id } = useParams();
 
@@ -23,7 +23,7 @@ export default function Delete() {
 			})
 			.then(function () {
 					history.push({
-						pathname: '/moderator/',
+						pathname: '/moderator/results',
 					});
 					window.location.reload();
 			});
