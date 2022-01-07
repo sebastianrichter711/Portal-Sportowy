@@ -126,16 +126,24 @@ class MatchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Match
         fields = (
+            'match_id',
             'match_date',
             'host',
             'guest',
-            'score'
+            'score',
+            'season_id'
         )
         
 class SeasonSerializer(serializers.ModelSerializer):
+    game_id = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field='name'
+    )
     class Meta:
         model = Season
         fields = (
+            'season_id',
             'season',
             'phase',
             'round',

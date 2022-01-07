@@ -15,6 +15,7 @@ import os
 from sport24.settings import BASE_DIR
 from PIL import Image
 import requests
+from sport24app.models import *
 
 
 class CustomUserCreate(APIView):
@@ -51,9 +52,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
+        if user.role == "moderator-art":
+            section = Section.objects.get(moderator_id = user)
+            if section:
+                section_name = section.name
+        else:
+            section_name = ""
+            
         # Add custom claims
         token['username'] = user.user_name
         token['role'] = user.role
+        token['section_name'] = section_name
         # ...
 
         return token

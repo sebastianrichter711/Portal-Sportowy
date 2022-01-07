@@ -1,5 +1,6 @@
 from datetime import datetime
-from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework import status,generics
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
@@ -62,4 +63,36 @@ def get_all_rounds(request, season, name):
                 seasons_serial = ShortRoundSerializer(seasons, many = True)
                 return JsonResponse(seasons_serial.data, safe=False, status=status.HTTP_200_OK)
             return JsonResponse("Nie znaleziono rund dla danych: ligi, sezonu!", safe=False, status=status.HTTP_404_NOT_FOUND)
+        
+class EditSeason(generics.UpdateAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SeasonSerializer
+    queryset = Season.objects.all()
+
+class DeleteSeason(generics.RetrieveDestroyAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SeasonSerializer
+    queryset = Season.objects.all()
+    
+class SeasonDetail(generics.RetrieveAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    queryset = Season.objects.all()
+    serializer_class = SeasonSerializer
+    
+@csrf_exempt
+def get_seasons(request):
+    if request.method == 'GET':
+        seasons = Season.objects.all()
+        print(seasons)
+        for season in seasons:
+            all_seasons = []
+            new_season = {"season_id": season.season_id, "season": season.season, "phase": season.phase, "round": season.round, "game": season.game_id.name}
+            print(new_season)
+        all_seasons.append(new_season)
+    return JsonResponse(all_seasons, safe=False, status=status.HTTP_200_OK)
+#return JsonResponse("Nie znaleziono sezonów!", safe=False, status=status.HTTP_404_NOT_FOUND)
+
+
+        
+
 

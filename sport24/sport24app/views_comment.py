@@ -58,31 +58,36 @@ def get_comments_for_article(request, article_id):
     if request.method == "GET":
         article = Article.objects.get(article_id=article_id)
         if article:
-            comments = Comment.objects.filter(article_id=article_id).order_by('-date_of_create')
-            comments_data = []
-            #comments_data.append({"Komentarze": + article.comments_number})
-            for comment in comments:
-                if 0 <= comment.date_of_create.minute <= 9:
+            comments = Comment.objects.filter(article_id=article).order_by('-date_of_create')
+            if comments:
+                print(comments)
+                comments_data = []
+                for comment in comments:
+                    if 0 <= comment.date_of_create.minute <= 9:
                         minute = '0' + str(comment.date_of_create.minute)
-                else:
+                    else:
                         minute = str(comment.date_of_create.minute)
-                if comment.date_of_last_change == None:
-                    new_comment = {"comment_id": comment.comment_id,
-                                "login": comment.author_id.user_name, 
-                                "avatar": str(comment.author_id.avatar), 
-                                "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
-                                "text": comment.text}
-                    comments_data.append(new_comment)
-                else:
-                    new_comment = {"comment_id": comment.comment_id,
-                                "login": comment.author_id.user_name, 
-                                "avatar": str(comment.author_id.avatar), 
-                                "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
-                                "modified": str(comment.date_of_last_change.day) + "." + str(comment.date_of_last_change.month) + "." + str(comment.date_of_last_change.year) + " " + str(comment.date_of_last_change.hour) + ":" + minute,
-                                "text": comment.text}
-                    comments_data.append(new_comment)
-            return JsonResponse(comments_data, safe=False, status=status.HTTP_200_OK)
-        return JsonResponse("Nie znaleziono artykułu o podanym ID!", safe=False, status = status.HTTP_404_NOT_FOUND)
+                    if comment.date_of_last_change == None:
+                        new_comment = {"comment_id": comment.comment_id,
+                                        "login": comment.author_id.user_name, 
+                                        "avatar": str(comment.author_id.avatar), 
+                                        "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
+                                        "text": comment.text,
+                                        "section": comment.article_id.section_id.name}
+                        comments_data.append(new_comment)
+                    else:
+                        new_comment = {"comment_id": comment.comment_id,
+                                    "login": comment.author_id.user_name, 
+                                    "avatar": str(comment.author_id.avatar), 
+                                    "date_of_create": str(comment.date_of_create.day) + "." + str(comment.date_of_create.month) + "." + str(comment.date_of_create.year) + " " + str(comment.date_of_create.hour) + ":" + minute,
+                                    "modified": str(comment.date_of_last_change.day) + "." + str(comment.date_of_last_change.month) + "." + str(comment.date_of_last_change.year) + " " + str(comment.date_of_last_change.hour) + ":" + minute,
+                                    "text": comment.text,
+                                    "section": comment.article_id.section_id.name}
+                        comments_data.append(new_comment)
+                        
+                print(comments_data)
+                return JsonResponse(comments_data, safe=False, status=status.HTTP_200_OK)
+            return JsonResponse("Nie znaleziono artykułu o podanym ID!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 class CreateCom(APIView):
     #permission_classes=[permissions.Is_Authenticated]

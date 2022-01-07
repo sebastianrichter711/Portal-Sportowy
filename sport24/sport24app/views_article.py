@@ -1,6 +1,7 @@
 from rest_framework import status,generics,filters,viewsets
 from rest_framework.views import APIView
 from sport24.settings import BASE_DIR
+from users.models import NewUser
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
@@ -107,10 +108,14 @@ def get_article(request, article_id):
                 minute = "0" + str(article.date_of_create.minute)
             else:
                 minute = str(article.date_of_create.minute)
+            if 0 <= article.date_of_create.month <= 9:
+                month = '0' + str(article.date_of_create.month)
+            else:
+                month = str(article.date_of_create.month)
             article_data = {}
             article_data['id'] = article.article_id
             article_data['title'] = article.title
-            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute
+            article_data['date_of_create'] = str(article.date_of_create.day) + "." + month + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute
             if article.date_of_last_change != None:
                 article_data['date_of_last_change'] = str(article.date_of_last_change)
             article_data['lead_text'] = article.lead_text
@@ -156,6 +161,44 @@ def find_articles_by_keyword(request, keyword):
         return JsonResponse("Nie znaleziono artykułów dla słowa " + keyword + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
  
 @csrf_exempt
+def get_articles_for_section_moderator(request, username):
+    if request.method == "GET":
+        user = NewUser.objects.get(user_name=username)
+        if user:
+            section = Section.objects.get(moderator_id=user)
+            if section:
+                #if art_number == 0:
+                #    section_articles = Article.objects.filter(section_id = section)
+                #else:
+                section_articles = Article.objects.filter(section_id = section).order_by('-date_of_create')
+                if section_articles:
+                    article_data = []
+                    for article in section_articles:
+                        if 0 <= article.date_of_create.minute <= 9:
+                            minute = '0' + str(article.date_of_create.minute)
+                        else:
+                            minute = str(article.date_of_create.minute)
+                        if 0 <= article.date_of_create.month <= 9:
+                            month = '0' + str(article.date_of_create.month)
+                        else:
+                            month = str(article.date_of_create.month)
+                        new_article = {
+                        'article_id': article.article_id,
+                        'date_of_create' : str(article.date_of_create.day) + "." + month + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute,
+                        'title' : article.title,
+                        'lead_text' : article.lead_text,
+                        'big_title_photo' : str(article.big_title_photo),
+                        'page_views' : article.page_views,
+                        'comments_number' : article.comments_number,
+                        'section': section.name
+                        }
+                        article_data.append(new_article)
+                    #section_articles_serial = ShortArticleSerializer(section_articles, many = True)
+                    return JsonResponse(article_data, safe=False, status=status.HTTP_200_OK)
+                return JsonResponse("Nie znaleziono artykułów dla działu " + section.name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+            return JsonResponse("Nie znaleziono działu " + section.name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+        
+@csrf_exempt
 def get_articles_for_section(request, section_name):
     if request.method == "GET":
         section = Section.objects.get(name=section_name)
@@ -171,20 +214,25 @@ def get_articles_for_section(request, section_name):
                         minute = '0' + str(article.date_of_create.minute)
                     else:
                         minute = str(article.date_of_create.minute)
+                    if 0 <= article.date_of_create.month <= 9:
+                        month = '0' + str(article.date_of_create.month)
+                    else:
+                        month = str(article.date_of_create.month)
                     new_article = {
-                    'article_id': article.article_id,
-                    'date_of_create' : str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute,
-                    'title' : article.title,
-                    'lead_text' : article.lead_text,
-                    'big_title_photo' : str(article.big_title_photo),
-                    'page_views' : article.page_views,
-                    'comments_number' : article.comments_number
-                    }
+                        'article_id': article.article_id,
+                        'date_of_create' : str(article.date_of_create.day) + "." + month + "." + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + ":" + minute,
+                        'title' : article.title,
+                        'lead_text' : article.lead_text,
+                        'big_title_photo' : str(article.big_title_photo),
+                        'page_views' : article.page_views,
+                        'comments_number' : article.comments_number,
+                        'section': section.name
+                        }
                     article_data.append(new_article)
-                #section_articles_serial = ShortArticleSerializer(section_articles, many = True)
+                    #section_articles_serial = ShortArticleSerializer(section_articles, many = True)
                 return JsonResponse(article_data, safe=False, status=status.HTTP_200_OK)
-            return JsonResponse("Nie znaleziono artykułów dla działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
-        return JsonResponse("Nie znaleziono działu " + section_name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+            return JsonResponse("Nie znaleziono artykułów dla działu " + section.name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
+        return JsonResponse("Nie znaleziono działu " + section.name + "!", safe=False, status = status.HTTP_404_NOT_FOUND)
     
 @csrf_exempt
 def get_newest_article(request, id=0):
@@ -254,9 +302,13 @@ class PostDetail(generics.RetrieveAPIView):
         print(slug)
         article = Article.objects.filter(title=slug)
         if article:
+            if 0 <= article.date_of_create.month <= 9:
+                month = '0' + str(article.date_of_create.month)
+            else:
+                month = str(article.date_of_create.month)
             article_data = {}
             article_data['title'] = article.title
-            article_data['date_of_create'] = str(article.date_of_create.day) + "." + str(article.date_of_create.month) + "." 
+            article_data['date_of_create'] = str(article.date_of_create.day) + "." + month + "." 
             + str(article.date_of_create.year) + " " + str(article.date_of_create.hour) + "." + str(article.date_of_create.minute)
             if article.date_of_last_change != None:
                 article_data['date_of_last_change'] = str(article.date_of_last_change)
@@ -270,7 +322,7 @@ class AddArticle(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
     def post(self,request,section_name,format=None):
-        download_data = download_article(request.data["url"], section_name="Piłka nożna")
+        download_data = download_article(request.data["url"], section_name=section_name)
         if download_data == True:
             return JsonResponse("Dodano artykuł/-y.", safe=False, status = status.HTTP_200_OK)
         return JsonResponse("Nie dodano artykułu/-ów!", safe=False, status = status.HTTP_404_NOT_FOUND)

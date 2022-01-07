@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status,generics
 from .models import *
 from .serializers import *
 from django.views.decorators.csrf import csrf_exempt
@@ -9,8 +9,6 @@ import requests
 from bs4 import BeautifulSoup
 from rest_framework.views import APIView
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
-
-
 
 def download_matches(game, phase, round, season):
     
@@ -118,5 +116,26 @@ class AddMatches(APIView):
         download_matches(game, request.data['phase'], request.data['round'], request.data['season'])
         return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
     #return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
+
+class EditMatch(generics.UpdateAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MatchSerializer
+    queryset = Match.objects.all()
+
+class DeleteMatch(generics.RetrieveDestroyAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MatchSerializer
+    queryset = Match.objects.all()
+    
+class MatchDetail(generics.RetrieveAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    queryset = Match.objects.all()
+    serializer_class = MatchSerializer
+        
+class MatchList(generics.ListAPIView):
+
+    serializer_class = MatchSerializer
+    queryset = Match.objects.all()
+
         
             

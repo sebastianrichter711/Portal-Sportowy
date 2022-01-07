@@ -50,7 +50,7 @@ def edit_game(request, game_id):
 class AddGame(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
-    def post(self,request,format=None):
+    def post(self,request,discipline, format=None):
         serializer = PostGameSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
