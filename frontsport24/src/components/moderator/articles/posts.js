@@ -47,7 +47,7 @@ const Posts = (props) => {
 	const { posts, section } = props;
 	const classes = useStyles();
 	if (!posts || posts.length === 0) return ( <React.Fragment>
-		<p>Can not find any posts, sorry</p>
+		<h1>Nie znaleziono artykułów dla sekcji {section}</h1>
 										<Button
 											href={'/moderator/create/' + section}
 											variant="contained"

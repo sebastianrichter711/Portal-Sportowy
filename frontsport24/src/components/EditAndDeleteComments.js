@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function EditandDeleteComments({login, comment_id, section}) {
+export default function EditandDeleteComments({login, comment_id, section, article_id}) {
     let { user, logoutUser } = useContext(AuthContext)
     const classes = useStyles();
     console.log(user.section_name)
@@ -75,7 +75,7 @@ export default function EditandDeleteComments({login, comment_id, section}) {
            {(user.username == login || user.section_name == section) ? (
             <Link
                 color="textPrimary"
-                href={'/deletecom/' + comment_id}
+                href={'/deletecom/' + comment_id + "/" + article_id}
                 className={classes.link}
             >
                 <DeleteForeverIcon></DeleteForeverIcon>

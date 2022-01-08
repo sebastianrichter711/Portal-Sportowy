@@ -21,6 +21,7 @@ import { Slide } from '@material-ui/core';
 import AuthContext from './AuthContext';
 import UnregisteredUser from './UnregisteredUser';
 import RegisteredUser from './RegisteredUser';
+import { yellow } from '@material-ui/core/colors';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -186,28 +187,32 @@ export default function Header(props) {
 							<img src={insta} alt="insta" className={classes.insLogo} />
 						</a>
 						&ensp;
+						<Button href='http://localhost:3000/disciplines' variant="contained">
+							WYNIKI
+						</Button>
+						&ensp;
 						<SearchBar
 							placeholder="Szukaj..."
 							value={data.search}
 							onChange={(newValue) => setData({ search: newValue })}
 							onRequestSearch={() => goSearch(data.search)}
 						/>
-						{(user!="xxx") ? (
+						{(user != "xxx") ? (
 							<RegisteredUser />
 						) : (
 							<UnregisteredUser />
 						)}
-						{(user!="xxx") &&
+						{(user != "xxx") &&
 							<Button href="/profile" variant="contained">
 								{user.username}
 							</Button>
 						}
 						{(user.role == "moderator-art") && <Button href="/moderator" variant="contained">
-								PANEL MODERATROSKI 
-							</Button>}
+							PANEL MODERATROSKI
+						</Button>}
 						{(user.role == "moderator-wyniki") && <Button href="/moderator/results" variant="contained">
-								PANEL MODERATROSKI - WYNIKI
-							</Button>}
+							PANEL MODERATROSKI - WYNIKI
+						</Button>}
 					</Toolbar>
 				</AppBar>
 			</ElevationScroll>

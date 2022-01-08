@@ -57,13 +57,17 @@ const Search = () => {
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
-				<br/>
-				<br/>
+				<br />
+				<br />
+				<br />
+				<br />
 				<br/>
 				<Grid container spacing={5} alignItems="flex-end">
 					<br/>
-					<h1> Wyniki wyszukiwania dla słowa "{window.location.search.slice(1).split("&")[0].split("=")[1]}" </h1> 
 					<br/>
+					<br/>
+					<h1> Wyniki wyszukiwania dla słowa "{window.location.search.slice(1).split("&")[0].split("=")[1]}" </h1>
+					<br />
 				</Grid>
 				<Grid container spacing={5} alignItems="flex-end">
 					{appState.articles.map((article) => {

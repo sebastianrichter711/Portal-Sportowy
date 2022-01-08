@@ -93,14 +93,6 @@ const ArticleComments = (props) => {
                                             component="h2"
                                             className={classes.postTitle}
                                         >
-                                            {comment.avatar}
-                                        </Typography>
-                                        <Typography
-                                            gutterBottom
-                                            variant="h6"
-                                            component="h2"
-                                            className={classes.postTitle}
-                                        >
                                             {comment.login} {comment.date_of_create}
                                         </Typography>
                                         <Typography
@@ -111,7 +103,7 @@ const ArticleComments = (props) => {
                                         >
                                             {comment.modified} {comment.text}
                                         </Typography> 
-                                        <EditandDeleteComments login={comment.login} comment_id={comment.comment_id} section={comment.section}/>
+                                        <EditandDeleteComments login={comment.login} comment_id={comment.comment_id} section={comment.section} article_id={props.id}/>
                                         {/* {(user.username == comment.login) ? (
                                         <Link
                                             color="textPrimary"

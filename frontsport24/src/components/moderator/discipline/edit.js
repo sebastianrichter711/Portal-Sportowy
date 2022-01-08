@@ -26,210 +26,139 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// /**
+//  * @params {File[]} files Array of files to add to the FileList
+//  * @return {FileList}
+//  */
+// function FileListItems(files) {
+//     var b = new ClipboardEvent("").clipboardData || new DataTransfer()
+//     for (var i = 0, len = files.length; i < len; i++) b.items.add(files[i])
+//     return b.files
+// }
+
 export default function EditDiscipline() {
     const history = useHistory();
     const { id } = useParams();
     const initialFormData = Object.freeze({
-        id: '',
-        title: '',
-        date_of_create: '',
-        date_of_last_change: '',
-        lead_text: '',
-        text: '',
-        page_views: '',
-        comments_number: '',
+        name: '',
     });
 
     const [formData, updateFormData] = useState(initialFormData);
+    //const [postImage, setPostImage] = useState(null);
 
+    //let list = new DataTransfer();
     useEffect(() => {
-        axiosInstance.get('moderator/edit/postdetail/' + id).then((res) => {
+        axiosInstance.get('edit/disdetail/' + id).then((res) => {
             updateFormData({
                 ...formData,
                 //['id']: res.data.id,
-                ['title']: res.data.title,
-                ['date_of_create']: res.data.date_of_create,
-                ['date_of_last_change']: res.data.date_of_last_change,
-                ['lead_text']: res.data.lead_text,
-                ['text']: res.data.text,
-                ['page_views']: res.data.page_views,
-                ['comments_number']: res.data.comments_number,
+                ['name']: res.data.name,
+                //['icon']: res.data.icon
 
             });
-            console.log(res.data);
+            // let postimage = document.getElementById('postimage')
+            // var files = [
+            //     new File([''], res.data.icon)
+            // ];
+            // postimage.files = new FileListItems(files)
+            // var newList = new FileListItems(files)
+            // //list.items.add(file);
+            // console.log(postimage.files);
+            // setPostImage({
+            //     image: postimage.files
+            // })
+            // console.log(postImage);
+
         });
     }, [updateFormData]);
 
     const handleChange = (e) => {
-        updateFormData({
-            ...formData,
-            // Trimming any whitespace
-            [e.target.name]: e.target.value.trim(),
-        });
+        // if ([[e.target.name] == 'image']) {
+        //     setPostImage({
+        //         image: e.target.files,
+        //     });
+        //     console.log(e.target.value);
+        // }
+        if ([e.target.name] == 'name') {
+            updateFormData({
+                ...formData,
+                // Trimming any whitespace
+                [e.target.name]: e.target.value.trim(),
+
+            });
+            console.log(e.target.value)
+        } else {
+            updateFormData({
+                ...formData,
+                // Trimming any whitespace
+                [e.target.name]: e.target.value.trim(),
+            });
+        }
     };
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);
+        let newFormData = new FormData();
+        newFormData.append('name', formData.name)
+        //newFormData.append('icon', postImage.image[0])
+        axiosInstance.put('moderator/edit_dis/' + id, newFormData);
 
-        axiosInstance.put('moderator/edit/' + id + "/", {
-            //id: formData.id,
-            title: formData.title,
-            date_of_create: formData.date_of_create,
-            date_of_last_change: formData.date_of_last_change,
-            lead_text: formData.lead_text,
-            text: formData.text,
-            page_views: formData.page_views,
-            comments_number: formData.comments_number
-        });
-
-        console.log(formData)
+        console.log(newFormData)
         // history.push({
         //     pathname: '/moderator/edit/' + id,
         // });
 
         //window.location.reload();
     };
-        
+
 
     const classes = useStyles();
 
-return (
-    <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-                Edytuj artykuł
-            </Typography>
-            <form className={classes.form} noValidate>
-                <Grid container spacing={2}>
-                    {/* <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="id"
-                            label="Id artykułu"
-                            name="id"
-                            autoComplete="id"
-                            value={formData.id}
+    return (
+        <Container component="main" maxWidth="sm">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                    Edytuj dyscyplinę
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Nazwa"
+                                name="name"
+                                autoComplete="name"
+                                onChange={handleChange}
+                                value={formData.name}
+                            />
+                        </Grid>
+                        {/* <input
+                            accept='image/*'
+                            className={classes.input}
+                            id="postimage"
                             onChange={handleChange}
-                        />
-                    </Grid> */}
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="title"
-                            label="Tytuł"
-                            name="title"
-                            autoComplete="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                        />
+                            name="image"
+                            type="file"
+                        /> */}
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_create"
-                            label="Data utworzenia"
-                            name="date_of_create"
-                            autoComplete="date_of_create"
-                            value={formData.date_of_create}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_last_change"
-                            label="Data ostatniej modyfikacji"
-                            name="date_of_last_change"
-                            autoComplete="date_of_last_change"
-                            value={formData.date_of_last_change}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="lead_text"
-                            label="Tekst początkowy"
-                            name="lead_text"
-                            autoComplete="lead_text"
-                            value={formData.lead_text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="text"
-                            label="Tekst"
-                            name="text"
-                            autoComplete="text"
-                            value={formData.text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="page_views"
-                            label="Liczba odsłon"
-                            name="page_views"
-                            autoComplete="page_views"
-                            value={formData.page_views}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="comments_number"
-                            label="Liczba komentarzy"
-                            name="comments_number"
-                            autoComplete="comments_number"
-                            value={formData.comments_number}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                </Grid>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={handleSubmit}
-                >
-                    Edytuj
-                </Button>
-            </form>
-        </div>
-    </Container>
-);
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSubmit}
+                    >
+                        Edytuj
+                    </Button>
+                </form>
+            </div>
+        </Container>
+    );
 };

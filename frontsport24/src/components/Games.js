@@ -42,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
     },
     results: {
         textAlign: "left"
+    },
+    btn: {
+        width: 200,
+        alignContent: 'center'
+
     }
 }));
 
@@ -66,8 +71,17 @@ function Games() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <Grid container spacing={5} xs={12} alignItems="center">
+                    <h1 className={classes.results}> WYNIKI - {name}</h1>
+                </Grid>
+                <br/> 
+                <br/>
                 <Grid container spacing={5} xs={3} alignItems="center">
-                    <h1 className={classes.results}> WYNIKI</h1>
                     {appState.games.map((game) => {
                         var url = 'http://localhost:8000' + game.logo
                         return (
@@ -77,7 +91,7 @@ function Games() {
                                 href={"http://localhost:3000/matches/" + game.name}
                                 className={classes.link}
                             >
-                                <Button variant="contained" alignItems="center">
+                                <Button variant="contained" alignItems="center" className={classes.btn}>
                                     <img className={classes.photo} src={url} alt="url" /> <br /> {game.name}
                                 </Button>
                             </Link>

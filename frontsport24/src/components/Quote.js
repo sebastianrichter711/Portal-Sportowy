@@ -11,6 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -41,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
         width: '800px',
         height: '600px',
         paddingTop: '1.25%'
+    },
+    quote: {
+        textColor: green
+    },
+    des: {
+        fontSize: '20px'
     }
 }));
 
@@ -60,10 +67,11 @@ export default function MainArticle() {
     return (
         <Card sx={{ maxWidth: 50 }}>
             <CardContent>
-            <Typography variant="h5" component="div">
+            <Typography variant="h5" component="div" className={classes.quote}>
                     {data.posts.quote}
                 </Typography>
-                <Typography variant="h5" component="div">
+                <br/> 
+                <Typography variant="h5" component="div" className={classes.des}>
                     {data.posts.description}
                 </Typography>
             </CardContent>

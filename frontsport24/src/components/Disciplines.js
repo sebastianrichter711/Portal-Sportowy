@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import axiosInstance from '../axios';
 import Button from '@material-ui/core/Button';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -41,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
     },
     results: {
         textAlign: "left"
+    },
+    btn: {
+        width: 160,
+        alignContent: 'center'
+
     }
 }));
 
@@ -63,6 +69,11 @@ function Disciplines() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
                 <Grid container spacing={5} xs={3} alignItems="center">
                     <h1 className={classes.results}> WYNIKI </h1>
                     {appState.disciplines.map((discipline) => {
@@ -74,7 +85,7 @@ function Disciplines() {
 										href={'games/' + discipline.name}
 										className={classes.link}
 							>
-                            <Button variant="contained" alignItems="center">
+                            <Button variant="contained" alignItems="center" className={classes.btn}>
                                 <img className={classes.photo} src={url} alt="url" /> <br /> {discipline.name}
                             </Button>
                             </Link>

@@ -123,10 +123,11 @@ export default function AddDiscipline() {
 		let formData = new FormData();
 		formData.append('db_game_id', postData.db_game_id);
 		formData.append('name', postData.name);
-		formData.append('icon', postImage.image[0]);
-		axiosInstance.post(`add_game/`, formData);
+		formData.append('image', postImage.image[0]);
+		formData.append('discipline', discipline);
+		axiosInstance.post('add_game', formData);
 		history.push({
-			pathname: 'add_game/'
+			pathname: 'create_game'
 		});
 		window.location.reload();
 	};

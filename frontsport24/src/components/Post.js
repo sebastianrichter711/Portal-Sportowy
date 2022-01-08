@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useParams } from 'react-router-dom';
 //MaterialUI
@@ -11,6 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import AddComment from './AddComment';
+import AuthContext from './AuthContext';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -20,35 +21,39 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 	},
 	mainPhoto: {
-		width:"1100px",
+		width: "1100px",
 		height: "770px",
 		top: "40px",
 		alignContent: "left"
 	}
 }));
 
-export default function Post () {
+export default function Post() {
 
+	let { user, logoutUser } = useContext(AuthContext)
 	const { id } = useParams();
 	const [data, setAppState] = useState({ posts: [] });
 
-    var url = "http://localhost:8000/api/article/" + id
-    console.log(url)
+	var url = "http://localhost:8000/api/article/" + id
+	console.log(url)
 	useEffect(() => {
-        axiosInstance.get(url).then((res) => {
-            const gotPost = res.data;
-            setAppState({ posts: gotPost });
-            console.log(res.data);
-        });
-    }, [setAppState]);
+		axiosInstance.get(url).then((res) => {
+			const gotPost = res.data;
+			setAppState({ posts: gotPost });
+			console.log(res.data);
+		});
+	}, [setAppState]);
 
-    console.log(data.posts.title)
-    var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
+	console.log(data.posts.title)
+	var article_url = 'http://localhost:8000/media/' + data.posts.big_title_photo
 	//var id = data.posts.id
 	console.log(article_url)
-    const classes = useStyles();
+	const classes = useStyles();
 	return (
 		<Container component="main" xs={3} md={3}>
+			<br />
+			<br />
+			<br />
 			<CssBaseline />
 			<div className={classes.paper}></div>
 			<div className={classes.heroContent}>
@@ -70,15 +75,23 @@ export default function Post () {
 					>
 						{data.posts.date_of_create}
 					</Typography>
-                    <Typography
+					<Typography
 						variant="h5"
 						align="center"
 						color="textSecondary"
 						paragraph
 					>
-						<img className={classes.mainPhoto} src={article_url} alt="big_title_photo"/>
+						Liczba odsłon: {data.posts.page_views}
 					</Typography>
-                    <Typography
+					<Typography
+						variant="h5"
+						align="center"
+						color="textSecondary"
+						paragraph
+					>
+						<img className={classes.mainPhoto} src={article_url} alt="big_title_photo" />
+					</Typography>
+					<Typography
 						variant="h5"
 						align="center"
 						color="textSecondary"
@@ -86,7 +99,7 @@ export default function Post () {
 					>
 						{data.posts.lead_text}
 					</Typography>
-                    <Typography
+					<Typography
 						variant="h5"
 						align="center"
 						color="textSecondary"
@@ -102,9 +115,8 @@ export default function Post () {
 					>
 						Komentarze ({data.posts.comments_number})
 					</Typography>
-					<AddComment art_id={id}/>
-					<ArticleComments id={id}/>
-
+					{(user != "xxx") ? (<AddComment art_id={id} />) : (<h1> Jeśli chcesz dodać komentarz, musisz mieć konto w serwisie!</h1>)}
+					<ArticleComments id={id} />
 				</Container>
 			</div>
 		</Container>

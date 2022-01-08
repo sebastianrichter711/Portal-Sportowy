@@ -20,44 +20,44 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    },
-    link: {
-        margin: theme.spacing(1, 1.5),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? theme.palette.grey[200]
-                : theme.palette.grey[700],
-    },
-    postTitle: {
-        fontSize: '16px',
-        textAlign: 'left',
-        fontStyle: 'bold'
-    },
-    postText: {
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'baseline',
-        fontSize: '12px',
-        textAlign: 'left',
-        marginBottom: theme.spacing(2),
-    },
-    photo: {
-        width: '20px',
-        height: '20px'
-    }
+	cardMedia: {
+		paddingTop: '56.25%', // 16:9
+	},
+	link: {
+		margin: theme.spacing(1, 1.5),
+	},
+	cardHeader: {
+		backgroundColor:
+			theme.palette.type === 'light'
+				? theme.palette.grey[200]
+				: theme.palette.grey[700],
+	},
+	postTitle: {
+		fontSize: '16px',
+		textAlign: 'left',
+		fontStyle: 'bold'
+	},
+	postText: {
+		display: 'flex',
+		justifyContent: 'left',
+		alignItems: 'baseline',
+		fontSize: '12px',
+		textAlign: 'left',
+		marginBottom: theme.spacing(2),
+	},
+	photo: {
+		width: '20px',
+		height: '20px'
+	}
 }));
 
 function ModeratorDisciplines() {
 
-    const [disciplines, setDisciplinesState] = useState({
+	const [disciplines, setDisciplinesState] = useState({
 		disciplines: []
 	});
 
-    useEffect(() => {
+	useEffect(() => {
 		axiosInstance.get("http://localhost:8000/api/discipline").then((res) => {
 			const allDisciplines = res.data;
 			setDisciplinesState({ disciplines: allDisciplines });
@@ -65,9 +65,9 @@ function ModeratorDisciplines() {
 		});
 	}, [setDisciplinesState]);
 
-    const classes = useStyles();
+	const classes = useStyles();
 
-    if (!disciplines.disciplines || disciplines.disciplines.length === 0) return <p>Nie znaleziono dyscyplin</p>;
+	if (!disciplines.disciplines || disciplines.disciplines.length === 0) return <p>Nie znaleziono dyscyplin</p>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
@@ -90,7 +90,15 @@ function ModeratorDisciplines() {
 												{discipline.discipline_id}
 											</TableCell>
 											<TableCell align="left">{discipline.name}</TableCell>
-                                            <TableCell align="left">{discipline.icon}</TableCell>
+											<TableCell align="left">
+											<Link
+												color="textPrimary"
+												href={'http://localhost:8000' + discipline.icon}
+												className={classes.link}
+											>
+												{discipline.icon}
+											</Link>
+											</TableCell>
 											<TableCell align="left">
 												<Link
 													color="textPrimary"
@@ -112,7 +120,7 @@ function ModeratorDisciplines() {
 								})}
 								<TableRow>
 									<TableCell colSpan={4} align="right">
-                                    <Button
+										<Button
 											href={'/add_discipline'}
 											variant="contained"
 											color="primary"
@@ -127,7 +135,7 @@ function ModeratorDisciplines() {
 				</Paper>
 			</Container>
 		</React.Fragment>
-    );
+	);
 }
 
 export default ModeratorDisciplines;

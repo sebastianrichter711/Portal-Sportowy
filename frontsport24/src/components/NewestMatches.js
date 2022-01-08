@@ -62,12 +62,12 @@ function NewestMatches() {
 
     return (
         <React.Fragment>
-            <Container maxWidth="md" component="main">
-                <Grid container spacing={2} alignItems="center">
+            <Container component="main">
+                <Grid container spacing={2} alignItems="left">
                     {appState.newestMatches.map((match) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <Grid item key={match.id} xs={12} md={3}>
+                            <Grid item key={match.id} xs={3}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography
@@ -99,18 +99,9 @@ function NewestMatches() {
                             </Grid>
                         );
                     })}
-                    <Link
-                        color="textPrimary"
-                        href={'http://localhost:3000/disciplines'}
-                        className={classes.link}
-                    >
-                        <Button variant="contained">
-                            WYNIKI
-                        </Button>
-                    </Link>
-                </Grid>
-            </Container>
-        </React.Fragment>
+        </Grid>
+        </Container>
+        </React.Fragment >
     );
 }
 

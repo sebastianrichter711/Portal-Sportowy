@@ -9,6 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Select } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -29,36 +34,58 @@ const useStyles = makeStyles((theme) => ({
 export default function EditGame() {
     const history = useHistory();
     const { id } = useParams();
+
     const initialFormData = Object.freeze({
-        id: '',
-        title: '',
-        date_of_create: '',
-        date_of_last_change: '',
-        lead_text: '',
-        text: '',
-        page_views: '',
-        comments_number: '',
+        db_game_id: '',
+        name: '',
+        discipline: '',
+
     });
 
     const [formData, updateFormData] = useState(initialFormData);
+    const [discipline, setDisciplineState] = useState('');
+
+    const [disciplines, setDisciplinesState] = useState({
+        disciplines: []
+    });
+
+    const handleDisciplineChange = (event) => {
+        setDisciplineState(event.target.value);
+    };
+
+    var dis_id;
+    var nameOfDis = ''
 
     useEffect(() => {
-        axiosInstance.get('moderator/edit/postdetail/' + id).then((res) => {
+        axiosInstance.get('edit/gamedetail/' + id + "/").then((res) => {
             updateFormData({
                 ...formData,
                 //['id']: res.data.id,
-                ['title']: res.data.title,
-                ['date_of_create']: res.data.date_of_create,
-                ['date_of_last_change']: res.data.date_of_last_change,
-                ['lead_text']: res.data.lead_text,
-                ['text']: res.data.text,
-                ['page_views']: res.data.page_views,
-                ['comments_number']: res.data.comments_number,
-
+                ['db_game_id']: res.data.db_game_id,
+                ['name']: res.data.name,
+                ['discipline']: res.data.discipline_id,
             });
+            dis_id = res.data.discipline_id
+            //setDisciplineState(res.data.discipline_id)
+            console.log(res.data);
+            axiosInstance.get("http://localhost:8000/api/get_discipline/" + res.data.discipline_id).then((res) => {
+                setDisciplineState(res.data.name);
+                console.log(res.data);
+                nameOfDis = res.data.name;
+            });
+        });
+
+        axiosInstance.get("http://localhost:8000/api/discipline").then((res) => {
+            const allDisciplines = res.data;
+            setDisciplinesState({ disciplines: allDisciplines });
             console.log(res.data);
         });
-    }, [updateFormData]);
+
+        // axiosInstance.get("http://localhost:8000/api/get_discipline/" + dis_id).then((res) => {
+        // 	setDisciplineState(res.data.name);
+        // 	console.log(res.data);
+        // });
+    }, [updateFormData, setDisciplinesState]);
 
     const handleChange = (e) => {
         updateFormData({
@@ -71,39 +98,34 @@ export default function EditGame() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);
-
-        axiosInstance.put('moderator/edit/' + id + "/", {
-            //id: formData.id,
-            title: formData.title,
-            date_of_create: formData.date_of_create,
-            date_of_last_change: formData.date_of_last_change,
-            lead_text: formData.lead_text,
-            text: formData.text,
-            page_views: formData.page_views,
-            comments_number: formData.comments_number
-        });
+        console.log(discipline);
+        let newFormData = new FormData();
+        newFormData.append('db_game_id', formData.db_game_id)
+        newFormData.append('name', formData.name)
+        newFormData.append('discipline', discipline)
+        axiosInstance.put('moderator/edit_game/' + id, newFormData);
 
         console.log(formData)
-        // history.push({
-        //     pathname: '/moderator/edit/' + id,
-        // });
+        history.push({
+        pathname: '/moderator/edit_game/' + id,
+        });
 
-        //window.location.reload();
+        window.location.reload();
     };
-        
+
 
     const classes = useStyles();
 
-return (
-    <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-                Edytuj artykuł
-            </Typography>
-            <form className={classes.form} noValidate>
-                <Grid container spacing={2}>
-                    {/* <Grid item xs={12}>
+    return (
+        <Container component="main" maxWidth="sm">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                    Edytuj rozgrywkę
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                        {/* <Grid item xs={12}>
                         <TextField
                             variant="outlined"
                             required
@@ -116,120 +138,62 @@ return (
                             onChange={handleChange}
                         />
                     </Grid> */}
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="title"
-                            label="Tytuł"
-                            name="title"
-                            autoComplete="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                        />
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="db_game_id"
+                                label="DB Id rozgrywki"
+                                name="db_game_id"
+                                autoComplete="db_game_id"
+                                value={formData.db_game_id}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="name"
+                                label="Nazwa"
+                                name="name"
+                                autoComplete="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                multiline
+                                rows={8}
+                            />
+                        </Grid>
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-standard-label">Dyscyplina</InputLabel>
+                            <Select className="custom-select1"
+                                name="discipline"
+                                value={discipline}
+                                onChange={handleDisciplineChange}
+
+                            >
+                                {disciplines.disciplines.map((d) => (
+                                    <MenuItem value={d.name}>
+                                        {d.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_create"
-                            label="Data utworzenia"
-                            name="date_of_create"
-                            autoComplete="date_of_create"
-                            value={formData.date_of_create}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_last_change"
-                            label="Data ostatniej modyfikacji"
-                            name="date_of_last_change"
-                            autoComplete="date_of_last_change"
-                            value={formData.date_of_last_change}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="lead_text"
-                            label="Tekst początkowy"
-                            name="lead_text"
-                            autoComplete="lead_text"
-                            value={formData.lead_text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="text"
-                            label="Tekst"
-                            name="text"
-                            autoComplete="text"
-                            value={formData.text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="page_views"
-                            label="Liczba odsłon"
-                            name="page_views"
-                            autoComplete="page_views"
-                            value={formData.page_views}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="comments_number"
-                            label="Liczba komentarzy"
-                            name="comments_number"
-                            autoComplete="comments_number"
-                            value={formData.comments_number}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                </Grid>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={handleSubmit}
-                >
-                    Edytuj
-                </Button>
-            </form>
-        </div>
-    </Container>
-);
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSubmit}
+                    >
+                        Edytuj
+                    </Button>
+                </form>
+            </div>
+        </Container>
+    );
 };

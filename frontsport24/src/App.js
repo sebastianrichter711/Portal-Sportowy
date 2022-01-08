@@ -29,14 +29,10 @@ function App() {
 			<br/>
 			<br/>
 			<br/>
-			<NewestMatches/>
-			<Grid alignContent='right'>
+			<NewestMatches/>	
 			<MainArticle />
-			</Grid>
-			<Grid>
-			<Posts/>
-			</Grid>
 			<Sections/>
+			{/* <Posts/> */}
 			<NewestArticles/>
 			<Quote/>
 		</div>

@@ -77,7 +77,7 @@ const routing = (
 					<Route path="/add_discipline" component={AddDiscipline} />
 					<Route path="/edituser/:username" component={EditUser} />
 					<Route path="/deleteuser/:username" component={DeleteUser} />
-					<Route path="/deletecom/:id" component={DeleteComment} />
+					<Route path="/deletecom/:id/:article_id" component={DeleteComment} />
 					<Route path="/editcom/:id" component={EditComment} />
 					<Route path="/moderator/results" component={ModeratorResults} />
 

@@ -73,11 +73,11 @@ export default function EditComment() {
         });
 
         console.log(formData)
-        // history.push({
-        //     pathname: '/moderator/edit/' + id,
-        // });
+        history.push({
+             pathname: '/posts/' + formData.article_id,
+        });
 
-        //window.location.reload();
+        window.location.reload();
     };
         
 

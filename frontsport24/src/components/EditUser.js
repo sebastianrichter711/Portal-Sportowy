@@ -42,20 +42,17 @@ export default function Edit() {
     const { username } = useParams();
     const dateValue = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     const initialFormData = Object.freeze({
-        //id: '',
         user_name: '',
         email: '',
         first_name: '',
         last_name: '',
         sex: '',
         birth_date: '',
-        phone_number: '',
-        avatar: null,
+        phone_number: ''
     });
 
     const [formData, updateFormData] = useState(initialFormData);
     const [sex, setSexState] = useState('');
-    const [postImage, setPostImage] = useState(null);
     const [date, setDate] = useState('');
 
     const handleSexChange = (event) => {
@@ -83,7 +80,6 @@ export default function Edit() {
         console.log(dateToApply);
     };
 
-
     useEffect(() => {
         axiosInstance.get("http://localhost:8000/api/user/edit/detail/" + user.user_id).then((res) => {
             updateFormData({
@@ -96,25 +92,18 @@ export default function Edit() {
                 ['sex']: res.data.sex,
                 ['birth_date']: res.data.birth_date,
                 ['phone_number']: res.data.phone_number,
-                ['avatar']: res.data.avatar
-
-                
             });
             setSexState(res.data.sex)
-            setDate(res.data.birth_date)
-            setPostImage(res.data.avatar)
+            if (res.data.birth_date == null)
+                setDate("2021-01-01")
+            else
+                setDate(res.data.birth_date)
             console.log(res.data);
-            console.log(postImage)
+            console.log(date)
         });
     }, [updateFormData]);
 
     const handleChange = (e) => {
-        if ([[e.target.name] == 'image']) {
-            setPostImage({
-                image: e.target.files,
-            });
-            console.log(e.target.files);
-        }
         updateFormData({
             ...formData,
             // Trimming any whitespace
@@ -133,11 +122,7 @@ export default function Edit() {
         newFormData.append('sex', sex);
         newFormData.append('birth_date', date);
         newFormData.append('phone_number', formData.phone_number);
-        //console.log(postImage.image[0])
-        newFormData.append('avatar', postImage.image[0]);
         axiosInstance.put('user/edit/' + user.user_id, newFormData);
-
-        console.log(postImage.image[0])
 
         console.log(formData.sex)
         history.push({
@@ -197,7 +182,7 @@ export default function Edit() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 multiline
-                                rows={8}
+                                rows={1}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -211,6 +196,7 @@ export default function Edit() {
                                 autoComplete="first_name"
                                 value={formData.first_name}
                                 onChange={handleChange}
+                                rows={1}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -225,7 +211,7 @@ export default function Edit() {
                                 value={formData.last_name}
                                 onChange={handleChange}
                                 multiline
-                                rows={8}
+                                rows={1}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -250,10 +236,10 @@ export default function Edit() {
                                 label="Data urodzenia"
                                 name="birth_date"
                                 autoComplete="birth_date"
-                                value={formData.birth_date}
+                                value={date}
                                 onChange={handleChange}
                                 multiline
-                                rows={8}
+                                rows={1}
                             />
                         </Grid>
                         <CalendarComponent value={dateValue} onChange={handleDateChange}
@@ -270,17 +256,17 @@ export default function Edit() {
                                 value={formData.phone_number}
                                 onChange={handleChange}
                                 multiline
-                                rows={8}
+                                rows={1}
                             />
                         </Grid>
-                        <input
+                        {/* <input
                             accept='image/*'
                             className={classes.input}
                             id="avatar"
                             onChange={handleChange}
                             name="avatar"
                             type="file"
-                        />
+                        /> */}
                     </Grid>
                     <Button
                         type="submit"

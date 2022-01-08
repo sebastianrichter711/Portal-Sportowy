@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
 		textAlign: 'left',
 		marginBottom: theme.spacing(2),
 	},
+	pag: {
+		alignContent: 'center'
+	}
 }));
 
 const ArticlesSections = () => {
@@ -51,7 +54,7 @@ const ArticlesSections = () => {
 	});
 	const [pageNumber, setPageNumber] = useState(0);
 
-	const usersPerPage = 5;
+	const usersPerPage = 6;
 	const pagesVisited = pageNumber * usersPerPage;
 
 	useEffect(() => {
@@ -122,14 +125,16 @@ const ArticlesSections = () => {
 				<br />
 				<br />
 				<br/>
+				<br/>
 				<h1>{name}</h1>
 				<Grid container spacing={5} alignItems="flex-end">
 					{displayUsers}
 				</Grid>
-				<Grid container spacing={1} alignItems="flex-end">
+				<br/>
+				<Grid container spacing={1} alignItems="center" className={classes.pag}>
 					<ReactPaginate
-						previousLabel={"previous"}
-						nextLabel={"next"}
+						previousLabel={"wstecz"}
+						nextLabel={"dalej"}
 						breakLabel={"..."}
 						pageCount={pageCount}
 						marginPagesDisplayed={2}

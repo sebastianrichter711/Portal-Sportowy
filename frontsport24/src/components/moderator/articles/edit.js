@@ -84,11 +84,11 @@ export default function Edit() {
         });
 
         console.log(formData)
-        // history.push({
-        //     pathname: '/moderator/edit/' + id,
-        // });
+        history.push({
+             pathname: '/moderator/edit/' + id,
+        });
 
-        //window.location.reload();
+        window.location.reload();
     };
         
 
@@ -140,8 +140,7 @@ return (
                             autoComplete="date_of_create"
                             value={formData.date_of_create}
                             onChange={handleChange}
-                            multiline
-                            rows={8}
+                           
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -198,8 +197,6 @@ return (
                             autoComplete="page_views"
                             value={formData.page_views}
                             onChange={handleChange}
-                            multiline
-                            rows={8}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -213,8 +210,6 @@ return (
                             autoComplete="comments_number"
                             value={formData.comments_number}
                             onChange={handleChange}
-                            multiline
-                            rows={8}
                         />
                     </Grid>
                 </Grid>

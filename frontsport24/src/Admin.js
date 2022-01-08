@@ -24,6 +24,15 @@ function Admin() {
 		});
 	}, [setAppState]);
 
+	if (user.role != "moderator-art") return (
+		<React.Fragment>
+		<br/>
+		<br/>
+		<br/>
+	<h1>Strona przeznaczona dla moderatorów artykułów.
+	</h1>
+	</React.Fragment>
+	 )
 	return (
 		<div className="App">
 			<br />

@@ -70,15 +70,18 @@ export default function ModeratorMatches() {
     if (!matches.matches || matches.matches.length === 0) return <p>Nie znaleziono meczy</p>;
     return (
         <React.Fragment>
-            <Container maxWidth="md" component="main">
+            <Container component="main">
                 <Paper className={classes.root}>
                     <TableContainer className={classes.container}>
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Id</TableCell>
+                                    <TableCell>Rozgrywka</TableCell>
+                                    <TableCell>Sezon</TableCell>
+                                    <TableCell>Faza</TableCell>
+                                    <TableCell>Runda</TableCell>
                                     <TableCell>Data spotkania</TableCell>
-                                    <TableCell>Rozgrywki</TableCell>
                                     <TableCell align="left">Gospodarz</TableCell>
                                     <TableCell align="left">Gość</TableCell>
                                     <TableCell align="left">Wynik</TableCell>
@@ -92,8 +95,11 @@ export default function ModeratorMatches() {
                                             <TableCell component="th" scope="row">
                                                 {match.match_id}
                                             </TableCell>
+                                            <TableCell align="left">{match.game}</TableCell>
+                                            <TableCell align="left">{match.season}</TableCell>
+                                            <TableCell align="left">{match.phase}</TableCell>
+                                            <TableCell align="left">{match.round}</TableCell>
                                             <TableCell align="left">{match.match_date}</TableCell>
-                                            <TableCell align="left">{match.season_id}</TableCell>
                                             <TableCell align="left">{match.host}</TableCell>
                                             <TableCell align="left">{match.guest}</TableCell>
                                             <TableCell align="left">{match.score}</TableCell>

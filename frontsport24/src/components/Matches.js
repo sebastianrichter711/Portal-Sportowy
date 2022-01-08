@@ -16,6 +16,12 @@ import { Select } from '@material-ui/core';
 import { MenuItem } from '@material-ui/core';
 import { InputLabel } from '@material-ui/core';
 import { FormControl } from '@material-ui/core';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -71,7 +77,7 @@ function Matches() {
 
     const handleSeasonChange = (event) => {
         setSeasonState(event.target.value);
-        var url = "http://localhost:8000/api/get_rounds/" + event.target.value + "/" +  name
+        var url = "http://localhost:8000/api/get_rounds/" + event.target.value + "/" + name
         axiosInstance.get(url).then((res) => {
             const gotRounds = res.data;
             setRoundsState({ rounds: gotRounds });
@@ -124,6 +130,8 @@ function Matches() {
                 <br />
                 <br />
                 <br />
+                <br />
+                <br />
                 <Grid container spacing={3} xs={8} alignItems="center">
                     <br />
                     <br />
@@ -131,8 +139,10 @@ function Matches() {
                     <h1 className={classes.results}> WYNIKI - {name} </h1>
                     <br />
                 </Grid>
+                <br />
+                <br />
                 <Grid container spacing={5} xs={8} alignItems="center">
-                    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                    <FormControl variant="standard" sx={{ m: 1, minWidth: 160 }}>
                         <InputLabel id="demo-simple-select-standard-label">Sezon</InputLabel>
                         <Select className="custom-select1"
                             value={season}
@@ -146,6 +156,8 @@ function Matches() {
                             ))}
                         </Select>
                     </FormControl>
+                    &ensp;
+                    &ensp;
                     {/* <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
                         <InputLabel id="demo-simple-select-standard-label">Faza</InputLabel>
                         <Select className="custom-select2"
@@ -181,15 +193,28 @@ function Matches() {
                     >
                         Pokaż wyniki
                     </Button>
+                    <TableContainer className={classes.container}>
+						<Table stickyHeader aria-label="sticky table">
+                        <TableBody>
                     {appState.games.map((game) => {
                         return (
-                            // Enterprise card is full width at sm breakpoint
-                            <p>{game?.match_date} {game?.host} {game?.score} {game?.guest}</p>
-                        );
+                            <TableRow>
+                            <Typography
+                                variant="h6"
+                                align="center"
+                                color="textSecondary"
+                            >
+                            { game?.match_date } { game?.host } { game?.score } { game?.guest }
+                            </Typography>
+                            </TableRow>
+                );
                     })}
-                </Grid>
-            </Container>
-        </React.Fragment>
+                    </TableBody>
+                    </Table>
+                    </TableContainer>
+            </Grid>
+        </Container>
+        </React.Fragment >
     );
 }
 

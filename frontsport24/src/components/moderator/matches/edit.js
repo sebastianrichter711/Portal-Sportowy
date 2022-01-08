@@ -9,6 +9,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { Select } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
+import { InputLabel } from '@material-ui/core';
+import { FormControl } from '@material-ui/core';
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -29,36 +34,57 @@ const useStyles = makeStyles((theme) => ({
 export default function EditMatch() {
     const history = useHistory();
     const { id } = useParams();
+
     const initialFormData = Object.freeze({
-        id: '',
-        title: '',
-        date_of_create: '',
-        date_of_last_change: '',
-        lead_text: '',
-        text: '',
-        page_views: '',
-        comments_number: '',
+        match_date: '',
+        host: '',
+        guest: '',
+        score: '',
+        season: ''
+
     });
 
     const [formData, updateFormData] = useState(initialFormData);
+    const [season, setSeasonState] = useState('');
+
+    const [seasons, setSeasonsState] = useState({
+        seasons: []
+    });
+
+    const handleSeasonChange = (event) => {
+        setSeasonState(event.target.value);
+    };
 
     useEffect(() => {
-        axiosInstance.get('moderator/edit/postdetail/' + id).then((res) => {
+        axiosInstance.get('edit/matchdetail/' + id + "/").then((res) => {
             updateFormData({
                 ...formData,
                 //['id']: res.data.id,
-                ['title']: res.data.title,
-                ['date_of_create']: res.data.date_of_create,
-                ['date_of_last_change']: res.data.date_of_last_change,
-                ['lead_text']: res.data.lead_text,
-                ['text']: res.data.text,
-                ['page_views']: res.data.page_views,
-                ['comments_number']: res.data.comments_number,
+                ['match_date']: res.data.match_date,
+                ['host']: res.data.host,
+                ['guest']: res.data.guest,
+                ['score']: res.data.score,
+                ['season']: res.data.season_id
 
             });
             console.log(res.data);
+            axiosInstance.get("http://localhost:8000/api/get_season/" + res.data.season_id).then((res) => {
+                setSeasonState(res.data.season_id);
+                console.log(res.data);
+            });
         });
-    }, [updateFormData]);
+
+        axiosInstance.get("http://localhost:8000/api/seasons_moderator").then((res) => {
+            const allSeasons = res.data;
+            setSeasonsState({ seasons: allSeasons });
+            console.log(res.data);
+        });
+
+        // axiosInstance.get("http://localhost:8000/api/get_discipline/" + dis_id).then((res) => {
+        // 	setDisciplineState(res.data.name);
+        // 	console.log(res.data);
+        // });
+    }, [updateFormData, setSeasonsState]);
 
     const handleChange = (e) => {
         updateFormData({
@@ -71,165 +97,120 @@ export default function EditMatch() {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData);
-
-        axiosInstance.put('moderator/edit/' + id + "/", {
-            //id: formData.id,
-            title: formData.title,
-            date_of_create: formData.date_of_create,
-            date_of_last_change: formData.date_of_last_change,
-            lead_text: formData.lead_text,
-            text: formData.text,
-            page_views: formData.page_views,
-            comments_number: formData.comments_number
-        });
+        let newFormData = new FormData();
+        newFormData.append('match_date', formData.match_date)
+        newFormData.append('host', formData.host)
+        newFormData.append('guest', formData.guest)
+        newFormData.append('score', formData.score)
+        newFormData.append('season', season)
+        axiosInstance.put('moderator/edit_match/' + id, newFormData);
 
         console.log(formData)
-        // history.push({
-        //     pathname: '/moderator/edit/' + id,
-        // });
+        history.push({
+        pathname: '/moderator/edit_match/' + id,
+        });
 
-        //window.location.reload();
+        window.location.reload();
     };
-        
+
 
     const classes = useStyles();
 
-return (
-    <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-                Edytuj artykuł
-            </Typography>
-            <form className={classes.form} noValidate>
-                <Grid container spacing={2}>
-                    {/* <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="id"
-                            label="Id artykułu"
-                            name="id"
-                            autoComplete="id"
-                            value={formData.id}
-                            onChange={handleChange}
-                        />
-                    </Grid> */}
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="title"
-                            label="Tytuł"
-                            name="title"
-                            autoComplete="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                        />
+    return (
+        <Container component="main" maxWidth="sm">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                    Edytuj mecz
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="match_date"
+                                label="Data spotkania"
+                                name="match_date"
+                                autoComplete="match_date"
+                                value={formData.match_date}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="host"
+                                label="Gospodarz"
+                                name="host"
+                                autoComplete="host"
+                                value={formData.host}
+                                onChange={handleChange}
+                                multiline
+                                rows={1}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="guest"
+                                label="Gość"
+                                name="guest"
+                                autoComplete="guest"
+                                value={formData.guest}
+                                onChange={handleChange}
+                                multiline
+                                rows={1}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="score"
+                                label="Wynik"
+                                name="score"
+                                autoComplete="score"
+                                value={formData.score}
+                                onChange={handleChange}
+                                multiline
+                                rows={1}
+                            />
+                        </Grid>
+                        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-standard-label">Sezon</InputLabel>
+                            <Select className="custom-select1"
+                                name="season"
+                                value={season}
+                                onChange={handleSeasonChange}
+
+                            >
+                                {seasons.seasons.map((s) => (
+                                    <MenuItem value={s.season_id}>
+                                        {s.game_name} {s.season} {s.phase} {s.round}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_create"
-                            label="Data utworzenia"
-                            name="date_of_create"
-                            autoComplete="date_of_create"
-                            value={formData.date_of_create}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="date_of_last_change"
-                            label="Data ostatniej modyfikacji"
-                            name="date_of_last_change"
-                            autoComplete="date_of_last_change"
-                            value={formData.date_of_last_change}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="lead_text"
-                            label="Tekst początkowy"
-                            name="lead_text"
-                            autoComplete="lead_text"
-                            value={formData.lead_text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="text"
-                            label="Tekst"
-                            name="text"
-                            autoComplete="text"
-                            value={formData.text}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="page_views"
-                            label="Liczba odsłon"
-                            name="page_views"
-                            autoComplete="page_views"
-                            value={formData.page_views}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="comments_number"
-                            label="Liczba komentarzy"
-                            name="comments_number"
-                            autoComplete="comments_number"
-                            value={formData.comments_number}
-                            onChange={handleChange}
-                            multiline
-                            rows={8}
-                        />
-                    </Grid>
-                </Grid>
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    onClick={handleSubmit}
-                >
-                    Edytuj
-                </Button>
-            </form>
-        </div>
-    </Container>
-);
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSubmit}
+                    >
+                        Edytuj
+                    </Button>
+                </form>
+            </div>
+        </Container>
+    );
 };

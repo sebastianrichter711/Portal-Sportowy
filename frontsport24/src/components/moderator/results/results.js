@@ -15,16 +15,25 @@ export default function ModeratorResults() {
 
 	let { user } = useContext(AuthContext);
 
+	if (user.role != "moderator-wyniki") return (
+		<React.Fragment>
+			<br />
+			<br />
+			<br />
+			<h1>Strona przeznaczona dla moderatorów wyników spotkań.
+			</h1>
+		</React.Fragment>
+	)
 	return (
 		<div className="App">
 			<br />
 			<br />
 			<br />
-            <h1>Wyniki spotkań</h1>
+			<h1>Wyniki spotkań</h1>
 			<Games />
-            <Disciplines />
-            <ModeratorSeasons/>
-            <ModeratorMatches/>
+			<Disciplines />
+			<ModeratorSeasons />
+			<ModeratorMatches />
 		</div>
 	);
 }

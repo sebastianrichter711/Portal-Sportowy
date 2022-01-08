@@ -10,6 +10,7 @@ import Link from '@material-ui/core/Link';
 import axiosInstance from '../axios';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import { green } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -39,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
     photo: {
         width: '30px',
         height: '30px'
+    },
+    btn: {
+        width: 160,
+        alignContent: 'center',
+        backgroundColor: green
+
     }
 }));
 
@@ -61,7 +68,9 @@ function Sections() {
     return (
         <React.Fragment>
             <Container maxWidth="md" component="main">
-                <Grid container spacing={5} xs={4} alignItems="flex-end">
+                <br/>
+                <br/>
+                <Grid container spacing={5} xs={24} alignItems="flex-end">
                         {appState.sections.map((section) => {
                             var url = 'http://localhost:8000' + section.icon
                             return (
@@ -71,8 +80,8 @@ function Sections() {
                                     href={'http://localhost:3000/sections/' + section.name}
                                     className={classes.link}
                                 >
-                                    <Button variant="contained">
-                                        <img className={classes.photo} src={url} alt="url" /> <br /> {section.name}
+                                    <Button variant="contained" className={classes.btn}>
+                                        <img className={classes.photo} src={url} alt="url" /> <br /> <br/> {section.name}
                                     </Button>
                                     <br/>
                                 </Link>

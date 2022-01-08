@@ -88,7 +88,7 @@ export default function Create({art_id}) {
         formData.append('text', postData.text);
 		axiosInstance.post(url, formData);
 		history.push({
-		  	pathname: '/add_comment'
+		  	pathname: '/posts/' + art_id
 	    });
 	    window.location.reload();
 	};

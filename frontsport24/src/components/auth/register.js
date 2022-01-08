@@ -68,95 +68,101 @@ export default function SignUp() {
 				history.push('/login');
 				console.log(res);
 				console.log(res.data);
+			})
+			.catch((err) => {
+				alert("Rejestracja zakończona niepowodzeniem! Sprawdź jeszcze raz wpisane dane.")
 			});
-	};
+	
 
-	const classes = useStyles();
 
-	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}></Avatar>
-				<Typography component="h1" variant="h5">
-					Rejestracja
-				</Typography>
-				<form className={classes.form} noValidate>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="email"
-								label="E-mail"
-								name="email"
-								autoComplete="email"
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="username"
-								label="Login"
-								name="username"
-								autoComplete="username"
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="password1"
-								label="Hasło"
-								type="password"
-								id="password1"
-								autoComplete="current-password"
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								name="password2"
-								label="Powtórz hasło:"
-								type="password"
-								id="password2"
-								autoComplete="current-password"
-								onChange={handleChange}
-							/>
-							<p> Twoje hasło musi zawierać: </p>
-							<p> * co najmniej 8 znaków </p>
-							<p> * 1 dużą i małą literę </p>
-						</Grid>
-						<p> * - pola obowiązkowe</p>
-						<Button
-							type="submit"
+};
+
+const classes = useStyles();
+
+return (
+	<Container component="main" maxWidth="xs">
+		<CssBaseline />
+		<div className={classes.paper}>
+			<Avatar className={classes.avatar}></Avatar>
+			<Typography component="h1" variant="h5">
+				Rejestracja
+			</Typography>
+			<form className={classes.form} noValidate>
+				<Grid container spacing={2}>
+					<Grid item xs={12}>
+						<TextField
+							variant="outlined"
+							required
 							fullWidth
-							variant="contained"
-							color="primary"
-							className={classes.submit}
-							onClick={handleSubmit}
-						>
-							Zarejestruj się
-						</Button>
-						<Grid container justify="flex-end">
-							<Grid item>
-								<Link href="/login" variant="body2">
-									Masz już konto? Zaloguj się!
-								</Link>
-							</Grid>
+							id="email"
+							label="E-mail"
+							name="email"
+							autoComplete="email"
+							onChange={handleChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							variant="outlined"
+							required
+							fullWidth
+							id="username"
+							label="Login"
+							name="username"
+							autoComplete="username"
+							onChange={handleChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							variant="outlined"
+							required
+							fullWidth
+							name="password1"
+							label="Hasło"
+							type="password"
+							id="password1"
+							autoComplete="current-password"
+							onChange={handleChange}
+						/>
+					</Grid>
+					<Grid item xs={12}>
+						<TextField
+							variant="outlined"
+							required
+							fullWidth
+							name="password2"
+							label="Powtórz hasło:"
+							type="password"
+							id="password2"
+							autoComplete="current-password"
+							onChange={handleChange}
+						/>
+						<p> Twoje hasło musi zawierać: </p>
+						<p> * co najmniej 8 znaków </p>
+						<p> * 1 dużą i małą literę </p>
+					</Grid>
+					<p> * - pola obowiązkowe</p>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+						onClick={handleSubmit}
+					>
+						Zarejestruj się
+					</Button>
+					<Grid container justify="flex-end">
+						<Grid item>
+							<Link href="/login" variant="body2">
+								Masz już konto? Zaloguj się!
+							</Link>
 						</Grid>
-						</Grid>
-				</form>
-			</div>
-		</Container>
-	);
+					</Grid>
+				</Grid>
+			</form>
+		</div>
+	</Container>
+);
 }

@@ -148,7 +148,7 @@ export default function AddDiscipline() {
 		formData.append('season', postData.season);
 		axiosInstance.post('add_matches/' + game, formData);
 		history.push({
-			pathname: 'add_matches/'
+			pathname: 'create_matches'
 		});
 		window.location.reload();
 	};
@@ -165,7 +165,7 @@ export default function AddDiscipline() {
 				<form className={classes.form} noValidate>
 					<Grid container spacing={2}>
 						<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-							<InputLabel id="demo-simple-select-standard-label">Runda</InputLabel>
+							<InputLabel id="demo-simple-select-standard-label">Rozgrywka</InputLabel>
 							<Select className="custom-select3"
 								//value={xxx}
 								onChange={handleGameChange}

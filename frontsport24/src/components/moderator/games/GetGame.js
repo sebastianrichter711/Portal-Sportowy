@@ -20,44 +20,44 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    },
-    link: {
-        margin: theme.spacing(1, 1.5),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? theme.palette.grey[200]
-                : theme.palette.grey[700],
-    },
-    postTitle: {
-        fontSize: '16px',
-        textAlign: 'left',
-        fontStyle: 'bold'
-    },
-    postText: {
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'baseline',
-        fontSize: '12px',
-        textAlign: 'left',
-        marginBottom: theme.spacing(2),
-    },
-    photo: {
-        width: '20px',
-        height: '20px'
-    }
+	cardMedia: {
+		paddingTop: '56.25%', // 16:9
+	},
+	link: {
+		margin: theme.spacing(1, 1.5),
+	},
+	cardHeader: {
+		backgroundColor:
+			theme.palette.type === 'light'
+				? theme.palette.grey[200]
+				: theme.palette.grey[700],
+	},
+	postTitle: {
+		fontSize: '16px',
+		textAlign: 'left',
+		fontStyle: 'bold'
+	},
+	postText: {
+		display: 'flex',
+		justifyContent: 'left',
+		alignItems: 'baseline',
+		fontSize: '12px',
+		textAlign: 'left',
+		marginBottom: theme.spacing(2),
+	},
+	photo: {
+		width: '20px',
+		height: '20px'
+	}
 }));
 
 export default function ModeratorGames() {
 
-    const [games, setGamesState] = useState({
+	const [games, setGamesState] = useState({
 		games: []
 	});
 
-    useEffect(() => {
+	useEffect(() => {
 		axiosInstance.get("http://localhost:8000/api/get_all_games").then((res) => {
 			const allGames = res.data;
 			setGamesState({ games: allGames });
@@ -65,9 +65,9 @@ export default function ModeratorGames() {
 		});
 	}, [setGamesState]);
 
-    const classes = useStyles();
+	const classes = useStyles();
 
-    if (!games.games || games.games.length === 0) return <p>Nie znaleziono rozgrywek</p>;
+	if (!games.games || games.games.length === 0) return <p>Nie znaleziono rozgrywek</p>;
 	return (
 		<React.Fragment>
 			<Container maxWidth="md" component="main">
@@ -92,7 +92,15 @@ export default function ModeratorGames() {
 											</TableCell>
 											<TableCell align="left">{game.db_game_id}</TableCell>
 											<TableCell align="left">{game.name}</TableCell>
-                                            <TableCell align="left">{game.logo}</TableCell>
+											<TableCell align="left">
+												<Link
+													color="textPrimary"
+													href={'http://localhost:8000' + game.logo}
+													className={classes.link}
+												>
+													{game.logo}
+												</Link>
+											</TableCell>
 											<TableCell align="left">
 												<Link
 													color="textPrimary"
@@ -128,7 +136,7 @@ export default function ModeratorGames() {
 					</TableContainer>
 				</Paper>
 			</Container>
-		</React.Fragment>
-    );
+		</React.Fragment >
+	);
 }
 
