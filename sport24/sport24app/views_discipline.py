@@ -58,5 +58,18 @@ class DeleteDiscipline(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = DisciplineSerializer
     queryset = Discipline.objects.all()
-        
-        
+
+class DisciplineDetail(generics.RetrieveAPIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    queryset = Discipline.objects.all()
+    serializer_class = DisciplineSerializer
+
+@csrf_exempt
+def get_discipline(request, id):
+    if request.method == "GET":
+        discipline = Discipline.objects.get(discipline_id = id)
+        if discipline:
+            discipline_serial = DisciplineSerializer(discipline)
+            return JsonResponse(discipline_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono dyscypliny!", safe=False, status=status.HTTP_404_NOT_FOUND)
+    

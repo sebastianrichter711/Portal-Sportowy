@@ -12,7 +12,6 @@ from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 def download_matches(game, phase, round, season):
     
-    
     if phase == 'grupowa':
         id_round = round
     elif phase == 'pucharowa' and round == 'ćwierćfinał':
@@ -116,12 +115,12 @@ class AddMatches(APIView):
         download_matches(game, request.data['phase'], request.data['round'], request.data['season'])
         return JsonResponse("Dodano mecze.", safe=False, status=status.HTTP_201_CREATED)
     #return JsonResponse("Nie dodano meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
-
+'''
 class EditMatch(generics.UpdateAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = MatchSerializer
     queryset = Match.objects.all()
-
+'''
 class DeleteMatch(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = MatchSerializer
@@ -137,5 +136,32 @@ class MatchList(generics.ListAPIView):
     serializer_class = MatchSerializer
     queryset = Match.objects.all()
 
-        
+@csrf_exempt
+def get_matches(request):
+    if request.method == 'GET':
+        matches = Match.objects.all()
+        all_matches = []
+        for match in matches:
+            new_match = {"match_id": match.match_id, "game": match.season_id.game_id.name, "season": match.season_id.season, "phase": match.season_id.phase, "round": match.season_id.round, 
+                         "match_date": match.match_date, "host": match.host, "guest": match.guest, "score": match.score}
+            all_matches.append(new_match)
+        return JsonResponse(all_matches, safe=False, status=status.HTTP_200_OK)
+    return JsonResponse("Nie znaleziono meczy!", safe=False, status=status.HTTP_404_NOT_FOUND)
             
+class EditMatch(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
+    def put(self,request,match_id,format=None):
+        print(request.data)
+        match = Match.objects.get(match_id=match_id)
+        if match:
+            match.match_date = request.data['match_date']
+            match.host = request.data['host']
+            match.guest = request.data['guest']
+            match.score = request.data['score']
+            season = Season.objects.get(season_id = request.data['season'])
+            if season:
+                match.season_id = season
+            match.save()
+            return JsonResponse("Zaktualizowano sezon!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie zmieniono sezonu",  safe=False, status=status.HTTP_404_NOT_FOUND)

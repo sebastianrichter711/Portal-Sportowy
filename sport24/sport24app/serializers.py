@@ -38,7 +38,8 @@ class GameSerializer(serializers.ModelSerializer):
             'game_id',
             'db_game_id',
             'name',
-            'logo'
+            'logo',
+            'discipline_id'
         )
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -135,11 +136,6 @@ class MatchSerializer(serializers.ModelSerializer):
         )
         
 class SeasonSerializer(serializers.ModelSerializer):
-    game_id = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='name'
-    )
     class Meta:
         model = Season
         fields = (

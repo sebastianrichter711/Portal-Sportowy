@@ -109,10 +109,10 @@ class CreateCom(APIView):
             return JsonResponse("Dodano komentarz!", safe=False, status=status.HTTP_200_OK)
         return JsonResponse("Nie znaleziono artykułu lub użytkownika!", safe=False, status = status.HTTP_404_NOT_FOUND)
 
-class DeleteComment(generics.RetrieveDestroyAPIView):
+#class DeleteComment(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CommentSerializer
-    queryset = Comment.objects.all()
+#    serializer_class = CommentSerializer
+#    queryset = Comment.objects.all()
     
 class CommentDetail(generics.RetrieveAPIView):
     #permission_classes = [permissions.IsAuthenticated]
@@ -126,3 +126,21 @@ class EditComment(generics.UpdateAPIView):
         queryset = Comment.objects.all()
     except Exception as e:
         print (type(e))
+        
+class DeleteComment(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
+    def delete(self,request,comment_id,format=None):
+        print(request.data)
+        comment = Comment.objects.get(comment_id=comment_id)
+        if comment:
+            article = Article.objects.get(article_id = comment.article_id.article_id)
+            author = NewUser.objects.get(id=comment.author_id.id)
+            if article and author:
+                comment.delete()
+                article.comments_number -= 1
+                article.save()
+                author.comments_number -= 1
+                author.save()
+            return JsonResponse("Usunięto komentarz!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto komentarza",  safe=False, status=status.HTTP_404_NOT_FOUND)

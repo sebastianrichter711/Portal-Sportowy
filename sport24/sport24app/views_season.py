@@ -63,12 +63,12 @@ def get_all_rounds(request, season, name):
                 seasons_serial = ShortRoundSerializer(seasons, many = True)
                 return JsonResponse(seasons_serial.data, safe=False, status=status.HTTP_200_OK)
             return JsonResponse("Nie znaleziono rund dla danych: ligi, sezonu!", safe=False, status=status.HTTP_404_NOT_FOUND)
-        
+''' 
 class EditSeason(generics.UpdateAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = SeasonSerializer
     queryset = Season.objects.all()
-
+'''
 class DeleteSeason(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = SeasonSerializer
@@ -83,16 +83,63 @@ class SeasonDetail(generics.RetrieveAPIView):
 def get_seasons(request):
     if request.method == 'GET':
         seasons = Season.objects.all()
-        print(seasons)
+        all_seasons = []
         for season in seasons:
-            all_seasons = []
             new_season = {"season_id": season.season_id, "season": season.season, "phase": season.phase, "round": season.round, "game": season.game_id.name}
-            print(new_season)
-        all_seasons.append(new_season)
-    return JsonResponse(all_seasons, safe=False, status=status.HTTP_200_OK)
-#return JsonResponse("Nie znaleziono sezonów!", safe=False, status=status.HTTP_404_NOT_FOUND)
+            all_seasons.append(new_season)
+        return JsonResponse(all_seasons, safe=False, status=status.HTTP_200_OK)
+    return JsonResponse("Nie znaleziono sezonów!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
+class EditSeason(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
+    def put(self,request,season_id,format=None):
+        print(request.data)
+        season = Season.objects.get(season_id=season_id)
+        if season:
+            season.season = request.data['season']
+            season.phase = request.data['phase']
+            season.round = request.data['round']
+            game = Game.objects.get(name = request.data['game'])
+            if game:
+                season.game_id = game
+            season.save()
+            return JsonResponse("Zaktualizowano sezon!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie zmieniono sezonu",  safe=False, status=status.HTTP_404_NOT_FOUND)
 
-        
+@csrf_exempt
+def get_season(request, id):
+    if request.method == "GET":
+        season = Season.objects.get(season_id = id)
+        if season:
+            season_serial = SeasonSerializer(season)
+            return JsonResponse(season_serial.data, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono sezonu!", safe=False, status=status.HTTP_404_NOT_FOUND)
 
-
+@csrf_exempt
+def get_all_seasons_moderator(request):
+    if request.method == 'GET':
+        seasons = Season.objects.all()
+        if seasons:
+            all_seasons = []
+            for season in seasons:
+                new_season = {"season_id": season.season_id, "season": season.season, "phase": season.phase,
+                              "round": season.round, "game_name": season.game_id.name}
+                all_seasons.append(new_season)
+            return JsonResponse(all_seasons, safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie znaleziono sezonów!", safe=False, status=status.HTTP_404_NOT_FOUND)
+    
+class DeleteSeason(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
+    def delete(self,request,season_id,format=None):
+        print(request.data)
+        season = Season.objects.get(season_id=season_id)
+        if season:
+            matches = Match.objects.filter(season_id=season)
+            if matches:
+                for match in matches:
+                    match.delete()
+            season.delete()
+            return JsonResponse("Usunięto sezon!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto sezonu",  safe=False, status=status.HTTP_404_NOT_FOUND)

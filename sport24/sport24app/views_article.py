@@ -334,13 +334,28 @@ class EditArticle(generics.UpdateAPIView):
         queryset = Article.objects.all()
     except Exception as e:
         print (type(e))
-
+'''
 class DeleteArticle(generics.RetrieveDestroyAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
-    
+''' 
 class AdminPostDetail(generics.RetrieveAPIView):
     #permission_classes = [permissions.IsAuthenticated]
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    
+class DeleteArticle(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
+    def delete(self,request,article_id,format=None):
+        print(request.data)
+        article = Article.objects.get(article_id=article_id)
+        if article:
+            section = Section.objects.get(section_id = article.section_id.section_id)
+            if section:
+                article.delete()
+                section.number_of_articles -= 1
+                section.save()
+            return JsonResponse("Usunięto artykuł!", safe=False, status=status.HTTP_200_OK)
+        return JsonResponse("Nie usunięto artykułu",  safe=False, status=status.HTTP_404_NOT_FOUND)
