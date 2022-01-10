@@ -11,6 +11,7 @@ import { Button, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AuthContext from './components/AuthContext'
+import VideoJS from './components/Video';
 
 const useStyles = makeStyles((theme) => ({
 	link: {
@@ -34,7 +35,13 @@ function App() {
 			<Sections/>
 			{/* <Posts/> */}
 			<NewestArticles/>
+			<br/>
+			<br/>
 			<Quote/>
+			<br/>
+			<h1> Najlepsze sportowe wideo!</h1>
+			<br/>
+			<VideoJS/>
 		</div>
 	);
 }

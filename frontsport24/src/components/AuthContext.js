@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom';
+import axiosInstance from '../axios';
 
 const AuthContext = createContext();
 
@@ -32,6 +33,8 @@ export const AuthProvider = ({ children }) => {
             console.log(authTokens)
             console.log(data)
             localStorage.setItem('authTokens', JSON.stringify(data))
+            axiosInstance.defaults.headers['Authorization'] =
+					'JWT ' + localStorage.getItem(authTokens?.access);
             history.push('/')
 
         } else {
@@ -41,13 +44,17 @@ export const AuthProvider = ({ children }) => {
     }
 
     let logoutUser = () => {
+        const response = axiosInstance.post('user/logout/blacklist/', {
+			refresh_token: localStorage.getItem(authTokens?.refresh),
+		});
         setAuthTokens("xxx")
         setUser("xxx")
         localStorage.removeItem('authTokens')
+        axiosInstance.defaults.headers['Authorization'] = null;
         history.push('/login')
     }
 
-
+    
     let contextData = {
         user: user,
         loginUser: loginUser,

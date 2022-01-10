@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
                 : theme.palette.grey[700],
     },
     postTitle: {
-        fontSize: '16px',
+        fontSize: '21px',
         textAlign: 'left',
     },
     postText: {
@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
         alignContent: "right"
     },
     newest: {
-        textAlign: "left"
+        textAlign: "left",
+        color: "#006600"
     }
 }));
 
@@ -102,7 +103,7 @@ function NewestArticles() {
                             );
                         })}
                     </Grid>
-                    <Grid container xs={8} spacing={2}>
+                    <Grid container xs={8} spacing={2} alignItems='flex-end'>
                         {appStatePosts.posts.map((post) => {
                             var url = 'http://localhost:8000' + post.big_title_photo
                             return (
@@ -120,7 +121,7 @@ function NewestArticles() {
                                                 title="Image title"
                                             />
                                         </Link>
-                                        <CardContent className={classes.cardContent}>
+                                        {/* <CardContent className={classes.cardContent}> */}
                                             <Link
                                                 color="textPrimary"
                                                 href={'posts/' + post.article_id}
@@ -129,13 +130,13 @@ function NewestArticles() {
                                                 <Typography
                                                     gutterBottom
                                                     variant="h6"
-                                                    component="h2"
+                                                    component="h4"
                                                     className={classes.postTitle}
                                                 >
                                                     {post.title}
                                                 </Typography>
                                             </Link>
-                                        </CardContent>
+                                        {/* </CardContent> */}
                                     </Card>
                                 </Grid>
                             );

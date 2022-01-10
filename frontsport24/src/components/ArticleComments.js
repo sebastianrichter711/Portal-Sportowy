@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
                 : theme.palette.grey[700],
     },
     postTitle: {
-        fontSize: '16px',
+        fontSize: '20px',
         textAlign: 'left',
         fontStyle: 'bold'
     },
@@ -40,14 +40,27 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'left',
         alignItems: 'baseline',
-        fontSize: '12px',
+        fontSize: '16px',
+        textAlign: 'left',
+        marginBottom: theme.spacing(2),
+    },
+    postDate: {
+        display: 'flex',
+        justifyContent: 'left',
+        alignItems: 'baseline',
+        fontSize: '16px',
         textAlign: 'left',
         marginBottom: theme.spacing(2),
     },
     photo: {
         width: '20px',
         height: '20px'
+    },
+    container: {
+        marginLeft: '251px'
     }
+    
+    
 }));
 
 const ArticleComments = (props) => {
@@ -76,15 +89,15 @@ const ArticleComments = (props) => {
 
     const classes = useStyles();
 
-    if (!appState.articleComments || appState.articleComments.length === 0) return <h1>Nie znaleziono komentarzy dla tego artykułu. Możesz dodać komentarz jako pierwszy!</h1>;
+    if (!appState.articleComments || appState.articleComments.length === 0) return <h1 align="center">Nie znaleziono komentarzy dla tego artykułu. Możesz dodać komentarz jako pierwszy!</h1>;
     return (
         <React.Fragment>
-            <Container maxWidth="md" component="main">
-                <Grid container spacing={2} alignItems="center">
+            <Container maxWidth="md" component="main" className={classes.container}>
+                <Grid container spacing={2}>
                     {appState.articleComments.map((comment) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <Grid item xs={12} md={3}>
+                            <Grid item xs={8}>
                                 <Card className={classes.card} key={comment}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography
@@ -93,13 +106,21 @@ const ArticleComments = (props) => {
                                             component="h2"
                                             className={classes.postTitle}
                                         >
-                                            {comment.login} {comment.date_of_create}
+                                            {comment.login} 
                                         </Typography>
                                         <Typography
                                             gutterBottom
                                             variant="h6"
                                             component="h2"
-                                            className={classes.postTitle}
+                                            className={classes.postDate}
+                                        >
+                                            {comment.date_of_create}
+                                        </Typography>
+                                        <Typography
+                                            gutterBottom
+                                            variant="h6"
+                                            component="h2"
+                                            className={classes.postText}
                                         >
                                             {comment.modified} {comment.text}
                                         </Typography> 

@@ -34,7 +34,7 @@ function Copyright() {
 const sections = [
 	{
 		title: 'Działy',
-		description: ['Piłka nożna', 'Siatkówka', 'Koszykówka', 'Lekkoatletyka'],
+		description: ['Piłka nożna', 'Siatkówka', 'Koszykówka', 'Tenis', 'Inne sporty'],
 	}
 ];
 
@@ -43,9 +43,9 @@ const results = [
 		title: 'Wyniki',
 		description: [
 			'PKO BP Ekstraklasa',
-			'1.Bundesliga',
+			'1. Bundesliga',
 			'UEFA Champions League',
-			'UEFA Europa League',
+			'PGNiG Superliga',
 			'Turkish Airlines Euroleague',
 		],
 	},

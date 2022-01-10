@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
                 : theme.palette.grey[700],
     },
     postTitle: {
-        fontSize: '16px',
+        fontSize: '17px',
         textAlign: 'left',
         fontStyle: 'bold'
     },
@@ -43,6 +43,12 @@ const useStyles = makeStyles((theme) => ({
         height: '20px'
     }
 }));
+
+const GreenTypography = withStyles({
+	root: {
+	  color: "#006600",
+	}
+  })(Typography);
 
 function NewestMatches() {
 
@@ -63,25 +69,26 @@ function NewestMatches() {
     return (
         <React.Fragment>
             <Container component="main">
-                <Grid container spacing={2} alignItems="left">
+                <Grid container spacing={2} alignContent="center">
                     {appState.newestMatches.map((match) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <Grid item key={match.id} xs={3}>
+                            <Grid item key={match.id} xs={2}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
-                                        <Typography
+                                        <GreenTypography
                                             gutterBottom
                                             variant="h6"
                                             component="h2"
                                             className={classes.postTitle}
                                         >
                                             {match.match_date}
-                                        </Typography>
+                                        </GreenTypography>
                                         <Typography
                                             gutterBottom
                                             variant="h6"
                                             component="h2"
+                                            align="justify"
                                             className={classes.postTitle}
                                         >
                                             {match.host} {match.host_score}
@@ -90,6 +97,7 @@ function NewestMatches() {
                                             gutterBottom
                                             variant="h6"
                                             component="h2"
+                                            align="justify"
                                             className={classes.postTitle}
                                         >
                                             {match.guest} {match.guest_score}

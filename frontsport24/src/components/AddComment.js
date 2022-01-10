@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
+		width: 130,
+		innerHeight: 130
 	},
 }));
 
@@ -100,8 +102,9 @@ export default function Create({art_id}) {
 			<CssBaseline />
 			<div className={classes.paper}>
             <img className="logo" src={logo} alt="logo" />
-				
-				<form className={classes.form} noValidate>
+			<Grid xs={12} alignContent='left'>
+				{/* <form className={classes.form} noValidate> */}
+				<Grid xs={12} alignContent='center'>
                 <TextField
 								variant="outlined"
 								required
@@ -121,7 +124,9 @@ export default function Create({art_id}) {
 					>     
                     Dodaj
                     </Button>
-				</form>
+				{/* </form> */}
+				</Grid>
+			</Grid>
 			</div>
 		</Container>
 	);

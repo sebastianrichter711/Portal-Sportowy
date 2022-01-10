@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function UserData() {
-    let {user} = useContext(AuthContext);
+    let { user } = useContext(AuthContext);
     const { title } = useParams();
     const classes = useStyles();
 
@@ -43,7 +43,7 @@ export default function UserData() {
     }
     useEffect(() => {
         var url = "http://localhost:8000/api/user/profile/" + user.username
-        axios.get(url,config).then((res) => {
+        axios.get(url, config).then((res) => {
             setData({ userData: res.data });
             console.log(res.data);
         });
@@ -51,16 +51,24 @@ export default function UserData() {
 
     var userAvatar = 'http://localhost:8000/media/' + data.userData.avatar
     console.log(userAvatar)
+    if (user == "xxx") return (<React.Fragment>
+        <br />
+        <br />
+        <br />
+        <h1>Strona dla zalogowanych użytkowników</h1>
+    </React.Fragment>
+    )
+
     return (
         <Container component="main" xs={3} md={3}>
             <CssBaseline />
-            <br/>
-            <br/>
-            <br/>
+            <br />
+            <br />
+            <br />
             <div className={classes.paper}></div>
             <div className={classes.heroContent}>
                 <Container xs={3}>
-                <Typography
+                    <Typography
                         variant="h5"
                         align="center"
                         color="textSecondary"
@@ -115,15 +123,7 @@ export default function UserData() {
                         color="textSecondary"
                         paragraph
                     >
-                    <p>Data urodzenia: {data.userData.birth_date} </p>
-                    </Typography>
-                    <Typography
-                            variant="h5"
-                            align="center"
-                            color="textSecondary"
-                            paragraph
-                    >
-                    <p>Numer telefonu: {data.userData.phone_number}</p>
+                        <p>Data urodzenia: {data.userData.birth_date} </p>
                     </Typography>
                     <Typography
                         variant="h5"
@@ -131,31 +131,39 @@ export default function UserData() {
                         color="textSecondary"
                         paragraph
                     >
-                    <p>Liczba komentarzy: {data.userData.comments_number}</p>
+                        <p>Numer telefonu: {data.userData.phone_number}</p>
                     </Typography>
-                   
+                    <Typography
+                        variant="h5"
+                        align="center"
+                        color="textSecondary"
+                        paragraph
+                    >
+                        <p>Liczba komentarzy: {data.userData.comments_number}</p>
+                    </Typography>
+
                     <Button
-						href={'http://localhost:3000/edituser/' + user.user_id}
+                        href={'http://localhost:3000/edituser/' + user.user_id}
                         color="white"
-						variant="outlined"
-						className={classes.link}
-						//to="/logout"
-					>
-						EDYTUJ KONTO
-					</Button>
+                        variant="outlined"
+                        className={classes.link}
+                    //to="/logout"
+                    >
+                        EDYTUJ KONTO
+                    </Button>
                     {(user.role != "moderator-art" && user.role != "moderator-wyniki") ? (
-                    <Button
-						href={'http://localhost:3000/deleteuser/' + user.username}
-						color="white"
-						variant="outlined"
-						className={classes.link}
-						//to="/logout"
-					>
-						USUŃ KONTO
-					</Button> ) : null }
-                   
-                    </Container>
-                    </div>
+                        <Button
+                            href={'http://localhost:3000/deleteuser/' + user.username}
+                            color="white"
+                            variant="outlined"
+                            className={classes.link}
+                        //to="/logout"
+                        >
+                            USUŃ KONTO
+                        </Button>) : null}
+
                 </Container>
-                );
+            </div>
+        </Container>
+    );
 }

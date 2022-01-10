@@ -3,7 +3,7 @@ import axiosInstance from '../axios';
 import { useParams } from 'react-router-dom';
 //MaterialUI
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -44,14 +44,21 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '1.25%'
     },
     quote: {
-        textColor: green
+        fontWeight: 600,
+        fontSize: '40px'
     },
     des: {
         fontSize: '20px'
     }
 }));
 
-export default function MainArticle() {
+const WhiteTypography = withStyles({
+	root: {
+	  color: "#ffffff",
+	}
+  })(Typography);
+
+export default function Quote() {
     const classes = useStyles();
 
     const [data, setData] = useState({ posts: [] });
@@ -65,15 +72,15 @@ export default function MainArticle() {
     }, [setData]);
 
     return (
-        <Card sx={{ maxWidth: 50 }}>
+        <Card sx={{ maxWidth: 50 }} style={{backgroundColor: '#006600'}}>
             <CardContent>
-            <Typography variant="h5" component="div" className={classes.quote}>
+            <WhiteTypography variant="h5" component="div" className={classes.quote}>
                     {data.posts.quote}
-                </Typography>
+                </WhiteTypography>
                 <br/> 
-                <Typography variant="h5" component="div" className={classes.des}>
+                <WhiteTypography variant="h5" component="div" className={classes.des}>
                     {data.posts.description}
-                </Typography>
+                </WhiteTypography>
             </CardContent>
         </Card>
     );

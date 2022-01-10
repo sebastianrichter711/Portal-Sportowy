@@ -112,6 +112,7 @@ export default function SignIn() {
 						autoComplete="current-password"
 						onChange={handleChange}
 					/>
+					<p> * - pola obowiązkowe</p>
 					<Button
 						type="submit"
 						fullWidth
@@ -123,11 +124,6 @@ export default function SignIn() {
 						Zaloguj się
 					</Button>
 					<Grid container>
-						<Grid item xs>
-							<Link href="#" variant="body2">
-								Zapomniałeś hasła?
-							</Link>
-						</Grid>
 						<Grid item>
 							<Link href="/register" variant="body2">
 								{"NIe masz konta? Zarejestruj się!"}

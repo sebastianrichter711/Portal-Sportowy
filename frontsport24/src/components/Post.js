@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axios';
 import { useParams } from 'react-router-dom';
 //MaterialUI
+import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -25,8 +26,17 @@ const useStyles = makeStyles((theme) => ({
 		height: "770px",
 		top: "40px",
 		alignContent: "left"
+	},
+	bold: {
+		fontWeight: 600
 	}
 }));
+
+const BlackTextTypography = withStyles({
+	root: {
+	  color: "#000000",
+	}
+  })(Typography);
 
 export default function Post() {
 
@@ -64,6 +74,7 @@ export default function Post() {
 						align="center"
 						color="textPrimary"
 						gutterBottom
+						className={classes.bold}
 					>
 						{data.posts.title}
 					</Typography>
@@ -91,22 +102,24 @@ export default function Post() {
 					>
 						<img className={classes.mainPhoto} src={article_url} alt="big_title_photo" />
 					</Typography>
-					<Typography
-						variant="h5"
-						align="center"
+					<BlackTextTypography
+						variant="h4"
+						align="left"
 						color="textSecondary"
 						paragraph
+						className={classes.bold}
 					>
 						{data.posts.lead_text}
-					</Typography>
+					</BlackTextTypography>
 					<Typography
 						variant="h5"
-						align="center"
+						align="left"
 						color="textSecondary"
 						paragraph
 					>
 						{data.posts.text}
 					</Typography>
+					<br/>
 					<Typography
 						variant="h5"
 						align="center"
@@ -115,7 +128,7 @@ export default function Post() {
 					>
 						Komentarze ({data.posts.comments_number})
 					</Typography>
-					{(user != "xxx") ? (<AddComment art_id={id} />) : (<h1> Jeśli chcesz dodać komentarz, musisz mieć konto w serwisie!</h1>)}
+					{(user != "xxx") ? (<AddComment art_id={id} />) : (<h1 align="center"> Jeśli chcesz dodać komentarz, musisz mieć konto w serwisie!</h1>)}
 					<ArticleComments id={id} />
 				</Container>
 			</div>

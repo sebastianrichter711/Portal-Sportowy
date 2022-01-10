@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
         width: '800px',
         height: '600px',
         paddingTop: '1.25%'
+    },
+    title:{
+        fontWeight: 600,
+        fontSize: '52px',
+        color: '#006600'
     }
 }));
 
@@ -79,7 +84,7 @@ export default function MainArticle() {
                     href={'posts/' + data.posts.article_id}
                     className={classes.link}
                 >
-                <Typography variant="h5" component="div">
+                <Typography variant="h5" component="div" className={classes.title}>
                     {data.posts.title}
                 </Typography>
                 </Link>

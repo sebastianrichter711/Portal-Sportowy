@@ -175,7 +175,9 @@ export default function AddDiscipline() {
 							name="image"
 							type="file"
 						/>
-						<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+						<br/>
+						<br/>
+						<FormControl variant="standard" sx={{ m: 1, minWidth: 120 }} alignItems="left">
 							<InputLabel id="demo-simple-select-standard-label">Dyscyplina</InputLabel>
 							<Select className="custom-select1"
 								name="discipline"
