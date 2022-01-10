@@ -63,6 +63,7 @@ def download_article(url, section_name):
 
     im = Image.open(requests.get(full_image_link, stream=True).raw)
 
+    modified_title = ''
     #signs = [',','.',':',';','!','?','"','*'] 
     signs = '",.:;!?-'
     for i in proper_title:                               

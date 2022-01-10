@@ -98,3 +98,7 @@ class Quote(models.Model):
     quote_id = models.AutoField(primary_key=True)
     quote = models.TextField(null=True)
     description = models.TextField(null=True)
+    
+class Video(models.Model):
+    video_id = models.AutoField(primary_key=True)
+    url = models.TextField(null=True)

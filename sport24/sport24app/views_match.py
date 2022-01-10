@@ -57,7 +57,7 @@ def add_matches(request, game_id, phase, round, season):
 @csrf_exempt
 def get_newest_matches(request):
     if request.method == "GET":
-        newest_matches = Match.objects.all().order_by('-match_date')[:4]
+        newest_matches = Match.objects.all().order_by('-match_date')[:6]
         if newest_matches: 
             list_newest_matches = []
             for match in newest_matches:
