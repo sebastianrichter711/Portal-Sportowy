@@ -41,9 +41,9 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
 
     id = models.AutoField(primary_key=True)
     email = models.EmailField(_('email address'), unique=True)
-    user_name = models.CharField(max_length=150, unique=True)
-    first_name = models.CharField(max_length=150, blank=True)
-    last_name = models.CharField(max_length=150, blank=True)
+    user_name = models.CharField(max_length=100, unique=True)
+    first_name = models.CharField(max_length=100, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
     sex = models.CharField(max_length=10, blank=True)
     phone_number = models.CharField(max_length=14, blank=True)
     birth_date = models.DateField(null=True)
@@ -54,8 +54,6 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     last_login = models.DateTimeField(default=timezone.now)
     comments_number = models.IntegerField(blank=True, default=0)
     avatar = models.ImageField(_("Image"), upload_to=upload_to_profiles, default='ludzik.png', null=True, blank=True)
-    about = models.TextField(_(
-        'about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 

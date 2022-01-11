@@ -65,7 +65,7 @@ def upload_to_games(instance, filename):
 
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
-    db_game_id = models.IntegerField()
+    db_game_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=100)
     logo = models.ImageField(_("Image"), upload_to=upload_to_games, default='media/ludzik.png', null=True, blank=True)
     discipline_id = models.ForeignKey(Discipline, on_delete=models.DO_NOTHING)
