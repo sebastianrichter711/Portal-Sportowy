@@ -138,9 +138,11 @@ return (
 							autoComplete="current-password"
 							onChange={handleChange}
 						/>
-						<p> Twoje hasło musi zawierać: </p>
-						<p> * co najmniej 8 znaków </p>
-						<p> * 1 dużą i małą literę </p>
+						<p> Twoje hasło: </p>
+						<p> * musi zawierać co najmniej 8 znaków </p>
+						<p> * nie może być popularne (np. password, qwerty) </p>
+						<p> * nie może składać się wyłącznie z cyfer </p>
+						<p> * nie może być podobne do loginu lub adresu email </p>
 					</Grid>
 					<p> * - pola obowiązkowe</p>
 					<Button
