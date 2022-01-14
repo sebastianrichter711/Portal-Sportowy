@@ -13,4 +13,5 @@ kategorii (dyscypliny sportowej).
 - backend: Django
 - baza danych: PostgreSQL
 
+Licensed under the [MIT License](LICENSE).
 
