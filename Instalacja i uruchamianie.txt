@@ -1,6 +1,6 @@
 Instalacja
 
-Uruchomienie aplikacji internetowej jest możliwe jedynie lokalnie na komputerze Użytkownika zainteresowanego 
+Uruchomienie aplikacji internetowej jest możliwe m.in. lokalnie na komputerze Użytkownika zainteresowanego 
 wypróbowaniem aplikacji. W tym celu należy wybrać lokalizację, w której ma być utworzony folder z projektem, 
 a w niej otworzyć terminal i wpisać polecenie git clone https://github.com/sebix354/Portal-Sportowy.git. 
 Projekt korzysta z licencji MIT.
