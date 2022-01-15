@@ -15,9 +15,9 @@ kategorii (dyscypliny sportowej).
 
 ## Wymagania sprzętowe i programowe
 - przeglądarka internetowa:
-Microsoft Edge w wersji 97.0.1072.55
-Mozilla Firefox w wersji 95.0.2
-Google Chrome w wersji 97.0.4692.71
+	- Microsoft Edge w wersji 97.0.1072.55
+	- Mozilla Firefox w wersji 95.0.2
+	- Google Chrome w wersji 97.0.4692.71
 
 - narzędzia i technologie
 React.js w wersji 17.0.2
