@@ -39,11 +39,6 @@ def download_article(url, section_name):
         new_date += ":00"
         date_time_obj = datetime.strptime(new_date, '%d.%m.%Y %H:%M:%S')
 
-    print(proper_title)
-    print(new_date)
-    print(lead_text.text)
-    print(main_text_to_db)
-
     images = html.find_all("script")
     str_img = str(images)
     split_images = str_img.split('<script>')
@@ -59,18 +54,14 @@ def download_article(url, section_name):
     https = image_link.find("https:")
     comma = image_link.find("',")
     full_image_link = image_link[https:comma]
-    print(full_image_link)
-
-    im = Image.open(requests.get(full_image_link, stream=True).raw)
 
     modified_title = ''
-    #signs = [',','.',':',';','!','?','"','*'] 
     signs = '",.:;!?-'
     for i in proper_title:                               
       if i in signs:                       
         modified_title = proper_title.replace(i, '')
-                  
-    print(modified_title)
+        
+    im = Image.open(requests.get(full_image_link, stream=True).raw)      
     image_name = 'articles/' + modified_title + '.png'
     current_location = os.getcwd()
     os.chdir(BASE_DIR)
