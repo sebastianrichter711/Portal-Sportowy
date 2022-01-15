@@ -30,7 +30,7 @@ kategorii (dyscypliny sportowej).
 
 Wykaz bibliotek Pythona użytych w projekcie dostępny w pliku requirements.txt w folderze sport24.
 
-Instrukcja instalacji i uruchomienia aplikacji znajduje się w pliku [Instalacja i uruchamianie.txt](Instalacja i uruchamianie.txt).
+Instrukcja instalacji i uruchomienia aplikacji znajduje się w pliku [Instalacja i uruchamianie](Instalacja i uruchamianie).
 
 Licensed under the [MIT License](LICENSE).
 
