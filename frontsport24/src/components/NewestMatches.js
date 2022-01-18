@@ -40,10 +40,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const GreenTypography = withStyles({
-	root: {
-	  color: "#006600",
-	}
-  })(Typography);
+    root: {
+        color: "#006600",
+    }
+})(Typography);
 
 function NewestMatches() {
 
@@ -55,7 +55,6 @@ function NewestMatches() {
         axiosInstance.get("http://localhost:8000/api/newest_matches").then((res) => {
             const matches = res.data;
             setAppState({ newestMatches: matches });
-            console.log(res.data);
         });
     }, [setAppState]);
 
@@ -74,7 +73,7 @@ function NewestMatches() {
                                         <GreenTypography
                                             gutterBottom
                                             variant="h6"
-                                            component="h2"
+                                            align="justify"
                                             className={classes.postTitle}
                                         >
                                             {match.match_date}
@@ -82,7 +81,6 @@ function NewestMatches() {
                                         <Typography
                                             gutterBottom
                                             variant="h6"
-                                            component="h2"
                                             align="justify"
                                             className={classes.postTitle}
                                         >
@@ -91,7 +89,6 @@ function NewestMatches() {
                                         <Typography
                                             gutterBottom
                                             variant="h6"
-                                            component="h2"
                                             align="justify"
                                             className={classes.postTitle}
                                         >
@@ -102,8 +99,8 @@ function NewestMatches() {
                             </Grid>
                         );
                     })}
-        </Grid>
-        </Container>
+                </Grid>
+            </Container>
         </React.Fragment >
     );
 }
