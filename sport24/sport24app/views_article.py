@@ -23,10 +23,10 @@ def download_article(url, section_name):
     html = BeautifulSoup(data.text, 'html.parser')
 
     title = html.find("meta", {"property": "og:title"})
-    proper_title = title["content"]
     date = html.find("span", {"class": "article_date"})
     lead_text = html.find("div", {"id": "gazeta_article_lead"})
     main_text = html.find_all("p", {"class": "art_paragraph"})
+    proper_title = title["content"]
 
     main_text_to_db = ""
     for item in main_text:
@@ -61,22 +61,19 @@ def download_article(url, section_name):
       if i in signs:                       
         modified_title = proper_title.replace(i, '')
         
-    im = Image.open(requests.get(full_image_link, stream=True).raw)      
+    photo = Image.open(requests.get(full_image_link, stream=True).raw)      
     image_name = 'articles/' + modified_title + '.png'
     current_location = os.getcwd()
     os.chdir(BASE_DIR)
     os.chdir('media')
-    im.save(image_name)
+    photo.save(image_name)
     os.chdir(current_location)
     
     section = Section.objects.get(name=section_name)
-    new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj, lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
-    
-    if new_article != None:
+    if section:
+        new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj, lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
         new_article.save()
-        articles_number = getattr(section, 'number_of_articles')
-        articles_number = articles_number + 1
-        setattr(section, 'number_of_articles', articles_number) 
+        section.number_of_articles += 1
         section.save()      
         return True
 
