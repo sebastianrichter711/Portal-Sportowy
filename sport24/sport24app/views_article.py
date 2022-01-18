@@ -42,7 +42,7 @@ def download_article(url, section_name):
     images = html.find_all("script")
     str_img = str(images)
     split_images = str_img.split('<script>')
-
+   
     images_gallery = ""
     for item in split_images:
         if "galleryInArticleData" in item:
@@ -68,7 +68,7 @@ def download_article(url, section_name):
     os.chdir('media')
     im.save(image_name)
     os.chdir(current_location)
-    #print(len(proper_title))
+    
     section = Section.objects.get(name=section_name)
     new_article = Article.objects.create(title=proper_title, date_of_create = date_time_obj, lead_text = lead_text.text, text = main_text_to_db, big_title_photo = image_name, section_id = section)
     
