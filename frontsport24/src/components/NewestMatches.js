@@ -7,35 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import axiosInstance from '../axios';
 
-const useStyles = makeStyles((theme) => ({
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    },
-    link: {
-        margin: theme.spacing(1, 1.5),
-    },
-    cardHeader: {
-        backgroundColor:
-            theme.palette.type === 'light'
-                ? theme.palette.grey[200]
-                : theme.palette.grey[700],
-    },
+const useStyles = makeStyles(() => ({
     postTitle: {
         fontSize: '17px',
         textAlign: 'left',
         fontStyle: 'bold'
-    },
-    postText: {
-        display: 'flex',
-        justifyContent: 'left',
-        alignItems: 'baseline',
-        fontSize: '12px',
-        textAlign: 'left',
-        marginBottom: theme.spacing(2),
-    },
-    photo: {
-        width: '20px',
-        height: '20px'
     }
 }));
 
@@ -67,9 +43,9 @@ function NewestMatches() {
                     {appState.newestMatches.map((match) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
-                            <Grid item key={match.id} xs={2}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
+                            <Grid item xs={2}>
+                                <Card>
+                                    <CardContent>
                                         <GreenTypography
                                             gutterBottom
                                             variant="h6"
@@ -101,7 +77,7 @@ function NewestMatches() {
                     })}
                 </Grid>
             </Container>
-        </React.Fragment >
+        </React.Fragment>
     );
 }
 
