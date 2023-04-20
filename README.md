@@ -98,7 +98,7 @@ Instruction of installing and launching the application is available in a file I
 - play a randomly displayed video on the home page.
 
 ## Hardware and software requirements
-- recommend web browsers:
+- recommended web browsers:
 	- Microsoft Edge 97.0.1072.55
 	- Mozilla Firefox 95.0.2
 	- Google Chrome 97.0.4692.71
